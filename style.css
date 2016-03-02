@@ -1,0 +1,39 @@
+h1, h2 {
+	text-align: center;
+}
+
+div {
+	border: 1px solid black;
+	margin: 13% 6%;
+}
+
+#lesson {
+	width: 25%;
+	height: 88%;
+	float: left;
+}
+
+#animation, #terminal {
+	width: 50%;
+	height: 18%;
+	float: right;
+}
+
+footer {
+	clear: both;
+}
+
+footer span {
+	display: inline-block;
+	width: 50%;
+	text-align: left;
+}
+
+footer a {
+	display: inline-block;
+	width: 49%; /* When I used 50% here, the span and the link ended up on different lines */
+	text-align: right;
+	/*margin-right: 0px;*/
+}
+
+/* Are there easy ways to do 12-column layouts other than Bootstrap? Skeleton? */
