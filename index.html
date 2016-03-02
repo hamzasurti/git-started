@@ -1,21 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
 		<title>Git Schooled</title>
-		<link rel='stylesheet' href='style.css'>
+		<!-- <link rel='stylesheet' href='style.css'> -->
+		<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+		<!-- I'm not sure exactly what normalize.css is for - we may not need it. -->
+		<link rel="stylesheet" href="css/normalize.css">
+  	<link rel="stylesheet" href="css/skeleton.css">
 	</head>
-	<header>
-		<h1>Git Schooled</h1>
-		<h2>Learn how to use Git - and see what's going on behind the scenes</h2>
-	</header>
 	<body>
-		<div id='lesson'>Lesson</div>
-		<div id='animation'>Animation</div>
-		<div id='terminal'>Terminal</div>
+		<div class='container'>
+
+			<div class='row'>
+				<!-- <div class='twelve columns'> Can I put skeleton classes on other block-level elements? -->
+					<header>
+						<h1>Git Schooled</h1>
+						<p>Learn how to use Git - and see what's going on behind the scenes</p>
+					</header>
+				<!-- </div> -->
+			</div>
+
+			<div class='row'>
+				<div class='one-third column' id='lesson'>Lesson</div>
+				<div class='two-thirds column'>
+					<div id='animation'>Animation</div>
+					<div id='terminal'>Terminal</div>
+				</div>
+			</div>
+
+			<footer class='row'> <!-- Isaac: It looks like it's OK to put the Skeleton class='row' attribute on a footer rather than a div. -->
+				<div class='one-half column' id='credits'>
+					Created by Andy, Hamza, and Isaac
+				</div>
+				<div class='one-half column' id='github'>
+					<a href='#'>Check out our code</a>
+				</div>
+			</footer>
+
+		</div> <!-- End of container -->
 	</body>
-	<footer>
-		<span id = 'credits'>Created by Andy, Hamza, and Isaac</span>
-		<a href='#' id='github'>Check out the code behind Git Started</a>
-	</footer>
 </html>
