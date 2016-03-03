@@ -12,7 +12,7 @@
 	<body>
 		<div class='container'>
 
-			<div class='row'> 
+			<div class='row'>
 				<header> <!-- Isaac: I don't think I need to use class='twelve columns' to specify that this header should stretch across the entire screen. -->
 					<!-- We could add navigation, contact/help, search, progress indicators, and login here if we have these features. -->
 					<h1>Git Schooled</h1>
@@ -25,12 +25,20 @@
 				<div class='one-third column' id='lesson'>Lesson</div>
 				<div class='two-thirds column'>
 					<div id='animation'>Animation</div>
-					<div id='terminal'>Terminal</div>
+					<div id='terminal'>Terminal
+						<div class="current"></div>
+						<form>
+							<input type="text" autocomplete="on" />
+						</form>
+						<script>
+							require('./app.js');
+						</script>
+					</div>
 				</div>
 			</div>
 
 			<!-- For testing only -->
-		<!-- 	<div class='row'> 
+		<!-- 	<div class='row'>
 				<div class='one column marker'>1</div>
 				<div class='one column marker'>2</div>
 				<div class='one column marker'>3</div>
