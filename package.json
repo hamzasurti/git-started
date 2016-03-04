@@ -1,7 +1,7 @@
 {
   "name": "git-started",
   "version": "0.1.0",
-  "main": "build/bundle.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron .",
     "task": "gulp"

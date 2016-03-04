@@ -44,4 +44,6 @@ var Dashboard = React.createClass({
 module.exports = Dashboard;
 
 // React.render(<Dashboard />, document.getElementById('dashboard-container'));
-ReactDOM.render(<Dashboard />, document.getElementById('dashboard-container'));
+// if (typeof window !== "undefined") {
+	ReactDOM.render(<Dashboard />, document.getElementById('dashboard-container'));
+// }
