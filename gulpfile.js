@@ -4,7 +4,7 @@ var babelify = require('babelify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var notify = require('gulp-notify');
-// var nodemon = require('gulp-nodemon'); // not in Doc-tor
+var nodemon = require('gulp-nodemon'); // not in Doc-tor
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
@@ -21,7 +21,7 @@ function buildScript(file, watch) {
     entries : ['./components/' + file],
     debug : true,
     transform : babelify.configure({
-                presets: ["react", "es2015"/*, "stage-0"*/] // Doc-tor doesn't have "stage 0" - do I need it?
+                presets: ["react", "es2015", "stage-0"] // Doc-tor doesn't have "stage 0" - do I need it?
                 })
   };
 
@@ -52,16 +52,16 @@ gulp.task('scripts', function() {
 });
 
 //run nodemon
-// gulp.task('start', function() {
-//   nodemon({
-//     script: 'server/server.js',
-//     ext: 'js html',
-//     env: {'NODE_ENV': 'development'}
-//   })
-// });
+gulp.task('start', function() {
+  nodemon({
+    script: 'main.js', // Or should this be the bundle?
+    ext: 'js html',
+    env: {'NODE_ENV': 'development'}
+  })
+});
 
 // run 'scripts' task first, then watch for future changes
-gulp.task('default', ['scripts'/*, 'start'*/], function() {
+gulp.task('default', ['scripts', 'start'], function() {
   return buildScript('Dashboard.js', true);
 });
 
