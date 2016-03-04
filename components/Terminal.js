@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-// Can you require files in script tags in JSX? I'm not sure app.js is running. 
+// I can't get app.js to run here. In fact, the script tag doesn't object if I give it an invalid address like 'tomato'. We can add this script back after the form element if needed: <script src='./../app'></script>
 export default class Terminal extends Component {
   render() {
     return (
@@ -10,9 +10,7 @@ export default class Terminal extends Component {
 				<form>
 					<input type="text" autoComplete="on" />
 				</form>
-				<script>
-					require('./../app.js');
-				</script>
+				
       </div>
     )
   }

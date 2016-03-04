@@ -1,5 +1,3 @@
-console.log('app.js is running');
-
 // document.write('node^');
 // document.write(process.versions.node);
 // document.write('process.versions.chrome');
@@ -17,7 +15,7 @@ const ipcRenderer = require('electron').ipcRenderer;
 // });
 
 ipcRenderer.on('terminal-reply', (event, arg) => {
- $('#terminal').append(arg);
+ $('#Terminal').append(arg);
  console.log(arg); // prints "pong"
 });
 
