@@ -1,10 +1,10 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
 var babelify = require('babelify');
-var watchify = require('watchify');
+var watchify = require('watchify'); // Isaac: I tested and confirmed that watchify is working. Yay!
 var source = require('vinyl-source-stream');
 var notify = require('gulp-notify');
-// var nodemon = require('gulp-nodemon'); // not in Doc-tor
+// var nodemon = require('gulp-nodemon'); // In OverReact boilerplate but not in Doc-tor
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
@@ -54,7 +54,7 @@ gulp.task('scripts', function() {
 //run nodemon
 // gulp.task('start', function() {
 //   nodemon({
-//     script: 'main.js', // Or should this be the bundle?
+//     script: 'main.js', // In the OverReact boilerplate, the script is server/server.js, which 'calls' index.html.
 //     ext: 'js html',
 //     env: {'NODE_ENV': 'development'}
 //   })
@@ -65,6 +65,4 @@ gulp.task('default', ['scripts'/*, 'start'*/], function() {
   return buildScript('Dashboard.js', true);
 });
 
-// Notes on package.json, which was informed by Doc-tor and OverReact boilerplate.
-// Doc-tor has some additional dependencies, including babel-preset-stage-0, electron-packager, grunt, or grunt-electron-installer. Do we need them?
-// The OverReact boilerplate includes nodemon, but Doc-tor doesn't.
+// In its pacakage.json, Doc-tor has some additional dependencies, including electron-packager, grunt, and grunt-electron-installer. Do we need them?
