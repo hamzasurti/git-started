@@ -33,8 +33,8 @@ body {
 
 .column,
 .columns,
-#animation,
-#terminal {
+#Animation,
+#Terminal {
   /*border: 1px solid black;*/
 }
 
@@ -52,9 +52,9 @@ body,
   background-color: lightgray;
 }
 
-#lesson,
-#animation,
-#terminal {
+#Lesson,
+#Animation,
+#Terminal {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
@@ -63,29 +63,29 @@ header {
   margin-top: 2rem;
 }
 
-#animation,
-#terminal {
+#Animation,
+#Terminal {
   min-height: 4rem;
 }
 
-#lesson {
+#Lesson {
   min-height: 14rem;
 }
 
 header,
-#lesson,
-#animation,
-#terminal,
+#Lesson,
+#Animation,
+#Terminal,
 footer {
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
 }
 
-/*.marker {
+.marker {
   border: 1px solid black;
   text-align: center;
-}*/
+}
 /*End of code added by Isaac*/
 
 /* Grid
