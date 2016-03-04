@@ -23,7 +23,7 @@ export default class Dashboard extends Component {
 
         <div className='one-third column'>
         	One-third column
-        	<Lesson lessonText={this.state.lessonText}/>
+        	<Lesson lessonText={this.state.lessonText} buttonFunction={this.state.buttonFunction}/>
       	</div>
 
         <div className='two-thirds column'>
@@ -38,14 +38,32 @@ export default class Dashboard extends Component {
 }
 
 // Note: The value of a prop can be JSX, but the prop must be enclosed by matching HTML tags.
+// Is ' the best option here? Or is &rsquo; better?
+
+// Should the button be part of the lesson text or not? That could get repetitive...
+// Maybe I want an object that holds all the lessonText/buttonText pairs?
+// I'm having trouble with onClick={this.props.buttonFunction} - this is undefined.
+
 Dashboard.defaultProps = {
 	initialLessonText:
 		<div>
 			<h2>Welcome!</h2>
-			<p>If you’re learning to code, chances are you’ve heard about something called Git. Git can be intimidating for beginners - but it doesn’t have to be!</p>
+			<p>If you're learning to code, chances are you've heard about something called Git. Git can be intimidating for beginners - but it doesn't have to be!</p>
+			<p>In this lesson, you'll...</p>
+			<ul>
+				<li>Set up Git</li>
+				<li>Set up a project</li>
+				<li>Learn some basic Git commands that you can use to track your new project</li>
+			</ul>
+			<p>Don't worry - we'll walk you through each step. Ready to get started?</p>
+			<button className='button-primary' id='lesson-button' onClick={function() {console.log('You clicked me!');}}>I don't do anything!</button>
 		</div>,
-		iWillProbablyWantAFunctionHere: 'this'
+	buttonFunction: function() {
+		console.log('You clicked me!');
+	}
 };
+
+// ' Stopping the madness
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
 
