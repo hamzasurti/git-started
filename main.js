@@ -9,6 +9,9 @@ const pty = require('pty.js');
 var mainWindow = null;
 // What does it mean for a JS object to be garbage collected?
 
+// console.log('electron is', electron); // Electron seems to be defined correctly in both my terminal and the Electron console.
+// console.log('app is', app); // Weird - app is defined correctly in my terminal, but it's undefined in the Electron console.
+
 app.on('window-all-closed', function() {
 	if (process.platform !== 'darwin') {
 		app.quit();

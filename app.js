@@ -1,3 +1,5 @@
+console.log('app.js is running');
+
 // document.write('node^');
 // document.write(process.versions.node);
 // document.write('process.versions.chrome');
