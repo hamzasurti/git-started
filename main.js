@@ -9,6 +9,11 @@ const	BrowserWindow = electron.BrowserWindow;
 var mainWindow = null;
 // What does it mean for a JS object to be garbage collected?
 
+console.log(electron); // Why is electron undefined? It's defined for Doc-tor.
+// When I add electron to the package.json, it becomes defined, but it's defined as something different from what I see with Doc-tor.
+// I'll try cleaning out my node_modules and then see what happens.
+console.log(app); // This is loggin undefined. Is there an async issue?
+// Using electron.app here didn't fix things
 app.on('window-all-closed', function() {
 	if (process.platform !== 'darwin') {
 		app.quit();
