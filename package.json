@@ -12,6 +12,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.2.0",
     "browserify": "^10.2.4",
+    "electron-packager": "^5.2.1",
     "electron-prebuilt": "^0.36.9",
     "gulp": "^3.9.0",
     "gulp-nodemon": "^2.0.6",
