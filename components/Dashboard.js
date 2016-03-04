@@ -37,33 +37,17 @@ export default class Dashboard extends Component {
   }
 }
 
+// Note: The value of a prop can be JSX, but the prop must be enclosed by matching HTML tags.
 Dashboard.defaultProps = {
-	initialLessonText: 'Hey howdy hey'
+	initialLessonText:
+		<div>
+			<h2>Welcome!</h2>
+			<p>If you’re learning to code, chances are you’ve heard about something called Git. Git can be intimidating for beginners - but it doesn’t have to be!</p>
+		</div>,
+		iWillProbablyWantAFunctionHere: 'this'
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
-
-// DELETE THIS WHEN I'M DONE
-// Lesson
-// <!-- 		<div class='one-third column' id='lesson'>Lesson</div>
-
-// 				// <div class='two-thirds column'>
-
-// Animation	
-// 					<div id='animation'>Animation</div>
-					
-// Terminal
-// 					<div id='terminal'>Terminal
-// 						<div class="current"></div>
-// 						<form>
-// 							<input type="text" autocomplete="on" />
-// 						</form>
-// 						<script>
-// 							require('./app.js');
-// 						</script>
-// 					</div>
-				
-// 				</div> -->
 
 // Here's an ES5 version in case we need it later.
 

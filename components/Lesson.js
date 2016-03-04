@@ -4,9 +4,10 @@ export default class Lesson extends Component {
   render() {
     return (
       <div id='Lesson'>
-      	Lesson
       	{this.props.lessonText}
       </div>
     )
   }
 }
+
+// Previously: {this.props.lessonText.map(function(element) {return})}
