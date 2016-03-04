@@ -21,6 +21,7 @@
     "watchify": "^3.2.2"
   },
   "dependencies": {
+    "electron": "^0.4.1",
     "jquery": "^2.2.1",
     "pty.js": "^0.3.0",
     "react": "^0.14",
