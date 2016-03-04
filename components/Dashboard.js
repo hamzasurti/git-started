@@ -9,13 +9,21 @@ import Terminal from './Terminal';
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			lessonText: props.initialLessonText
+		};
+	}
+
   render() {
     return (
       <div id='Dashboard' className='row'>
 
         <div className='one-third column'>
         	One-third column
-        	<Lesson />
+        	<Lesson lessonText={this.state.lessonText}/>
       	</div>
 
         <div className='two-thirds column'>
@@ -28,6 +36,10 @@ export default class Dashboard extends Component {
     )
   }
 }
+
+Dashboard.defaultProps = {
+	initialLessonText: 'Hey howdy hey'
+};
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
 

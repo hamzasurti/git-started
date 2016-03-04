@@ -5,6 +5,7 @@ export default class Lesson extends Component {
     return (
       <div id='Lesson'>
       	Lesson
+      	{this.props.lessonText}
       </div>
     )
   }
