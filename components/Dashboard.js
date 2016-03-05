@@ -53,7 +53,7 @@ export default class Dashboard extends Component {
 
         <div className='one-third column' id='left'>
         	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
-        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+        	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
       	</div>
 
         <div className='two-thirds column'>
