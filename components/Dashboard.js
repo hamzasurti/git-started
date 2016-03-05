@@ -21,13 +21,29 @@ export default class Dashboard extends Component {
 		};
 	}
 
+	handleClick() {
+		console.log('this is', this);
+  	console.log('handleClick is running. this.props.slideNumber is', this.props.slideNumber); // this is Lesson
+  	// console.log('If I bind, this is', this).bind(this);
+  	console.log('that is', that);
+  	this.setState({
+  		slideNumber: 1 // had this.props.slideNumber + 1 // This isn't working either. Can I not setState here?
+  	});
+
+  	console.log('setState ran. this.props.slideNumber is', this.props.slideNumber);//.bind(this);
+
+  	// this.setState({
+  	// 	lessonText: this.props.lesson[this.props.slideNumber].lessonText
+  	// });
+  }
+
   render() {
     return (
       <div id='Dashboard' className='row'>
 
         <div className='one-third column'>
         	One-third column
-        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} handleClick={this.handleClick}/>
       	</div>
 
         <div className='two-thirds column'>
