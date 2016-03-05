@@ -1,0 +1,20 @@
+ {
+    "container": "git-started",
+    "children": [
+        { "container": "google",
+         "children": [
+            { "container": "index.html", "size" : 3938},
+            { "container": "style.css", "size" : 3812}
+         ]
+        },
+        {"container": "main.js", "size": 700},
+        {"container": "server",
+        "children": [
+            { "container" : "server.js" },
+            { "container" : "d3.js"   }
+         ]
+        }
+    ]   
+}
+      
+      

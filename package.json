@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "jquery": "^2.2.1",
+    "nodemon": "^1.9.1",
     "pty.js": "^0.3.0",
     "tty.js": "^0.2.15"
   }
