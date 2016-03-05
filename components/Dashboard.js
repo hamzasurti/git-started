@@ -16,10 +16,8 @@ export default class Dashboard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			lesson: props.initialLesson,
 			slideNumber: props.initialSlideNumber,
-			lessonText: props.initialLesson[props.initialSlideNumber].lessonText,
-			buttonFunction: props.initialLesson[props.initialSlideNumber].buttonFunction
+			lessonText: lesson1[props.initialSlideNumber].lessonText // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
 		};
 	}
 
@@ -29,7 +27,7 @@ export default class Dashboard extends Component {
 
         <div className='one-third column'>
         	One-third column
-        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} buttonFunction={this.state.buttonFunction}/> // I probably shouldn't pass down the entire lesson - lesson={this.state.lesson}
+        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
       	</div>
 
         <div className='two-thirds column'>
@@ -46,17 +44,10 @@ export default class Dashboard extends Component {
 // Note: The value of a prop can be JSX, but the prop must be enclosed by matching HTML tags.
 // Is ' the best option here? Or is &rsquo; better?
 
-// Should the button be part of the lesson text or not? That could get repetitive...
-// Maybe I want an object that holds all the lessonText/buttonText pairs?
-// I'm having trouble with onClick={this.props.buttonFunction} - this is undefined.
-
 Dashboard.defaultProps = {
 	initialLesson: lesson1,
-	initialSlideNumber: 0//,
-	// initialLessonText: lesson1[0].lessonText
+	initialSlideNumber: 0
 };
-
-// had this.initialLesson[this.initialSlideNumber]
 
 // Old code
 	// 	<div>

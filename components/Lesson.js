@@ -3,15 +3,16 @@ import React, {Component} from 'react';
 export default class Lesson extends Component {
   
   handleClick() {
-  	console.log('handleClick is running.');
+  	console.log('handleClick is running. this.props.slideNumber is', this.props.slideNumber);
   	this.setState({
-  		slideNumber: this.props.slideNumber + 1
+  		slideNumber: 1 // had this.props.slideNumber + 1 // This isn't working either. Can I not setState here?
   	});
 
-  	console.log('setState ran. this is', this);//this.props.slideNumber is', this.props.slideNumber);//.bind(this);
-  	this.setState({
-  		lessonText: this.props.lesson[this.props.slideNumber].lessonText
-  	});
+  	console.log('setState ran. this.props.slideNumber is', this.props.slideNumber);//.bind(this);
+
+  	// this.setState({
+  	// 	lessonText: this.props.lesson[this.props.slideNumber].lessonText
+  	// });
   }
 
   render() {
