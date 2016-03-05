@@ -6,7 +6,6 @@ export default class Lesson extends Component {
     return (
       <div id='Lesson'>
       	{this.props.lessonText}
-      	<button onClick={this.props.handleClick}>Press me for details</button>
       </div>
     )
   }
