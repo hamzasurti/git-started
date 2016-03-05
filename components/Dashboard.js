@@ -29,7 +29,7 @@ export default class Dashboard extends Component {
 
         <div className='one-third column'>
         	One-third column
-        	<Lesson lessonText={this.state.lessonText} buttonFunction={this.state.buttonFunction}/>
+        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} buttonFunction={this.state.buttonFunction}/> // I probably shouldn't pass down the entire lesson - lesson={this.state.lesson}
       	</div>
 
         <div className='two-thirds column'>
