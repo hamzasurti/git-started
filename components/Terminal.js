@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+const Term = require('term.js');
+
+
 
 export default class Terminal extends Component {
   render() {
@@ -9,7 +12,7 @@ export default class Terminal extends Component {
 				<form>
 					<input type="text" autoComplete="on" />
 				</form>
-				
+
       </div>
     )
   }

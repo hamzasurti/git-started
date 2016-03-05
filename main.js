@@ -26,21 +26,22 @@ app.on('ready', function() {
 	var term = pty.spawn('bash', [], {
 	  name: 'xterm-color',
 	  cols: 80,
-	  rows: 30,
+	  rows: 50,
 	  cwd: process.env.HOME,
 	  env: process.env
 	});
 
 
-	var currentDirectory = ""
 
+
+	var currentDirectory = ""
+console.log(process.env._);
 	ipcMain.on('command-message', function(event, arg) {
-		// currentDirectory = currentDirectory + arg;
-		// event.sender.send('current', currentDirectory);
+
 		term.write(arg);
 		// term.resize(100, 40);
 		term.write(' && ls\r');
-		// term.write('&& history -c')
+		term.write('&& basename ' +  process.env._);
 		term.on('data', function(data) {
 			event.sender.send('terminal-reply', data);
 		});

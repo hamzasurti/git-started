@@ -1,25 +1,38 @@
-// document.write('node^');
-// document.write(process.versions.node);
-// document.write('process.versions.chrome');
-// document.write(process.versions.chrome);
-// document.write('process.versions.electron');
-// document.write(process.versions.electron);
-
 const fs = require('fs');
 const $ = require('jquery');
+const Terminal = require('term.js');
+const pty = require('pty.js');
+
 
 const ipcRenderer = require('electron').ipcRenderer;
-// console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
-// ipcRenderer.on('current', (event, arg) => {
-//   $('.current').append(arg);
-// });
+var elem = document.getElementById("Terminal");
+console.log(elem);
 
-ipcRenderer.on('terminal-reply', (event, arg) => {
- $('#Terminal').append(arg);
- console.log(arg); // prints "pong"
+const term = new Terminal({
+  cursorBlink: true,
+  cols: 100,
+  rows: 20
 });
 
-$('form').submit((e) =>{
+term.open(elem);
+var ptyProcess = pty.fork('bash', [], {
+cwd: process.env.HOME,
+env: process.env,
+name: 'xterm-256color'
+});
+console.log(ptyProcess.process);
+
+ptyProcess.on('data', (data) =>{
+  console.log('hi everyone ptyprocess does stuff');
+})
+
+ipcRenderer.on('terminal-reply', (event, arg) => {
+ // $('#Terminal').append(arg);
+ term.write(arg);
+ console.log(arg);
+});
+
+$('form').submit((e) => {
  e.preventDefault();
  var command = $('input').val();
  ipcRenderer.send('command-message', command);
