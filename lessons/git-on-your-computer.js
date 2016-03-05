@@ -47,7 +47,7 @@ export default [
 			<div>
 				<h2>Step 2: Set up a project</h2>
 				<h3>Make a directory</h3>
-				<p>OK, let’s take a quick break from Git to set up our project.</p>
+				<p>OK, let's take a quick break from Git to set up our project.</p>
 				<p>In the past, you've probably used the Finder or a program like Microsoft Word to create new folders and files. For this lesson, we'll use the terminal.</p>
 				<p>Ready? Type <code>mkdir new-project</code> and then click Enter.</p>
 				<p>Above the terminal, you'll see a visualization of what happens when you type this command.
@@ -60,8 +60,8 @@ export default [
 			<div>
 				<h2>Step 2: Set up a project</h2>
 				<h3>Navigate to your new directory</h3>
-				<p>As you just saw, you just created a new folder called "my-project." (The <code>mkdir</code> command is short for "make directory," and "directory" is just a fancy word for folder.)</p>
-				<p>Now type <code>cd new-project</code> and click Enter to navigate to your new directory. (The <code>cd</code> command is short for "change directory.") This is where you'll  store all the files for your project.
+				<p>As you just saw, you just created a new folder called "my-project." (The "mkdir" command is short for "make directory," and "directory" is just a fancy word for folder.)</p>
+				<p>Now type <code>cd new-project</code> and click Enter to navigate to your new directory. (The "cd" command is short for "change directory.") This is where you'll  store all the files for your project.
 				</p>
 			</div>,
 		buttonText: 'Got it!'
@@ -71,97 +71,90 @@ export default [
 			<div>
 				<h2>Step 2: Set up a project</h2>
 				<h3>Create a file</h3>
-				<p>Now let’s add a file to your folder.</p>
-				<p>In the terminal, type <code>touch new-file.txt</code> and click Enter. (If you're feeling fancy, feel free to create a .html, .css, or .js file instead.)</p>
-				<p>Notice that we haven't been typing the word <code>git</code> in the commands we're using to create directories and files and to navigate through them. That's because these commands aren't specific to Git - but we'll get back to Git now!</p>
+				<p>Now let's add a file to your folder.</p>
+				<p>In the terminal, type <code>touch new-file.txt</code> and click Enter.</p>
+				<p>Notice that we haven't been typing the word "git" in the commands we're using to create directories and files and to navigate through them. That's because these commands aren't specific to Git - but we'll get back to Git now!</p>
 			</div>,
 		buttonText: "OK, I'm ready for step three!"
 	
 	}, {
 		lessonText: 
 			<div>
+				<h2>Step 3: Learn Git commands</h2>
+				<h3>git init</h3>
+				<p>Now that we've created a project, we need to tell Git that we want to track it. To do this, type <code>git init</code> and then click Enter. This initializes a new Git repository, or "repo."</p>
 			</div>,
-		buttonText: 'text'
+		buttonText: "So what's a repo?"
 	
 	}, {
 		lessonText: 
 			<div>
+				<h2>Step 3: Learn Git commands</h2>
+				<h3>git status</h3>
+				<p>A repo contains all the files Git is tracking for a project, as well as the revision history for these files. All this information is stored in a special folder called ".git" inside your project folder.</p>
+				<p>Your .git folder is hidden by default, so you won't see it in your file tree. However, you can use the terminal to make sure you've initialized your repository correctly. Just  type <code>git status</code> and then click Enter. As long as you don't see this error message - <code>fatal: Not a git repository</code> - you're good to go.</p>
 			</div>,
-		buttonText: 'text'
+		buttonText: "I'm good to go!"
 	
 	}, {
 		lessonText: 
 			<div>
+				<h2>Step 3: Learn Git commands</h2>
+				<h3>git add</h3>
+				<p>So you've initialized a Git repository, and you've created the first file for your project. Now it's time to tell Git that you'd like to track that file.</p>
+				<p>Type <code>git add new-file.txt</code> and click Enter to add this file to your "staging area." This tells Git that you want to track changes to new-file.txt, and that you're getting ready to make a commit.</p>
 			</div>,
-		buttonText: 'text'
+		buttonText: "So what's a commit?"
+
+	}, {
+		lessonText: 
+			<div>
+				<h2>Step 3: Learn Git commands</h2>
+				<h3>git commit -m</h3>
+				<p>You can think of a commit as a snapshot of your code at a specific point in time. Git saves each commit to your repo, along with a message you write to describe the status of the project.</p>
+				<p>So let's commit - type <code>git commit -m "<strong>create file to store text for project</strong>"</code> and click Enter. (The "-m" is for "message," and you can replace the bolded text with whatever message you like.)</p>
+				<p>It's a best practice to commit early and often, and to write descriptive commit messages. The more descriptive your commit messages are, the easier it will be to find specific commits when you want to refer back to them in the future!</p>
+			</div>,
+		buttonText: "I've committed - what's next?"
 	
 	}, {
 		lessonText: 
 			<div>
+				<h2>Step 3: Learn Git commands</h2>
+				<h3>Take a break from Git to edit your file</h3>
+				<p>OK, you've made a commit for this project - the first snapshot of many! But it wasn't a very exciting snapshot, because new-file.txt was empty. So let's add some text to the file and then commit again.</p>
+				<p>Typically, developers write code using a text editor like Atom or Sublime Text. For this lesson, though, we'll practice editing a file directly from the terminal - something you can do even without Git.</p>
+				<p>In the terminal, type <code>echo "<strong>This will be the best project ever.</strong>" > new-file.txt</code> and click Enter. (Again, you can replace the bolded part with whatever text you wish.)</p>
 			</div>,
-		buttonText: 'text'
+		buttonText: 'Done!'
+
+	}, {
+		lessonText: 
+			<div>
+				<h2>Step 3: Learn Git commands</h2>
+				<h3>git diff</h3>
+				<p>To make sure we actually edited the file, type <code>git diff</code> and click Enter.</p>
+				<p>This will show us the differences between the current version of the project and our most recent commit. Remember: last time we committed, new-file.txt was empty.</p>
+			</div>,
+		buttonText: 'Great - I see the changes I made!'
 	
 	}, {
 		lessonText: 
 			<div>
+				<h2>Congrats!</h2>
+				<p>You've finished our lesson on using Git on your computer.</p>
+				<p>Now you're ready to start learning about GitHub, a popular website that makes it easy to back up your Git projects online and collaborate with other developers.</p>
 			</div>,
-		buttonText: 'text'
+		buttonText: 'Learn about Github'
 	
 	}, {
 		lessonText: 
 			<div>
+				<p>The GitHub lesson is coming soon, but it isn't ready yet. Would you like to repeat the lesson you just finished?</p>
 			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
-	
-	}, {
-		lessonText: 
-			<div>
-			</div>,
-		buttonText: 'text'
+		buttonText: "Let's do it!"
 	}
 ];
 
-// ' Stop the madness
+// '" Stop the madness
 

@@ -30,8 +30,9 @@ export default class Dashboard extends Component {
 		// What to do if we're already on the last slide.
 		if (this.state.slideNumber === lesson1.length - 1) {
 			this.setState({
-				lessonText: "You've reached the end of this lesson.", // Don't update this.state.slideNumber
-				buttonText: "Sorry, you can't click me."
+				slideNumber: 0,
+				lessonText: lesson1[0].lessonText,
+				buttonText: lesson1[0].buttonText
 			});
 
 		} else {
