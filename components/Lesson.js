@@ -5,6 +5,7 @@ export default class Lesson extends Component {
   render() {
     return (
       <div id='Lesson'>
+      	<p>For testing only: Slide #{this.props.slideNumber}</p>
       	{this.props.lessonText}
       </div>
     )

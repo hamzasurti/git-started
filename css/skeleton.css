@@ -52,7 +52,7 @@ body,
   background-color: lightgray;
 }
 
-#Lesson,
+#left,
 #Animation,
 #Terminal {
   margin-top: 2rem;
@@ -68,12 +68,12 @@ header {
   min-height: 4rem;
 }
 
-#Lesson {
+#left {
   min-height: 14rem;
 }
 
 header,
-#Lesson,
+#left,
 #Animation,
 #Terminal,
 footer {

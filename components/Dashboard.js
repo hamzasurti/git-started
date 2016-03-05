@@ -17,30 +17,43 @@ export default class Dashboard extends Component {
 		super(props);
 		this.state = {
 			slideNumber: props.initialSlideNumber,
-			lessonText: lesson1[props.initialSlideNumber].lessonText // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
+			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
+			buttonText: lesson1[props.initialSlideNumber].buttonText
 		};
 	}
 
+	// I'll eventually need to add logic to see whether the user passed the test. The test will depend on this.state.slideNumber. I could potentially pull the tests and buttonText from lesson1.
 	handleClick() {
+		// console.log('handleClick is running. this.state.slideNumber is', this.state.slideNumber); // For testing only
 		// console.log('this is', this); // this is Dashboard
-  	console.log('handleClick is running. this.state.slideNumber is', this.state.slideNumber);
 
-  	this.setState({
-  		slideNumber: this.state.slideNumber + 1
-  	});
+		// What to do if we're already on the last slide.
+		if (this.state.slideNumber === lesson1.length - 1) {
+			this.setState({
+				lessonText: "You've reached the end of this lesson.", // Don't update this.state.slideNumber
+				buttonText: "Sorry, you can't click me."
+			});
 
-  	// this.setState({
-  	// 	lessonText: this.props.lesson[this.props.slideNumber].lessonText
-  	// });
+		} else {
+			this.setState({
+	  		slideNumber: this.state.slideNumber + 1,
+	  		// Would it be better to make the value of lessonText the result of a function?
+	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
+	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText
+	  	});
+		}
   }
 
+	// Down the line, we might want a function that runs when a user hits the Enter key in the terminal.
+
+  // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
     return (
       <div id='Dashboard' className='row'>
 
-        <div className='one-third column'>
-        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} handleClick={this.handleClick}/>
-        	<button onClick={this.handleClick.bind(this)}>Press me for details</button>
+        <div className='one-third column' id='left'>
+        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
       	</div>
 
         <div className='two-thirds column'>
