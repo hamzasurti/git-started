@@ -18,7 +18,10 @@ export default [
 				</ul>
 				<p>Don't worry - we'll walk you through each step. Ready to get started?</p>
 			</div>,
-		buttonText: "Yes - let's do this!"
+		buttonText: "Yes - let's do this!",
+		buttonFunction: function() {
+			console.log('I am the function for the Welcome slide!');
+		}
 	
 	}, {
 		lessonText: 
@@ -28,8 +31,10 @@ export default [
 				<p>For this step, we'll use the <strong>terminal</strong>, which lets you and your Mac communicate using just text.</p>
 				<p>Software developers use their terminals every day, but no need to worry if this tool is new to you. We've embedded a terminal in this app to help you learn the ropes - it's the black box to the right.</p>
 			</div>,
-		buttonText: 'Got it!'
-	
+		buttonText: 'Got it!',
+		buttonFunction: function() {
+			console.log('I am another awesome function!');
+		}
 	}, {
 		lessonText: 
 			<div>
