@@ -6,11 +6,11 @@ const ipcMain = require('electron').ipcMain;
 const	BrowserWindow = electron.BrowserWindow;
 const pty = require('pty.js');
 
+// Require the child_process module so we can communicate with the user's terminal
+const exec = require('child_process').exec;
+
 var mainWindow = null;
 // What does it mean for a JS object to be garbage collected?
-
-// console.log('electron is', electron); // Electron seems to be defined correctly in both my terminal and the Electron console.
-// console.log('app is', app); // Weird - app is defined correctly in my terminal, but it's undefined in the Electron console.
 
 app.on('window-all-closed', function() {
 	if (process.platform !== 'darwin') {
@@ -35,7 +35,7 @@ app.on('ready', function() {
 
 
 	var currentDirectory = ""
-console.log(process.env._);
+	console.log(process.env._);
 	ipcMain.on('command-message', function(event, arg) {
 
 		term.write(arg);
@@ -46,6 +46,12 @@ console.log(process.env._);
 			event.sender.send('terminal-reply', data);
 		});
 		// term.end()
+	});
+
+	ipcMain.on('test-message', function(event, arg) {
+		// Do stuff
+		console.log('Console.logging. arg is', arg); // I see this in my terminal. arg is git --version
+		// term.write('Term-writing. arg is', arg); // I don't see this anywhere.
 	});
 
 	// For testing only

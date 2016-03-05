@@ -1,7 +1,10 @@
-// I'm importing React so I can use JSX.
+// Import React so we can use JSX.
 import React from 'react';
 
-// Export and array. Alternatively, we could use a linked list.
+// For communicating with main.js
+// const ipcRenderer = require('electron').ipcRenderer;
+
+// Export an array. Alternatively, we could use a linked list.
 
 export default [
 	{
@@ -41,7 +44,15 @@ export default [
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
 		buttonFunction: function() {
-			console.log('Check whether the user has installed Git. See Git-It tests for guidance.');
+			// console.log(React); // React IS defined - as a big object.
+			// console.log(exec); // undefined
+			// Could try console.logging React too
+			// exec('git --version', (err, stdout) => {
+			// 	if (err) throw err;
+			// 	console.log(stdout);
+			// });
+			ipcRenderer.send('test-message', 'git --version');
+			console.log('Check whether the user has installed Git. See Git-It tests for guidance. I think git --version will throw an error if the user does not have Git installed'); // I see this in Electron.
 		}
 	
 	// I'll need to edit "you'll see"
