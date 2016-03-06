@@ -48,9 +48,14 @@ app.on('ready', function() {
 		// term.end()
 	});
 
+// For running tests to see whether the user is following directions
 	ipcMain.on('test-message', function(event, arg) {
 		// Do stuff
-		console.log('Console.logging. arg is', arg); // I see this in my terminal. arg is git --version
+		exec(arg, function(err, stdout, stderr) {
+			// if (err) throw err; // displays a pop-up error message in Electron; probably not what I want.
+			// console.log(stdout); // shows up in my terminal
+			event.sender.send('test-reply', stdout);
+		});
 		// term.write('Term-writing. arg is', arg); // I don't see this anywhere.
 	});
 

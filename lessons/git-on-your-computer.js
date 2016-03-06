@@ -44,15 +44,12 @@ export default [
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
 		buttonFunction: function() {
-			// console.log(React); // React IS defined - as a big object.
-			// console.log(exec); // undefined
-			// Could try console.logging React too
-			// exec('git --version', (err, stdout) => {
-			// 	if (err) throw err;
-			// 	console.log(stdout);
-			// });
 			ipcRenderer.send('test-message', 'git --version');
-			console.log('Check whether the user has installed Git. See Git-It tests for guidance. I think git --version will throw an error if the user does not have Git installed'); // I see this in Electron.
+			// console.log('Check whether the user has installed Git. See Git-It tests for guidance. I think git --version will throw an error if the user does not have Git installed'); // I see this in Electron.
+			ipcRenderer.on('test-reply', function(event, arg) {
+				console.log(arg); // I see 'git version 2.6.4' in my Electron console - amazing!
+				// Now do something based on the response.
+			})
 		}
 	
 	// I'll need to edit "you'll see"
