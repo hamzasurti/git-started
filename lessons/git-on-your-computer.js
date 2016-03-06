@@ -1,11 +1,9 @@
+// Need to make sure all the tests here are valid.
+
 // Import React so we can use JSX.
 import React from 'react';
 
-// For communicating with main.js
-// const ipcRenderer = require('electron').ipcRenderer;
-
 // Export an array. Alternatively, we could use a linked list.
-
 export default [
 	{
 		lessonText:
@@ -43,12 +41,11 @@ export default [
 				<p>If not, you can download Git from <a href='http://git-scm.com/downloads'>git-scm.com/downloads</a>. Then follow the directions at the top of this page to confirm that Git is installed correctly.</p>
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
-		buttonFunction: function() {
-			ipcRenderer.send('test-message', 'git --version');
-			// console.log('Check whether the user has installed Git. See Git-It tests for guidance. I think git --version will throw an error if the user does not have Git installed'); // I see this in Electron.
+		buttonFunction: function() { // Check whether the user has installed Git
+			ipcRenderer.send('test-message', 'git --version'); // I think 'git --version' will throw an error if the user does not have Git installed. How can we handle this?
 			ipcRenderer.on('test-reply', function(event, arg) {
-				console.log(arg); // I see 'git version 2.6.4' in my Electron console - amazing!
-				// Now do something based on the response.
+				// Send a Boolean. If test-reply contains the text 'git version', the user passed. If not, the user did not pass.
+				ipcRenderer.send('test-passed', arg.indexOf('git version') > -1);
 			})
 		}
 	

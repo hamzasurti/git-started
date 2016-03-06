@@ -48,15 +48,23 @@ app.on('ready', function() {
 		// term.end()
 	});
 
-// For running tests to see whether the user is following directions
+// For running tests to see whether the user is ready to advance
 	ipcMain.on('test-message', function(event, arg) {
-		// Do stuff
+
 		exec(arg, function(err, stdout, stderr) {
-			// if (err) throw err; // displays a pop-up error message in Electron; probably not what I want.
-			// console.log(stdout); // shows up in my terminal
+			// if (err) throw err; // This displays a pop-up error message in Electron, which is probably not what I want. But I also probably need to handle errors somehow.
+			// console.log(stdout); // for testing only - shows up in my terminal
 			event.sender.send('test-reply', stdout);
 		});
-		// term.write('Term-writing. arg is', arg); // I don't see this anywhere.
+	});
+
+	ipcMain.on('test-passed', function(event, arg) {
+		
+		// If the user passed (if arg is true)...
+		if (arg) {
+			
+		}
+		console.log('Result received:', arg);
 	});
 
 	// For testing only

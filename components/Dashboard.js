@@ -25,24 +25,37 @@ export default class Dashboard extends Component {
 	// I'll eventually need to add logic to see whether the user passed the test. The test will depend on this.state.slideNumber. I could potentially pull the tests and buttonText from lesson1.
 	handleClick() {
 
-		// Getting handleClick to run functions from lesson1
-		if(lesson1[this.state.slideNumber].buttonFunction) lesson1[this.state.slideNumber].buttonFunction();
+		var that = this;
 
-		// What to do if we're already on the last slide.
-		if (this.state.slideNumber === lesson1.length - 1) {
-			this.setState({
-				slideNumber: 0,
-				lessonText: lesson1[0].lessonText,
-				buttonText: lesson1[0].buttonText
-			});
+		// Helper function that advances to the next slide
+		function advance() {
 
+			// What to do if we're already on the last slide.
+			if (that.state.slideNumber === lesson1.length - 1) {
+				that.setState({
+					slideNumber: 0,
+					lessonText: lesson1[0].lessonText,
+					buttonText: lesson1[0].buttonText
+				});
+
+			// What to do on every other slide
+			} else {
+				that.setState({
+		  		slideNumber: that.state.slideNumber + 1,
+		  		// Would it be better to make the value of lessonText the result of a function?
+		  		lessonText: lesson1[that.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
+		  		buttonText: lesson1[that.state.slideNumber + 1].buttonText
+		  	});
+			}
+		}
+
+		// If this slide has a buttonFunction, run it.
+		if(lesson1[this.state.slideNumber].buttonFunction) {
+			lesson1[this.state.slideNumber].buttonFunction();
+
+		// If not, advance.
 		} else {
-			this.setState({
-	  		slideNumber: this.state.slideNumber + 1,
-	  		// Would it be better to make the value of lessonText the result of a function?
-	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
-	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText
-	  	});
+			advance();
 		}
   }
 
