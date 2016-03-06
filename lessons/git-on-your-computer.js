@@ -42,11 +42,23 @@ export default [
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
 		buttonFunction: function() { // Check whether the user has installed Git
+			var result;
 			ipcRenderer.send('test-message', 'git --version'); // I think 'git --version' will throw an error if the user does not have Git installed. How can we handle this?
 			ipcRenderer.on('test-reply', function(event, arg) {
 				// Send a Boolean. If test-reply contains the text 'git version', the user passed. If not, the user did not pass.
-				ipcRenderer.send('test-passed', arg.indexOf('git version') > -1);
-			})
+				result = arg.indexOf('git version') > -1;
+				ipcRenderer.send('test-passed', result);
+				// return result; // This doesn't do anything. I console-logged the output of ipcRenderer.on and got an Event Emitter. Grr.
+			});
+
+			// Nice try here, but no cigar.
+			// while (result === undefined) {
+			// 	setTimeout(function() {
+			// 		console.log('result is not yet defined');
+			// 	}, 100);
+			// }
+			// return result;
+			// return result; // undefined - async issues
 		}
 	
 	// I'll need to edit "you'll see"

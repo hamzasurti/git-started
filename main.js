@@ -60,11 +60,15 @@ app.on('ready', function() {
 
 	ipcMain.on('test-passed', function(event, arg) {
 		
+		console.log('Result received:', arg);
 		// If the user passed (if arg is true)...
 		if (arg) {
-			
+			// advance
+		} else {
+			// setState
 		}
-		console.log('Result received:', arg);
+		// How can I trigger these functions, which are located on Dashboard?
+		
 	});
 
 	// For testing only

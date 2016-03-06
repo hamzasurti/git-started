@@ -22,40 +22,38 @@ export default class Dashboard extends Component {
 		};
 	}
 
+	// Helper function that advances to the next slide
+	advance() {
+		// What to do if we're already on the last slide.
+		if (this.state.slideNumber === lesson1.length - 1) {
+			this.setState({
+				slideNumber: 0,
+				lessonText: lesson1[0].lessonText,
+				buttonText: lesson1[0].buttonText
+			});
+
+		// What to do on every other slide
+		} else {
+			this.setState({
+	  		slideNumber: this.state.slideNumber + 1,
+	  		// Would it be better to make the value of lessonText the result of a function?
+	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
+	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText
+	  	});
+		}
+	}
+
 	// I'll eventually need to add logic to see whether the user passed the test. The test will depend on this.state.slideNumber. I could potentially pull the tests and buttonText from lesson1.
 	handleClick() {
 
-		var that = this;
-
-		// Helper function that advances to the next slide
-		function advance() {
-
-			// What to do if we're already on the last slide.
-			if (that.state.slideNumber === lesson1.length - 1) {
-				that.setState({
-					slideNumber: 0,
-					lessonText: lesson1[0].lessonText,
-					buttonText: lesson1[0].buttonText
-				});
-
-			// What to do on every other slide
-			} else {
-				that.setState({
-		  		slideNumber: that.state.slideNumber + 1,
-		  		// Would it be better to make the value of lessonText the result of a function?
-		  		lessonText: lesson1[that.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
-		  		buttonText: lesson1[that.state.slideNumber + 1].buttonText
-		  	});
-			}
-		}
-
 		// If this slide has a buttonFunction, run it.
 		if(lesson1[this.state.slideNumber].buttonFunction) {
-			lesson1[this.state.slideNumber].buttonFunction();
-
+			console.log('buttonFunction is running');
+			lesson1[this.state.slideNumber].buttonFunction(); // I really really want this to return a Boolean!
+			// console.log('Hello from Dashboard.js! result is', lesson1[this.state.slideNumber].buttonFunction()); // didn't work
 		// If not, advance.
 		} else {
-			advance();
+			this.advance();
 		}
   }
 
