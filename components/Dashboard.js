@@ -9,6 +9,9 @@ import Terminal from './Terminal';
 // Import lesson content
 import lesson1 from './../lessons/git-on-your-computer';
 
+// ****ADD ipcRenderer.on('test-passed')
+// setState based on that.
+
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
@@ -22,11 +25,8 @@ export default class Dashboard extends Component {
 		};
 	}
 
-	// I'll eventually need to add logic to see whether the user passed the test. The test will depend on this.state.slideNumber. I could potentially pull the tests and buttonText from lesson1.
-	handleClick() {
-		// console.log('handleClick is running. this.state.slideNumber is', this.state.slideNumber); // For testing only
-		// console.log('this is', this); // this is Dashboard
-
+	// Helper function that advances to the next slide
+	advance() {
 		// What to do if we're already on the last slide.
 		if (this.state.slideNumber === lesson1.length - 1) {
 			this.setState({
@@ -35,6 +35,7 @@ export default class Dashboard extends Component {
 				buttonText: lesson1[0].buttonText
 			});
 
+		// What to do on every other slide
 		} else {
 			this.setState({
 	  		slideNumber: this.state.slideNumber + 1,
@@ -42,6 +43,20 @@ export default class Dashboard extends Component {
 	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
 	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText
 	  	});
+		}
+	}
+
+	// I'll eventually need to add logic to see whether the user passed the test. The test will depend on this.state.slideNumber. I could potentially pull the tests and buttonText from lesson1.
+	handleClick() {
+
+		// If this slide has a buttonFunction, run it.
+		if(lesson1[this.state.slideNumber].buttonFunction) {
+			console.log('buttonFunction is running');
+			lesson1[this.state.slideNumber].buttonFunction(); // I really really want this to return a Boolean!
+			// console.log('Hello from Dashboard.js! result is', lesson1[this.state.slideNumber].buttonFunction()); // didn't work
+		// If not, advance.
+		} else {
+			this.advance();
 		}
   }
 
@@ -67,32 +82,10 @@ export default class Dashboard extends Component {
   }
 }
 
-// Note: The value of a prop can be JSX, but the prop must be enclosed by matching HTML tags.
-// Is ' the best option here? Or is &rsquo; better?
-
 Dashboard.defaultProps = {
 	initialLesson: lesson1,
 	initialSlideNumber: 0
 };
-
-// Old code
-	// 	<div>
-	// 		<h2>Welcome!</h2>
-	// 		<p>If you're learning to code, chances are you've heard about something called Git. Git can be intimidating for beginners - but it doesn't have to be!</p>
-	// 		<p>In this lesson, you'll...</p>
-	// 		<ul>
-	// 			<li>Set up Git</li>
-	// 			<li>Set up a project</li>
-	// 			<li>Learn some basic Git commands that you can use to track your new project</li>
-	// 		</ul>
-	// 		<p>Don't worry - we'll walk you through each step. Ready to get started?</p>
-	// 		<button className='button-primary' id='lesson-button' onClick={function() {console.log('You clicked me!');}}>I don't do anything!</button>
-	// 	</div>,
-	// buttonFunction: function() {
-	// 	console.log('You clicked me!');
-	// }
-
-// ' Stopping the madness
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
 
