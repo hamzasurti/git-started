@@ -9,6 +9,9 @@ import Terminal from './Terminal';
 // Import lesson content
 import lesson1 from './../lessons/git-on-your-computer';
 
+// ****ADD ipcRenderer.on('test-passed')
+// setState based on that.
+
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
