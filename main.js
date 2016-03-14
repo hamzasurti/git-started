@@ -36,9 +36,11 @@ app.on('ready', function() {
 	ipcMain.on('command-message', function(event, arg) {
 		console.log(ptyTerm);
 		ptyTerm.write(arg);
+		// ptyTerm.write('challengesPS1=$(basename "`pwd`"" ""$")');
 		ptyTerm.removeAllListeners('data');
 		ptyTerm.on('data', function(data) {
 			event.sender.send('terminal-reply', data);
+
 		});
 	});
 
