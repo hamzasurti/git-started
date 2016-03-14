@@ -1,8 +1,9 @@
-// I'm importing React so I can use JSX.
+// Need to make sure all the tests here are valid.
+
+// Import React so we can use JSX.
 import React from 'react';
 
-// Export and array. Alternatively, we could use a linked list.
-
+// Export an array. Alternatively, we could use a linked list.
 export default [
 	{
 		lessonText:
@@ -29,7 +30,7 @@ export default [
 				<p>Software developers use their terminals every day, but no need to worry if this tool is new to you. We've embedded a terminal in this app to help you learn the ropes - it's the black box to the right.</p>
 			</div>,
 		buttonText: 'Got it!'
-	
+
 	}, {
 		lessonText: 
 			<div>
@@ -39,7 +40,26 @@ export default [
 				<p>If you see a version number - like <code>git version 2.6.4</code> - you have Git installed, and you're ready for step two.</p>
 				<p>If not, you can download Git from <a href='http://git-scm.com/downloads'>git-scm.com/downloads</a>. Then follow the directions at the top of this page to confirm that Git is installed correctly.</p>
 			</div>,
-		buttonText: "OK - I'm ready for step two!"
+		buttonText: "OK - I'm ready for step two!",
+		buttonFunction: function() { // Check whether the user has installed Git
+			var result;
+			ipcRenderer.send('test-message', 'git --version'); // I think 'git --version' will throw an error if the user does not have Git installed. How can we handle this?
+			ipcRenderer.on('test-reply', function(event, arg) {
+				// Send a Boolean. If test-reply contains the text 'git version', the user passed. If not, the user did not pass.
+				result = arg.indexOf('git version') > -1;
+				ipcRenderer.send('test-passed', result);
+				// return result; // This doesn't do anything. I console-logged the output of ipcRenderer.on and got an Event Emitter. Grr.
+			});
+
+			// Nice try here, but no cigar.
+			// while (result === undefined) {
+			// 	setTimeout(function() {
+			// 		console.log('result is not yet defined');
+			// 	}, 100);
+			// }
+			// return result;
+			// return result; // undefined - async issues
+		}
 	
 	// I'll need to edit "you'll see"
 	}, {
@@ -53,7 +73,10 @@ export default [
 				<p>Above the terminal, you'll see a visualization of what happens when you type this command.
 				</p>
 			</div>,
-		buttonText: 'I typed, I saw, I conquered.'
+		buttonText: 'I typed, I saw, I conquered.',
+		buttonFunction: function() {
+			console.log('Check whether the user has created new-project. Can I tell what their current working directory is?')
+		}
 	
 	}, {
 		lessonText: 
@@ -64,7 +87,10 @@ export default [
 				<p>Now type <code>cd new-project</code> and click Enter to navigate to your new directory. (The "cd" command is short for "change directory.") This is where you'll  store all the files for your project.
 				</p>
 			</div>,
-		buttonText: 'Got it!'
+		buttonText: 'Got it!',
+		buttonFunction: function() {
+			console.log("Check whether the user's current working directory is new-project.");
+		}
 	
 	}, {
 		lessonText: 
@@ -75,7 +101,10 @@ export default [
 				<p>In the terminal, type <code>touch new-file.txt</code> and click Enter.</p>
 				<p>Notice that we haven't been typing the word "git" in the commands we're using to create directories and files and to navigate through them. That's because these commands aren't specific to Git - but we'll get back to Git now!</p>
 			</div>,
-		buttonText: "OK, I'm ready for step three!"
+		buttonText: "OK, I'm ready for step three!",
+		buttonFunction: function() {
+			console.log('Check whether the user has created new-file.txt');
+		}
 	
 	}, {
 		lessonText: 
@@ -84,7 +113,10 @@ export default [
 				<h3>git init</h3>
 				<p>Now that we've created a project, we need to tell Git that we want to track it. To do this, type <code>git init</code> and then click Enter. This initializes a new Git repository, or "repo."</p>
 			</div>,
-		buttonText: "So what's a repo?"
+		buttonText: "So what's a repo?",
+		buttonFunction: function() {
+			console.log('Check whether the user has initialized their repo successfully. Running git status should be sufficient.');
+		}
 	
 	}, {
 		lessonText: 
@@ -94,7 +126,10 @@ export default [
 				<p>A repo contains all the files Git is tracking for a project, as well as the revision history for these files. All this information is stored in a special folder called ".git" inside your project folder.</p>
 				<p>Your .git folder is hidden by default, so you won't see it in your file tree. However, you can use the terminal to make sure you've initialized your repository correctly. Just  type <code>git status</code> and then click Enter. As long as you don't see this error message - <code>fatal: Not a git repository</code> - you're good to go.</p>
 			</div>,
-		buttonText: "I'm good to go!"
+		buttonText: "I'm good to go!",
+		buttonFunction: function() {
+			console.log("If we run a test on the last slide, we don't actually need a test here.");
+		}
 	
 	}, {
 		lessonText: 
@@ -104,7 +139,10 @@ export default [
 				<p>So you've initialized a Git repository, and you've created the first file for your project. Now it's time to tell Git that you'd like to track that file.</p>
 				<p>Type <code>git add new-file.txt</code> and click Enter to add this file to your "staging area." This tells Git that you want to track changes to new-file.txt, and that you're getting ready to make a commit.</p>
 			</div>,
-		buttonText: "So what's a commit?"
+		buttonText: "So what's a commit?",
+		buttonFunction: function() {
+			console.log('Check whether the user has git-added new-file.text. Running git status should tell us what we need to know.');
+		}
 
 	}, {
 		lessonText: 
@@ -115,7 +153,10 @@ export default [
 				<p>So let's commit - type <code>git commit -m "<strong>create file to store text for project</strong>"</code> and click Enter. (The "-m" is for "message," and you can replace the bolded text with whatever message you like.)</p>
 				<p>It's a best practice to commit early and often, and to write descriptive commit messages. The more descriptive your commit messages are, the easier it will be to find specific commits when you want to refer back to them in the future!</p>
 			</div>,
-		buttonText: "I've committed - what's next?"
+		buttonText: "I've committed - what's next?",
+		buttonFunction: function() {
+			console.log('Check whether the user has git-committed new-file.text. Running git status should tell us what we need to know. We could also check for a message.');
+		}
 	
 	}, {
 		lessonText: 
@@ -126,7 +167,10 @@ export default [
 				<p>Typically, developers write code using a text editor like Atom or Sublime Text. For this lesson, though, we'll practice editing a file directly from the terminal - something you can do even without Git.</p>
 				<p>In the terminal, type <code>echo "<strong>This will be the best project ever.</strong>" > new-file.txt</code> and click Enter. (Again, you can replace the bolded part with whatever text you wish.)</p>
 			</div>,
-		buttonText: 'Done!'
+		buttonText: 'Done!',
+		buttonFunction: function() {
+			console.log('Check whether the user has edited new-file.text. Running git status should tell us what we need to know.');
+		}
 
 	}, {
 		lessonText: 
@@ -136,7 +180,10 @@ export default [
 				<p>To make sure we actually edited the file, type <code>git diff</code> and click Enter.</p>
 				<p>This will show us the differences between the current version of the project and our most recent commit. Remember: last time we committed, new-file.txt was empty.</p>
 			</div>,
-		buttonText: 'Great - I see the changes I made!'
+		buttonText: 'Great - I see the changes I made!',
+		buttonFunction: function() {
+			console.log('Can we check whether the user has run git diff?');
+		}
 	
 	}, {
 		lessonText: 
