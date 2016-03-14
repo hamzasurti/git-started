@@ -28,13 +28,13 @@
 /*Beginning of code added by Isaac*/
 
 body {
-  min-width: 600px; /*900 might be better*/
+  min-width: 900px; /*900 might be better*/
 }
 
 .column,
 .columns,
-#animation,
-#terminal {
+#Animation,
+#Terminal {
   /*border: 1px solid black;*/
 }
 
@@ -52,9 +52,9 @@ body,
   background-color: lightgray;
 }
 
-#lesson,
-#animation,
-#terminal {
+#left,
+#Animation,
+#Terminal {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
@@ -63,29 +63,59 @@ header {
   margin-top: 2rem;
 }
 
-#animation,
-#terminal {
+#Animation,
+#Terminal {
   min-height: 4rem;
 }
 
-#lesson {
+#left {
   min-height: 14rem;
 }
 
+.terminal {
+    border-radius: 1rem;
+}
+
 header,
-#lesson,
-#animation,
-#terminal,
+#left,
+#Animation,
+#Terminal,
 footer {
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
 }
 
-/*.marker {
+.marker {
   border: 1px solid black;
   text-align: center;
-}*/
+}
+
+
+
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+
+
 /*End of code added by Isaac*/
 
 /* Grid
@@ -93,7 +123,7 @@ footer {
 .container {
   position: relative;
   width: 100%;
-  max-width: 960px;
+  /*max-width: 960px;*/
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box; }
@@ -106,14 +136,14 @@ footer {
 /* For devices larger than 400px */
 @media (min-width: 400px) {
   .container {
-    width: 85%;
+    width: 95%;
     padding: 0; }
 }
 
 /* For devices larger than 550px */
 @media (min-width: 550px) {
   .container {
-    width: 80%; }
+    width: 95%; }
   .column,
   .columns {
     margin-left: 4%; }

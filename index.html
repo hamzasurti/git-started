@@ -2,22 +2,26 @@
 <html lang='en'>
 	<head>
 		<title>Git Schooled</title>
-		<script src="//d3js.org/d3.v3.min.js" type="text/javascript" charset="utf-8"></script>
-
-
-<script>
-	
-	
-	
-	
-</script>
-
-
-
+		<!-- Since this is a desktop application, we probably don't want to require the users to download a font from the Internet. However, Skeleton suggests Raleway. -->
+		<!-- <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:400,300,600"> -->
+		<!-- I'm not sure exactly what normalize.css is for - we may not need it. -->
+		<link rel="stylesheet" href="css/normalize.css">
+  	<link rel="stylesheet" href="css/skeleton.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 	</head>
-	
 	<body>
-		<p> hello world! </p>
-	</body>
-	
+		<div class='container'>
+
+			<div class='row'>
+				<header> <!-- Isaac: I don't think I need to use class='twelve columns' to specify that this header should stretch across the entire screen. -->
+					<!-- We could add navigation, contact/help, search, progress indicators, and login here if we have these features. -->
+					<h1>Git Schooled</h1>
+					Learn how to use Git
+				</header>
+			</div>
+
+			<div class='row' id='dashboard-container'></div>
+
+	<script src="build/bundle.js"></script>
+	<script src='app.js'></script>
 </html>
