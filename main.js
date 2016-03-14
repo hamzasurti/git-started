@@ -25,6 +25,7 @@ app.on('ready', function() {
 
 
 
+
 	var ptyTerm = pty.spawn('bash', [], {
 		name: 'xterm-color',
 		cols: 80,
@@ -35,36 +36,50 @@ app.on('ready', function() {
 	ipcMain.on('command-message', function(event, arg) {
 		console.log(ptyTerm);
 		ptyTerm.write(arg);
-		// ptyTerm.write('challengesPS1=$(basename "`pwd`"" ""$")');
 		ptyTerm.removeAllListeners('data');
 		ptyTerm.on('data', function(data) {
 			event.sender.send('terminal-reply', data);
-
 		});
 	});
 
 
 // For running tests to see whether the user is ready to advance
-	ipcMain.once('test-message', function(event, arg) {
+	// Listen for commands from the lesson file.
+	ipcMain.on('command-to-run', function(event, arg) {
+		// Upon receiving a command, run it in the terminal.
+			// For testing only
+			// exec('pwd', function(err, stdout, stderr) {
+			// 	console.log('*****\n\nworking directory:', stdout);
+			// });
+			// exec('ls', function(err, stdout, stderr) {
+			// 	console.log('contents:', stdout);
+			// });
+		// For reals
 
 		exec(arg, function(err, stdout, stderr) {
-			// if (err) throw err; // This displays a pop-up error message in Electron, which is probably not what I want. But I also probably need to handle errors somehow.
-			// console.log(stdout); // for testing only - shows up in my terminal
-			event.sender.send('test-reply', stdout);
+			// Send the terminal's response back to the lesson.
+				// For testing only
+				console.log('command executed:', arg);
+				if (err) {
+					console.log(err.toString()); // This will give me the human-readable text description of the error from the Error object.
+				} else {
+					console.log('terminal output:', stdout);
+				}
+			if (err) return event.sender.send('terminal-output', err.toString()); // Should I send something else? Would stdout ever begin with the word 'Error'?
+				// For testing only
+				// exec('pwd', function(err, stdout, stderr) {
+				// 	console.log('working directory at end:', stdout);
+				// });
+			event.sender.send('terminal-output', stdout);
 		});
 	});
 
-	ipcMain.on('test-passed', function(event, arg) {
-
-		console.log('Result received:', arg);
-		// If the user passed (if arg is true)...
-		if (arg) {
-			// advance
-		} else {
-			// setState
-		}
-		// How can I trigger these functions, which are located on Dashboard?
-
+	// Listen for a Boolean from the lesson file.
+	// Is there a way to cut out the middleman here and send the test result directly from the lesson to Dashboard.js (rather than from the lesson to main.js and then from main.js to Dashboard.js)? I tried adding 'ipcRenderer.on('test-result-1'...)' to Dashboard.js, but that didn't work.
+	ipcMain.on('test-result-1', function(event, arg) {
+		// console.log('main.js has recieved the test result:', arg);
+		// Upon receiving it, send it to the Dashboard.
+		event.sender.send('test-result-2', arg);
 	});
 
 	// For testing only

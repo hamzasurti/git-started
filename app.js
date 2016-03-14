@@ -30,7 +30,7 @@ term.on("data", function(data) {
 
 ptyProcess.on('data', (data) => {
   console.log('ptyProcess data +++>',data);
-  term.write(eval(`PS1=$("\h: \W $ ")`);
+  // term.write(eval(`PS1=$("\h: \W $ ")`);
 })
 
 ipcRenderer.on('terminal-reply', (event, arg) => {

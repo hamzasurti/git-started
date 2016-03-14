@@ -21,7 +21,8 @@ export default class Dashboard extends Component {
 		this.state = {
 			slideNumber: props.initialSlideNumber,
 			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
-			buttonText: lesson1[props.initialSlideNumber].buttonText
+			buttonText: lesson1[props.initialSlideNumber].buttonText,
+			errorMessage: ''
 		};
 	}
 
@@ -32,7 +33,8 @@ export default class Dashboard extends Component {
 			this.setState({
 				slideNumber: 0,
 				lessonText: lesson1[0].lessonText,
-				buttonText: lesson1[0].buttonText
+				buttonText: lesson1[0].buttonText,
+				errorMessage: ''
 			});
 
 		// What to do on every other slide
@@ -41,7 +43,8 @@ export default class Dashboard extends Component {
 	  		slideNumber: this.state.slideNumber + 1,
 	  		// Would it be better to make the value of lessonText the result of a function?
 	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
-	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText
+	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText,
+				errorMessage: ''
 	  	});
 		}
 	}
@@ -51,9 +54,19 @@ export default class Dashboard extends Component {
 
 		// If this slide has a buttonFunction, run it.
 		if(lesson1[this.state.slideNumber].buttonFunction) {
-			console.log('buttonFunction is running');
-			lesson1[this.state.slideNumber].buttonFunction(); // I really really want this to return a Boolean!
-			// console.log('Hello from Dashboard.js! result is', lesson1[this.state.slideNumber].buttonFunction()); // didn't work
+			lesson1[this.state.slideNumber].buttonFunction();
+			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler). I changed .on to .once
+			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pul out and name this function.
+				console.log(`Test result for slide ${this.state.slideNumber}: ${arg}`);
+				// If the user passed the test (if arg is true), advance.
+				if (arg) {
+					this.advance();
+				} else {
+					this.showError();
+					// console.log('Oops! Try again.') // I could customize this error message for each slide.
+				}
+			}.bind(this));
+
 		// If not, advance.
 		} else {
 			this.advance();
@@ -61,6 +74,12 @@ export default class Dashboard extends Component {
   }
 
 	// Down the line, we might want a function that runs when a user hits the Enter key in the terminal.
+
+	showError() {
+		this.setState({
+			errorMessage: lesson1[this.state.slideNumber].errorMessage
+		});
+	}
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
@@ -70,6 +89,7 @@ export default class Dashboard extends Component {
         <div className='one-third column' id='left'>
         	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
         	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+					<p><strong>{this.state.errorMessage}</strong></p>
       	</div>
 
         <div className='two-thirds column'>
@@ -83,7 +103,7 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	initialLesson: lesson1,
+	initialLesson: lesson1, // We're not currently using this prop.
 	initialSlideNumber: 0
 };
 
@@ -92,7 +112,7 @@ render(<Dashboard />, document.getElementById('dashboard-container'));
 // Here's an ES5 version in case we need it later.
 
 // var React = require('react');
-// var ReactDOM = require('react-dom'); 
+// var ReactDOM = require('react-dom');
 
 // // Import other components here
 
