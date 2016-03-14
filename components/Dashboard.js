@@ -52,14 +52,14 @@ export default class Dashboard extends Component {
 		// If this slide has a buttonFunction, run it.
 		if(lesson1[this.state.slideNumber].buttonFunction) {
 			lesson1[this.state.slideNumber].buttonFunction();
-			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler).
-			ipcRenderer.on('test-result', function(event, arg) { // Refactoring opportunity: pul out and name this function.
-				console.log('Dashboard.js has recieved the test result from main.js:', arg);
+			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler). I changed .on to .once
+			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pul out and name this function.
+				console.log(`Test result for slide ${this.state.slideNumber}: ${arg}`);
 				// If the user passed the test (if arg is true), advance.
 				if (arg) {
 					this.advance();
 				} else {
-					console.log('Oops! Try again.')
+					console.log('Oops! Try again.') // I could customize this error message for each slide.
 				}
 			}.bind(this));
 

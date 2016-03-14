@@ -44,11 +44,11 @@ export default [
 		buttonText: "OK - I'm ready for step two!",
 		buttonFunction: function() { // Check whether the user has installed Git
 			// Send a command to the terminal via main.js.
-			ipcRenderer.send('test-message', 'git --version');
+			ipcRenderer.send('command-to-run', 'git --version');
 			// Listen for the terminal's response.
-			ipcRenderer.on('test-reply', function(event, arg) {
-				// Upon receiving the response, send a Boolean to main.js. If test-reply contains the text 'git version', the user passed. If not, the user did not pass.
-				ipcRenderer.send('test-passed', arg.indexOf('git version') > -1);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				// Upon receiving the response, send a Boolean to main.js. If terminal-output contains the text 'git version', the user passed. If not, the user did not pass.
+				ipcRenderer.send('test-result-1', arg.indexOf('git version') > -1);
 			});
 
 		}
@@ -66,8 +66,13 @@ export default [
 				</p>
 			</div>,
 		buttonText: 'I typed, I saw, I conquered.',
-		buttonFunction: function() {
-			console.log('Check whether the user has created new-project. Can I tell what their current working directory is?')
+		buttonFunction: function() { // Check whether the user has created new-project
+			ipcRenderer.send('command-to-run', 'cd new-project');
+			ipcRenderer.once('terminal-output', function(event, arg) {
+			// If I can cd into new-project, stdout will be '', and the user passed (and I'll need to cd out of the folder). If not, the user did not pass.
+				ipcRenderer.send('test-result-1', arg === '');
+			})
+			// console.log('Check whether the user has created new-project. Can I tell what their current working directory is?')
 		}
 
 	}, {
