@@ -25,26 +25,27 @@ app.on('ready', function() {
 
 
 
-	var ptyTerm = pty.fork('bash', [], {
-	  name: 'xterm-color',
-	  cols: 80,
-	  rows: 50,
-	  cwd: process.env.HOME,
-	  env: process.env
+	var ptyTerm = pty.spawn('bash', [], {
+		name: 'xterm-color',
+		cols: 80,
+		rows: 50,
+		cwd: process.env.HOME,
+		env: process.env
 	});
-
-
 	ipcMain.on('command-message', function(event, arg) {
+		console.log(ptyTerm);
 		ptyTerm.write(arg);
-
+		// ptyTerm.write('challengesPS1=$(basename "`pwd`"" ""$")');
+		ptyTerm.removeAllListeners('data');
 		ptyTerm.on('data', function(data) {
 			event.sender.send('terminal-reply', data);
+
 		});
 	});
 
 
 // For running tests to see whether the user is ready to advance
-	ipcMain.on('test-message', function(event, arg) {
+	ipcMain.once('test-message', function(event, arg) {
 
 		exec(arg, function(err, stdout, stderr) {
 			// if (err) throw err; // This displays a pop-up error message in Electron, which is probably not what I want. But I also probably need to handle errors somehow.
