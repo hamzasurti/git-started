@@ -25,22 +25,24 @@ app.on('ready', function() {
 
 
 
-	// var ptyTerm = pty.fork('bash', [], {
-	//   name: 'xterm-color',
-	//   cols: 80,
-	//   rows: 50,
-	//   cwd: process.env.HOME,
-	//   env: process.env
-	// });
-	//
-	//
-	// ipcMain.on('command-message', function(event, arg) {
-	// 	ptyTerm.write(arg);
-	//
-	// 	ptyTerm.on('data', function(data) {
-	// 		event.sender.send('terminal-reply', data);
-	// 	});
-	// });
+
+	var ptyTerm = pty.spawn('bash', [], {
+		name: 'xterm-color',
+		cols: 80,
+		rows: 50,
+		cwd: process.env.HOME,
+		env: process.env
+	});
+	ipcMain.on('command-message', function(event, arg) {
+		console.log(ptyTerm);
+		ptyTerm.write(arg);
+		// ptyTerm.write('challengesPS1=$(basename "`pwd`"" ""$")');
+		ptyTerm.removeAllListeners('data');
+		ptyTerm.on('data', function(data) {
+			event.sender.send('terminal-reply', data);
+
+		});
+	});
 
 
 // For running tests to see whether the user is ready to advance
@@ -55,6 +57,7 @@ app.on('ready', function() {
 			// 	console.log('contents:', stdout);
 			// });
 		// For reals
+
 		exec(arg, function(err, stdout, stderr) {
 			// Send the terminal's response back to the lesson.
 				// For testing only
