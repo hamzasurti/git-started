@@ -4,6 +4,8 @@
 import React from 'react';
 // Why didn't I have to import ipcRenderer?
 
+var currentDirectory = '~/Desktop';
+
 // Export an array. Alternatively, we could use a linked list.
 export default [
 	{
@@ -67,12 +69,14 @@ export default [
 			</div>,
 		buttonText: 'I typed, I saw, I conquered.',
 		buttonFunction: function() { // Check whether the user has created new-project
-			ipcRenderer.send('command-to-run', 'cd ~/Desktop; cd new-project'); // need to replace '~/Desktop' with the user's current directory.
+			var commandToRun = 'cd ' + currentDirectory + '; cd new-project';
+			ipcRenderer.send('command-to-run', commandToRun); // need to replace '~/Desktop' with the user's current directory.
 			ipcRenderer.once('terminal-output', function(event, arg) {
 			// If I can cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user passed the test (and I may need to cd out of the folder), so we'll return a falsy value: zero. If not, the user did not pass.
 				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
 			})
-			// console.log('Check whether the user has created new-project. Can I tell what their current working directory is?')
+			// For testing only
+			currentDirectory += '/new-project';
 		},
 		errorMessage: "Oops! It looks like you haven't created a new directory called 'new-project'. Try again and then click the button above."
 
@@ -86,12 +90,12 @@ export default [
 				</p>
 			</div>,
 		buttonText: 'Got it!',
-		buttonFunction: function() {
-			// I want to see whcih directory the user is in. Simply running pwd won't work.
-			ipcRenderer.once('terminal-output', function(event, arg) {
-				console.log('result of pwd', arg);
-			})
-		},
+		// buttonFunction: function() {
+		// 	// I want to see which directory the user is in. Simply running pwd won't work.
+		// 	ipcRenderer.once('terminal-output', function(event, arg) {
+		// 		console.log('result of pwd', arg);
+		// 	})
+		// },
 		errorMessage: "Oops! It looks like you haven't navigated into the 'new-project' directory. Try again and then click the button above."
 
 	}, {
@@ -105,8 +109,15 @@ export default [
 			</div>,
 		buttonText: "OK, I'm ready for step three!",
 		buttonFunction: function() {
-			console.log('Check whether the user has created new-file.txt');
-		}
+			// console.log('Check whether the user has created new-file.txt');
+			var commandToRun = 'cd ' + currentDirectory + '; ls';
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+			// If the terminal-output contains 'new-file.txt', the user should pass.
+				ipcRenderer.send('test-result-1', arg.indexOf('new-file.txt') > -1);
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't created a file called 'new-file.txt', or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
