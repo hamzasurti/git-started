@@ -9,9 +9,6 @@ import Terminal from './Terminal';
 // Import lesson content
 import lesson1 from './../lessons/git-on-your-computer';
 
-// ****ADD ipcRenderer.on('test-passed')
-// setState based on that.
-
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
@@ -56,14 +53,13 @@ export default class Dashboard extends Component {
 		if(lesson1[this.state.slideNumber].buttonFunction) {
 			lesson1[this.state.slideNumber].buttonFunction();
 			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler). I changed .on to .once
-			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pul out and name this function.
+			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pull out and name this function.
 				console.log(`Test result for slide ${this.state.slideNumber}: ${arg}`);
 				// If the user passed the test (if arg is true), advance.
 				if (arg) {
 					this.advance();
 				} else {
 					this.showError();
-					// console.log('Oops! Try again.') // I could customize this error message for each slide.
 				}
 			}.bind(this));
 

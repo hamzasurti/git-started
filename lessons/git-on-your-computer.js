@@ -69,10 +69,10 @@ export default [
 			</div>,
 		buttonText: 'I typed, I saw, I conquered.',
 		buttonFunction: function() { // Check whether the user has created new-project
-			var commandToRun = 'cd ' + currentDirectory + '; cd new-project';
+			var commandToRun = 'cd ' + currentDirectory + '; cd new-project'; // If I'm doing this all the time, how can I make my code DRY?
 			ipcRenderer.send('command-to-run', commandToRun); // need to replace '~/Desktop' with the user's current directory.
 			ipcRenderer.once('terminal-output', function(event, arg) {
-			// If I can cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user passed the test (and I may need to cd out of the folder), so we'll return a falsy value: zero. If not, the user did not pass.
+			// If we can't cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user should fail the test, so we'll return a falsy value: zero. Otherwise, the user should pass.
 				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
 			})
 			// For testing only
@@ -128,8 +128,15 @@ export default [
 			</div>,
 		buttonText: "So what's a repo?",
 		buttonFunction: function() {
-			console.log('Check whether the user has initialized their repo successfully. Running git status should be sufficient.');
-		}
+			// Check whether the user has initialized their repo successfully. Running git status should be sufficient
+			var commandToRun = 'cd ' + currentDirectory + '; git status';
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+			// If the repo hasn't been initialized, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user should fail the test, so we'll return a falsy value: zero. Otherwise, the user should pass.
+				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't initialized your repo, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
