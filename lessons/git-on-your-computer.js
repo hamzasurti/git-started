@@ -50,8 +50,8 @@ export default [
 				// Upon receiving the response, send a Boolean to main.js. If terminal-output contains the text 'git version', the user passed. If not, the user did not pass.
 				ipcRenderer.send('test-result-1', arg.indexOf('git version') > -1);
 			});
-
-		}
+		},
+		errorMessage: "Oops! It looks like you haven't installed Git. Try again and then click the button above."
 
 	// I'll need to edit "you'll see"
 	}, {
@@ -67,13 +67,14 @@ export default [
 			</div>,
 		buttonText: 'I typed, I saw, I conquered.',
 		buttonFunction: function() { // Check whether the user has created new-project
-			ipcRenderer.send('command-to-run', 'cd new-project');
+			ipcRenderer.send('command-to-run', 'cd ~/Desktop; cd new-project'); // need to replace '~/Desktop' with the user's current directory.
 			ipcRenderer.once('terminal-output', function(event, arg) {
-			// If I can cd into new-project, stdout will be '', and the user passed (and I'll need to cd out of the folder). If not, the user did not pass.
-				ipcRenderer.send('test-result-1', arg === '');
+			// If I can cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user passed the test (and I may need to cd out of the folder), so we'll return a falsy value: zero. If not, the user did not pass.
+				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
 			})
 			// console.log('Check whether the user has created new-project. Can I tell what their current working directory is?')
-		}
+		},
+		errorMessage: "Oops! It looks like you haven't created a new directory called 'new-project'. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -86,8 +87,12 @@ export default [
 			</div>,
 		buttonText: 'Got it!',
 		buttonFunction: function() {
-			console.log("Check whether the user's current working directory is new-project.");
-		}
+			// I want to see whcih directory the user is in. Simply running pwd won't work.
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				console.log('result of pwd', arg);
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't navigated into the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:

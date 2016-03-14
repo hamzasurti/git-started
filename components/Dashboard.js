@@ -21,7 +21,8 @@ export default class Dashboard extends Component {
 		this.state = {
 			slideNumber: props.initialSlideNumber,
 			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
-			buttonText: lesson1[props.initialSlideNumber].buttonText
+			buttonText: lesson1[props.initialSlideNumber].buttonText,
+			errorMessage: ''
 		};
 	}
 
@@ -32,7 +33,8 @@ export default class Dashboard extends Component {
 			this.setState({
 				slideNumber: 0,
 				lessonText: lesson1[0].lessonText,
-				buttonText: lesson1[0].buttonText
+				buttonText: lesson1[0].buttonText,
+				errorMessage: ''
 			});
 
 		// What to do on every other slide
@@ -41,7 +43,8 @@ export default class Dashboard extends Component {
 	  		slideNumber: this.state.slideNumber + 1,
 	  		// Would it be better to make the value of lessonText the result of a function?
 	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
-	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText
+	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText,
+				errorMessage: ''
 	  	});
 		}
 	}
@@ -59,7 +62,8 @@ export default class Dashboard extends Component {
 				if (arg) {
 					this.advance();
 				} else {
-					console.log('Oops! Try again.') // I could customize this error message for each slide.
+					this.showError();
+					// console.log('Oops! Try again.') // I could customize this error message for each slide.
 				}
 			}.bind(this));
 
@@ -71,6 +75,12 @@ export default class Dashboard extends Component {
 
 	// Down the line, we might want a function that runs when a user hits the Enter key in the terminal.
 
+	showError() {
+		this.setState({
+			errorMessage: lesson1[this.state.slideNumber].errorMessage
+		});
+	}
+
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
     return (
@@ -79,6 +89,7 @@ export default class Dashboard extends Component {
         <div className='one-third column' id='left'>
         	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
         	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+					<p><strong>{this.state.errorMessage}</strong></p>
       	</div>
 
         <div className='two-thirds column'>

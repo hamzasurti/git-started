@@ -47,22 +47,29 @@ app.on('ready', function() {
 	// Listen for commands from the lesson file.
 	ipcMain.on('command-to-run', function(event, arg) {
 		// Upon receiving a command, run it in the terminal.
-		// For testing only
-		exec('pwd', function(err, stdout, stderr) {
-			console.log('*****\n\n\nworking directory:', stdout);
-		});
-		exec('ls', function(err, stdout, stderr) {
-			console.log('contents:', stdout);
-		});
+			// For testing only
+			// exec('pwd', function(err, stdout, stderr) {
+			// 	console.log('*****\n\nworking directory:', stdout);
+			// });
+			// exec('ls', function(err, stdout, stderr) {
+			// 	console.log('contents:', stdout);
+			// });
 		// For reals
 		exec(arg, function(err, stdout, stderr) {
 			// Send the terminal's response back to the lesson.
-			console.log('command executed:', arg);
-			if (err) {
-				console.log(err.toString()); // This will give me the human-readable text description of the error from the Error object.
-			}
-			console.log('terminal output:', stdout);
-			event.sender.send('terminal-output', stdout); // Can I handle errors by changing 'stdout' to 'stdout || err'? (Throwing an error will just display a pop-up message in Electron.) Will I run into cases where 'stdout' is falsy?
+				// For testing only
+				console.log('command executed:', arg);
+				if (err) {
+					console.log(err.toString()); // This will give me the human-readable text description of the error from the Error object.
+				} else {
+					console.log('terminal output:', stdout);
+				}
+			if (err) return event.sender.send('terminal-output', err.toString()); // Should I send something else? Would stdout ever begin with the word 'Error'?
+				// For testing only
+				// exec('pwd', function(err, stdout, stderr) {
+				// 	console.log('working directory at end:', stdout);
+				// });
+			event.sender.send('terminal-output', stdout);
 		});
 	});
 
