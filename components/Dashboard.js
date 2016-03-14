@@ -51,9 +51,18 @@ export default class Dashboard extends Component {
 
 		// If this slide has a buttonFunction, run it.
 		if(lesson1[this.state.slideNumber].buttonFunction) {
-			console.log('buttonFunction is running');
-			lesson1[this.state.slideNumber].buttonFunction(); // I really really want this to return a Boolean!
-			// console.log('Hello from Dashboard.js! result is', lesson1[this.state.slideNumber].buttonFunction()); // didn't work
+			lesson1[this.state.slideNumber].buttonFunction();
+			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler).
+			ipcRenderer.on('test-result', function(event, arg) { // Refactoring opportunity: pul out and name this function.
+				console.log('Dashboard.js has recieved the test result from main.js:', arg);
+				// If the user passed the test (if arg is true), advance.
+				if (arg) {
+					this.advance();
+				} else {
+					console.log('Oops! Try again.')
+				}
+			}.bind(this));
+
 		// If not, advance.
 		} else {
 			this.advance();
@@ -83,7 +92,7 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	initialLesson: lesson1,
+	initialLesson: lesson1, // We're not currently using this prop.
 	initialSlideNumber: 0
 };
 
@@ -92,7 +101,7 @@ render(<Dashboard />, document.getElementById('dashboard-container'));
 // Here's an ES5 version in case we need it later.
 
 // var React = require('react');
-// var ReactDOM = require('react-dom'); 
+// var ReactDOM = require('react-dom');
 
 // // Import other components here
 

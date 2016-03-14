@@ -25,45 +25,40 @@ app.on('ready', function() {
 
 
 
-	var ptyTerm = pty.fork('bash', [], {
-	  name: 'xterm-color',
-	  cols: 80,
-	  rows: 50,
-	  cwd: process.env.HOME,
-	  env: process.env
-	});
-
-
-	ipcMain.on('command-message', function(event, arg) {
-		ptyTerm.write(arg);
-
-		ptyTerm.on('data', function(data) {
-			event.sender.send('terminal-reply', data);
-		});
-	});
+	// var ptyTerm = pty.fork('bash', [], {
+	//   name: 'xterm-color',
+	//   cols: 80,
+	//   rows: 50,
+	//   cwd: process.env.HOME,
+	//   env: process.env
+	// });
+	//
+	//
+	// ipcMain.on('command-message', function(event, arg) {
+	// 	ptyTerm.write(arg);
+	//
+	// 	ptyTerm.on('data', function(data) {
+	// 		event.sender.send('terminal-reply', data);
+	// 	});
+	// });
 
 
 // For running tests to see whether the user is ready to advance
+	// Listen for commands from the lesson file.
 	ipcMain.on('test-message', function(event, arg) {
-
+		// Upon receiving a command, run it in the terminal.
 		exec(arg, function(err, stdout, stderr) {
-			// if (err) throw err; // This displays a pop-up error message in Electron, which is probably not what I want. But I also probably need to handle errors somehow.
-			// console.log(stdout); // for testing only - shows up in my terminal
-			event.sender.send('test-reply', stdout);
+			// Send the terminal's response back to the lesson.
+			event.sender.send('test-reply', stdout || err); // Will this handle errors? (Throwing an error will just display a pop-up message in Electron.)
 		});
 	});
 
+	// Listen for a Boolean from the lesson file.
+	// Is there a way to cut out the middleman here and send the test result directly from the lesson to Dashboard.js (rather than from the lesson to main.js and then from main.js to Dashboard.js)? I tried adding 'ipcRenderer.on('test-passed'...)' to Dashboard.js, but that didn't work.
 	ipcMain.on('test-passed', function(event, arg) {
-
-		console.log('Result received:', arg);
-		// If the user passed (if arg is true)...
-		if (arg) {
-			// advance
-		} else {
-			// setState
-		}
-		// How can I trigger these functions, which are located on Dashboard?
-
+		// console.log('main.js has recieved the test result:', arg);
+		// Upon receiving it, send it to the Dashboard.
+		event.sender.send('test-result', arg);
 	});
 
 	// For testing only

@@ -2,6 +2,7 @@
 
 // Import React so we can use JSX.
 import React from 'react';
+// Why didn't I have to import ipcRenderer?
 
 // Export an array. Alternatively, we could use a linked list.
 export default [
@@ -20,9 +21,9 @@ export default [
 				<p>Don't worry - we'll walk you through each step. Ready to get started?</p>
 			</div>,
 		buttonText: "Yes - let's do this!"
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 1: Set up Git</h2>
 				<h3>Meet the terminal</h3>
@@ -32,7 +33,7 @@ export default [
 		buttonText: 'Got it!'
 
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 1: Set up Git</h2>
 				<h3>Check your version</h3>
@@ -42,28 +43,19 @@ export default [
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
 		buttonFunction: function() { // Check whether the user has installed Git
-			var result;
-			ipcRenderer.send('test-message', 'git --version'); // I think 'git --version' will throw an error if the user does not have Git installed. How can we handle this?
+			// Send a command to the terminal via main.js.
+			ipcRenderer.send('test-message', 'git --version');
+			// Listen for the terminal's response.
 			ipcRenderer.on('test-reply', function(event, arg) {
-				// Send a Boolean. If test-reply contains the text 'git version', the user passed. If not, the user did not pass.
-				result = arg.indexOf('git version') > -1;
-				ipcRenderer.send('test-passed', result);
-				// return result; // This doesn't do anything. I console-logged the output of ipcRenderer.on and got an Event Emitter. Grr.
+				// Upon receiving the response, send a Boolean to main.js. If test-reply contains the text 'git version', the user passed. If not, the user did not pass.
+				ipcRenderer.send('test-passed', arg.indexOf('git version') > -1);
 			});
 
-			// Nice try here, but no cigar.
-			// while (result === undefined) {
-			// 	setTimeout(function() {
-			// 		console.log('result is not yet defined');
-			// 	}, 100);
-			// }
-			// return result;
-			// return result; // undefined - async issues
 		}
-	
+
 	// I'll need to edit "you'll see"
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 2: Set up a project</h2>
 				<h3>Make a directory</h3>
@@ -77,9 +69,9 @@ export default [
 		buttonFunction: function() {
 			console.log('Check whether the user has created new-project. Can I tell what their current working directory is?')
 		}
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 2: Set up a project</h2>
 				<h3>Navigate to your new directory</h3>
@@ -91,9 +83,9 @@ export default [
 		buttonFunction: function() {
 			console.log("Check whether the user's current working directory is new-project.");
 		}
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 2: Set up a project</h2>
 				<h3>Create a file</h3>
@@ -105,9 +97,9 @@ export default [
 		buttonFunction: function() {
 			console.log('Check whether the user has created new-file.txt');
 		}
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 3: Learn Git commands</h2>
 				<h3>git init</h3>
@@ -117,9 +109,9 @@ export default [
 		buttonFunction: function() {
 			console.log('Check whether the user has initialized their repo successfully. Running git status should be sufficient.');
 		}
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 3: Learn Git commands</h2>
 				<h3>git status</h3>
@@ -130,9 +122,9 @@ export default [
 		buttonFunction: function() {
 			console.log("If we run a test on the last slide, we don't actually need a test here.");
 		}
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 3: Learn Git commands</h2>
 				<h3>git add</h3>
@@ -145,7 +137,7 @@ export default [
 		}
 
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 3: Learn Git commands</h2>
 				<h3>git commit -m</h3>
@@ -157,9 +149,9 @@ export default [
 		buttonFunction: function() {
 			console.log('Check whether the user has git-committed new-file.text. Running git status should tell us what we need to know. We could also check for a message.');
 		}
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 3: Learn Git commands</h2>
 				<h3>Take a break from Git to edit your file</h3>
@@ -173,7 +165,7 @@ export default [
 		}
 
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Step 3: Learn Git commands</h2>
 				<h3>git diff</h3>
@@ -184,18 +176,18 @@ export default [
 		buttonFunction: function() {
 			console.log('Can we check whether the user has run git diff?');
 		}
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<h2>Congrats!</h2>
 				<p>You've finished our lesson on using Git on your computer.</p>
 				<p>Now you're ready to start learning about GitHub, a popular website that makes it easy to back up your Git projects online and collaborate with other developers.</p>
 			</div>,
 		buttonText: 'Learn about Github'
-	
+
 	}, {
-		lessonText: 
+		lessonText:
 			<div>
 				<p>The GitHub lesson is coming soon, but it isn't ready yet. Would you like to repeat the lesson you just finished?</p>
 			</div>,
@@ -204,4 +196,3 @@ export default [
 ];
 
 // '" Stop the madness
-
