@@ -5,6 +5,7 @@ const app = electron.app;
 const ipcMain = require('electron').ipcMain;
 const	BrowserWindow = electron.BrowserWindow;
 const pty = require('pty.js');
+const net = require('net');
 
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
@@ -23,7 +24,8 @@ app.on('ready', function() {
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
 
-	var term = pty.spawn('bash', [], {
+
+	var ptyTerm = pty.fork('bash', [], {
 	  name: 'xterm-color',
 	  cols: 80,
 	  rows: 50,
@@ -32,21 +34,14 @@ app.on('ready', function() {
 	});
 
 
-
-
-	var currentDirectory = ""
-	console.log(process.env._);
 	ipcMain.on('command-message', function(event, arg) {
+		ptyTerm.write(arg);
 
-		term.write(arg);
-		// term.resize(100, 40);
-		term.write(' && ls\r');
-		term.write('&& basename ' +  process.env._);
-		term.on('data', function(data) {
+		ptyTerm.on('data', function(data) {
 			event.sender.send('terminal-reply', data);
 		});
-		// term.end()
 	});
+
 
 // For running tests to see whether the user is ready to advance
 	ipcMain.on('test-message', function(event, arg) {
@@ -59,7 +54,7 @@ app.on('ready', function() {
 	});
 
 	ipcMain.on('test-passed', function(event, arg) {
-		
+
 		console.log('Result received:', arg);
 		// If the user passed (if arg is true)...
 		if (arg) {
@@ -68,7 +63,7 @@ app.on('ready', function() {
 			// setState
 		}
 		// How can I trigger these functions, which are located on Dashboard?
-		
+
 	});
 
 	// For testing only

@@ -72,6 +72,10 @@ header {
   min-height: 14rem;
 }
 
+.terminal {
+    border-radius: 1rem;
+}
+
 header,
 #left,
 #Animation,
@@ -86,6 +90,32 @@ footer {
   border: 1px solid black;
   text-align: center;
 }
+
+
+
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+
+
 /*End of code added by Isaac*/
 
 /* Grid
