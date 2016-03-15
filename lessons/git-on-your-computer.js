@@ -13,14 +13,9 @@
 
 // Import React so we can use JSX. (For some reason, we don't have to import ipcRenderer.)
 import React from 'react';
-console.log('React:', React);
-import currentDirectory from './../directory-finder.js'; // When directory-finder.js does not contain an export statement, currentDirectory is an empty object. When I add an export statement to directory-finder.js, currentDirectory becomes undefined. Seriously, WTF?
-// Would I still need to export currentDirectory to Dashboard.js?
-// Is the path just wrong? No, I tried moving the file, and that makes Gulp show an error, so I'm pretty sure the file path is correct.
+import currentDirectory from './../directory-finder.js'; // Would I still need to export currentDirectory to Dashboard.js?
 console.log('currentDirectory:', currentDirectory);
-var cd = currentDirectory();
-console.log('cd:', cd); // This works!
-
+// Figuring out the import/export syntax for currentDirectory was tricky. I kept running into situations where currentDirectory was defined when I console-logged it from directory-finder.js but not when I console-logged it from this file.
 
 // var currentDirectory;
 // // Uncaught ReferenceError: ipcRenderer is not defined
