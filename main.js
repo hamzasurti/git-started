@@ -1,5 +1,4 @@
 'use strict';
-
 const electron = require('electron');
 const app = electron.app;
 const ipcMain = require('electron').ipcMain;
@@ -23,9 +22,7 @@ app.on('ready', function() {
 	mainWindow = new BrowserWindow({width: 1200, height: 700});
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-
-
-
+var currDir;
 	var ptyTerm = pty.spawn('bash', [], {
 		name: 'xterm-color',
 		cols: 80,
@@ -33,16 +30,24 @@ app.on('ready', function() {
 		cwd: process.env.HOME,
 		env: process.env
 	});
+
+	ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
 	ipcMain.on('command-message', function(event, arg) {
-		// console.log(ptyTerm);
 		ptyTerm.write(arg);
-		// ptyTerm.write('challengesPS1=$(basename "`pwd`"" ""$")');
 		ptyTerm.removeAllListeners('data');
 		ptyTerm.on('data', function(data) {
 			event.sender.send('terminal-reply', data);
-
+			//crude way to find path, need to improve
+			var re = /\s[$]\s/g;
+			if (data.match(re)) {
+				var temp = data;
+				temp = temp.replace(re,'');
+				currDir = temp;
+				event.sender.send('curr-dir', currDir);
+			}
 		});
 	});
+
 
 
 // For running tests to see whether the user is ready to advance

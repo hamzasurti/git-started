@@ -17,6 +17,11 @@ import React from 'react';
 // Why didn't I have to import ipcRenderer?
 
 var currentDirectory = '~/Desktop';
+// var commandToRun;
+// ipcRenderer.on('curr-dir', function(event, arg) {
+// 		currDirec = arg;
+// 	commandToRun	= 'cd ' + currDirec + '; cd new-project'; // If I'm doing this all the time, how can I make my code DRY?
+// })
 
 // Export an array. Alternatively, we could use a linked list.
 export default [
