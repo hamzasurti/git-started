@@ -16,13 +16,12 @@ export default class Animation extends Component {
     // Do not allow react to render the component on prop change
     return false;
   }
+
   render() {
     return (
       <div id='Animation'>
       	Animation
-
         <svg ref="treeRender"></svg>
-
       </div>
     )
   }
