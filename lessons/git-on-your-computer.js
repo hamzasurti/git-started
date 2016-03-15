@@ -1,5 +1,4 @@
 // Need to make sure all the tests here are valid.
-// We may want to compare our tests to Git-It's.
 
 // Button function template:
 // buttonFunction: function() {
@@ -12,19 +11,20 @@
 // },
 // errorMessage: "Oops! It looks like X IS WRONG, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
-// Import React so we can use JSX.
+// Import React so we can use JSX. (For some reason, we don't have to import ipcRenderer.)
 import React from 'react';
-// Why didn't I have to import ipcRenderer?
+import currentDirectory from ''; // Could I then stop exporting currentDirectory?
 
-var currentDirectory = '~/Desktop';
-// var commandToRun;
+
+// var currentDirectory;
+// // Uncaught ReferenceError: ipcRenderer is not defined
 // ipcRenderer.on('curr-dir', function(event, arg) {
-// 		currDirec = arg;
-// 	commandToRun	= 'cd ' + currDirec + '; cd new-project'; // If I'm doing this all the time, how can I make my code DRY?
-// })
+// 		currentDirectory = arg;
+// 		console.log('currentDirectory:', currentDirectory);
+// });
 
 // Export an array. Alternatively, we could use a linked list.
-export var lesson1 = [
+var slides = [
 	{
 		lessonText:
 			<div>
@@ -290,4 +290,4 @@ export var lesson1 = [
 
 // '" Stop the madness
 
-// export {slides as lesson1}; // Removing 'slides as' didn't help.
+export {slides as lesson1, currentDirectory};

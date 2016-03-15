@@ -7,7 +7,7 @@ import Lesson from './Lesson';
 import Terminal from './Terminal';
 
 // Import lesson content
-import {lesson1} from './../lessons/git-on-your-computer';
+import {lesson1, currentDirectory} from './../lessons/git-on-your-computer';
 
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
@@ -84,6 +84,7 @@ export default class Dashboard extends Component {
       <div id='Dashboard' className='row'>
 
         <div className='one-third column' id='left'>
+					For testing only: current directory: {currentDirectory}
         	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
         	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 					<p><strong>{this.state.errorMessage}</strong></p>
