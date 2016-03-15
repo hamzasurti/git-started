@@ -1,8 +1,22 @@
 // Need to make sure all the tests here are valid.
+// We may want to compare our tests to Git-It's.
+
+// Button function template:
+// buttonFunction: function() {
+// 	var commandToRun = 'cd ' + currentDirectory// + '; git status';
+// 	ipcRenderer.send('command-to-run', commandToRun);
+// 	ipcRenderer.once('terminal-output', function(event, arg) {
+// 		// Insert test
+// 		ipcRenderer.send('test-result-1', false); // Replace false with Boolean
+// 	})
+// },
+// errorMessage: "Oops! It looks like X IS WRONG, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 // Import React so we can use JSX.
 import React from 'react';
 // Why didn't I have to import ipcRenderer?
+
+var currentDirectory = '~/Desktop';
 
 // Export an array. Alternatively, we could use a linked list.
 export default [
@@ -67,12 +81,13 @@ export default [
 			</div>,
 		buttonText: 'I typed, I saw, I conquered.',
 		buttonFunction: function() { // Check whether the user has created new-project
-			ipcRenderer.send('command-to-run', 'cd ~/Desktop; cd new-project'); // need to replace '~/Desktop' with the user's current directory.
+			var commandToRun = 'cd ' + currentDirectory + '; cd new-project'; // If I'm doing this all the time, how can I make my code DRY?
+			ipcRenderer.send('command-to-run', commandToRun); // need to replace '~/Desktop' with the user's current directory.
 			ipcRenderer.once('terminal-output', function(event, arg) {
-			// If I can cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user passed the test (and I may need to cd out of the folder), so we'll return a falsy value: zero. If not, the user did not pass.
+			// If we can't cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user should fail the test, so we'll return a falsy value: zero. Otherwise, the user should pass.
 				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
 			})
-			// console.log('Check whether the user has created new-project. Can I tell what their current working directory is?')
+
 		},
 		errorMessage: "Oops! It looks like you haven't created a new directory called 'new-project'. Try again and then click the button above."
 
@@ -86,12 +101,12 @@ export default [
 				</p>
 			</div>,
 		buttonText: 'Got it!',
-		buttonFunction: function() {
-			// I want to see whcih directory the user is in. Simply running pwd won't work.
-			ipcRenderer.once('terminal-output', function(event, arg) {
-				console.log('result of pwd', arg);
-			})
-		},
+		// buttonFunction: function() {
+		// 	// I want to see which directory the user is in. Simply running pwd won't work.
+		// 	ipcRenderer.once('terminal-output', function(event, arg) {
+		// 		console.log('result of pwd', arg);
+		// 	})
+		// },
 		errorMessage: "Oops! It looks like you haven't navigated into the 'new-project' directory. Try again and then click the button above."
 
 	}, {
@@ -105,8 +120,17 @@ export default [
 			</div>,
 		buttonText: "OK, I'm ready for step three!",
 		buttonFunction: function() {
-			console.log('Check whether the user has created new-file.txt');
-		}
+			// For testing only
+			currentDirectory = '~/Desktop/new-project';
+			// console.log('Check whether the user has created new-file.txt');
+			var commandToRun = 'cd ' + currentDirectory + '; ls';
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+			// If the terminal-output contains 'new-file.txt', the user should pass.
+				ipcRenderer.send('test-result-1', arg.indexOf('new-file.txt') > -1);
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't created a file called 'new-file.txt', or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -117,8 +141,15 @@ export default [
 			</div>,
 		buttonText: "So what's a repo?",
 		buttonFunction: function() {
-			console.log('Check whether the user has initialized their repo successfully. Running git status should be sufficient.');
-		}
+			// Check whether the user has initialized their repo successfully
+			var commandToRun = 'cd ' + currentDirectory + '; git status';
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+			// If the repo hasn't been initialized, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user should fail the test, so we'll return a falsy value: zero. Otherwise, the user should pass.
+				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't initialized your repo, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -128,10 +159,7 @@ export default [
 				<p>A repo contains all the files Git is tracking for a project, as well as the revision history for these files. All this information is stored in a special folder called ".git" inside your project folder.</p>
 				<p>Your .git folder is hidden by default, so you won't see it in your file tree. However, you can use the terminal to make sure you've initialized your repository correctly. Just  type <code>git status</code> and then click Enter. As long as you don't see this error message - <code>fatal: Not a git repository</code> - you're good to go.</p>
 			</div>,
-		buttonText: "I'm good to go!",
-		buttonFunction: function() {
-			console.log("If we run a test on the last slide, we don't actually need a test here.");
-		}
+		buttonText: "I'm good to go!"
 
 	}, {
 		lessonText:
@@ -143,8 +171,26 @@ export default [
 			</div>,
 		buttonText: "So what's a commit?",
 		buttonFunction: function() {
-			console.log('Check whether the user has git-added new-file.text. Running git status should tell us what we need to know.');
-		}
+			// Check whether the user has git-added new-file.text
+			var commandToRun = 'cd ' + currentDirectory + '; git status'; // same as the last test
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				// Assume the user has failed until they prove otherwise.
+				var didUserPass = false;
+				// If new-file.txt has been added to the staging area, arg should contain 'Changes to be committed' followed by either 'modified:   new-file.txt' or 'new file:   new-file.txt' There should NOT be an instance of 'Changes not staged for commit' between 'Changes to be committed' and 'new-file.txt'. Let's check these conditions with regex.
+				var regExp1 = /Changes to be committed([\s\S]+)new-file[.]txt/;
+				var result = regExp1.exec(arg);
+				// If the result is truthy (isn't null), arg contains 'Changes to be committed' followed by 'new-file.txt', and we should continue examine the result.
+				if (result) {
+					// If the result contains 'Changes not staged for commit', keep didUserPass false. If not, change didUserPass to true.
+					if (result[1].indexOf('Changes not staged for commit') === -1) {
+						didUserPass = true;
+					}
+				}
+				ipcRenderer.send('test-result-1', didUserPass);
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't added new-file.txt to your staging area, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -156,9 +202,25 @@ export default [
 				<p>It's a best practice to commit early and often, and to write descriptive commit messages. The more descriptive your commit messages are, the easier it will be to find specific commits when you want to refer back to them in the future!</p>
 			</div>,
 		buttonText: "I've committed - what's next?",
+		//  Running git status should tell us what we need to know. We could also check for a message.
 		buttonFunction: function() {
-			console.log('Check whether the user has git-committed new-file.text. Running git status should tell us what we need to know. We could also check for a message.');
-		}
+			// Check whether the user has git-committed new-file.text.
+			var commandToRun = 'cd ' + currentDirectory + '; git log; git status'; // same as the last test. Or would running git log make more sense?
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				// Insert test
+				var didUserPass = true;
+				// Check the git log to be sure there's a commit. We don't want arg to start with 'fatal' (which is probably an error).
+				if (!arg.indexOf('fatal')) {
+					didUserPass = false;
+				// Then check the git status. If it contains 'Changes not staged for commit' or 'Changes to be committed', we don't want to see 'new-file.txt' after that. For now, though it's probably easier to check for 'nothing to commit, working directory clean';
+				} else {
+					if (arg.indexOf('nothing to commit, working directory clean') === -1) didUserPass = false;
+				}
+				ipcRenderer.send('test-result-1', didUserPass);
+			})
+		},
+		errorMessage: "Oops! It looks like you have changes that you haven't committed, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -170,9 +232,18 @@ export default [
 				<p>In the terminal, type <code>echo "<strong>This will be the best project ever.</strong>" > new-file.txt</code> and click Enter. (Again, you can replace the bolded part with whatever text you wish.)</p>
 			</div>,
 		buttonText: 'Done!',
+		// Running git status should tell us what we need to know.
 		buttonFunction: function() {
-			console.log('Check whether the user has edited new-file.text. Running git status should tell us what we need to know.');
-		}
+			// Check whether the user has edited new-file.text
+			var commandToRun = 'cd ' + currentDirectory + '; git status';
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				// If the user has modified new-file.txt, arg should contain 'modified:' + whitespace + 'new-file.txt'.
+				var regExp = /(modified:\s+new-file[.]txt)/;
+				ipcRenderer.send('test-result-1', regExp.test(arg)); // As an alternative to RegExp.test, we could use String.search.
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't made any changes to new-file.txt since your last commit, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -183,9 +254,16 @@ export default [
 				<p>This will show us the differences between the current version of the project and our most recent commit. Remember: last time we committed, new-file.txt was empty.</p>
 			</div>,
 		buttonText: 'Great - I see the changes I made!',
-		buttonFunction: function() {
-			console.log('Can we check whether the user has run git diff?');
-		}
+			// 'To check whether the user has run git diff, I'd need to be able to access the contents of their command line.'
+		// buttonFunction: function() {
+		// 	var commandToRun = 'cd ' + currentDirectory// + '; git status';
+		// 	ipcRenderer.send('command-to-run', commandToRun);
+		// 	ipcRenderer.once('terminal-output', function(event, arg) {
+		// 		// Insert test
+		// 		ipcRenderer.send('test-result-1', false); // Replace false with Boolean
+		// 	})
+		// },
+		errorMessage: "Oops! It looks like you didn't run the git diff command, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
