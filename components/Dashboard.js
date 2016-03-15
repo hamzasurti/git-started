@@ -13,6 +13,7 @@ import lesson1 from './../lessons/git-on-your-computer';
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
 
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -20,45 +21,22 @@ export default class Dashboard extends Component {
 			totalNumberOfSlides: props.initialTotalNumberOfSlides,
 			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
 			buttonText: lesson1[props.initialSlideNumber].buttonText,
-			errorMessage: '',
-			treeData: [
-				{
-					"name": "Top Level",
-					"parent": "null",
-					"children": [
-						{
-							"name": "Level 2: A",
-							"parent": "Top Level",
-							"children": [
-								{
-									"name": "Son of A",
-									"parent": "Level 2: A"
-								},
-								{
-									"name": "Daughter of A",
-									"parent": "Level 2: A"
-								}
-							]
-						},
-						{
-							"name": "Level 2: B",
-							"parent": "Top Level"
-						}
-					]
-				}
-			]
+			errorMessage: ''
 		};
 	}
 
+
+
 	// Helper function that advances to the next slide
 	advance() {
+
 		// What to do if we're already on the last slide.
 		if (this.state.slideNumber === lesson1.length - 1) {
 			this.setState({
 				slideNumber: 0,
 				lessonText: lesson1[0].lessonText,
 				buttonText: lesson1[0].buttonText,
-				errorMessage: ''
+				errorMessage: '',
 			});
 
 		// What to do on every other slide
@@ -68,7 +46,7 @@ export default class Dashboard extends Component {
 	  		// Would it be better to make the value of lessonText the result of a function?
 	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
 	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText,
-				errorMessage: ''
+				errorMessage: '',
 	  	});
 		}
 	}
@@ -116,7 +94,7 @@ export default class Dashboard extends Component {
       	</div>
 
         <div className='two-thirds column'>
-        	<Animation treeData={this.state.treeData}/>
+        	<Animation />
         	<Terminal />
         </div>
 
