@@ -175,12 +175,33 @@ export default [
 			var commandToRun = 'cd ' + currentDirectory + '; git status'; // same as the last test
 			ipcRenderer.send('command-to-run', commandToRun);
 			ipcRenderer.once('terminal-output', function(event, arg) {
-				// If new-file.txt hasn't been added, arg will contain 'Untracked files' AND 'new-file.txt' will come after 'Untracked files'.
-				var didUserPass = true;
-				var indexOfUntrackedFiles = arg.indexOf('Untracked files');
-				if (indexOfUntrackedFiles > -1) {
-					if (arg.indexOf('new-file.txt') > indexOfUntrackedFiles) didUserPass = false;
+				// Assume the user has failed until they prove otherwise.
+				var didUserPass = false;
+				// If new-file.txt has been added to the staging area, arg should contain 'Changes to be committed' followed by either 'modified:   new-file.txt' or 'new file:   new-file.txt' There should not be an instance of 'Changes not staged for commit' between 'Changes to be committed' and 'new-file.txt'. Let's check this with RegEx!
+				// Check whether arg contains 'Changes to be committed' followed by 'new-file.txt'.
+				var regExp1 = /Changes to be committed([\s\S]+)new-file[.]txt/; // I moved the parens; they were originally right inside the /'s. I want to grab [1].
+				// console.log('matches for regExp1', arg.match(regExp1));
+				// console.log('matches for regExp1', regExp1.exec(arg));
+
+				// regExp1 = /(wahoo)/;
+				var result = regExp1.exec(arg);
+				// If the result isn't falsy (isn't null), there's a match.
+				if (result) {
+					// var match = result[1];
+					// console.log('match', match); // match is a string
+					// Check whether there is an instance of 'Changes not staged for commit' in the match. If not, change didUserPass to true.
+					if (result[1].indexOf('Changes not staged for commit') === -1) {
+						didUserPass = true;
+					}
 				}
+
+
+
+				// var didUserPass = true;
+				// var indexOfUntrackedFiles = arg.indexOf('Untracked files');
+				// if (indexOfUntrackedFiles > -1) {
+				// 	if (arg.indexOf('new-file.txt') > indexOfUntrackedFiles) didUserPass = false;
+				// }
 				ipcRenderer.send('test-result-1', didUserPass);
 			})
 		},
@@ -233,8 +254,8 @@ export default [
 			ipcRenderer.send('command-to-run', commandToRun);
 			ipcRenderer.once('terminal-output', function(event, arg) {
 				// If the user has modified new-file.txt, arg should contain 'modified:' + whitespace + 'new-file.txt'.
-				var regularExpression = /(modified:\s+new-file[.]txt)/;
-				ipcRenderer.send('test-result-1', regularExpression.test(arg)); // As an alternative to RegExp.test, we could use String.search.
+				var regExp = /(modified:\s+new-file[.]txt)/;
+				ipcRenderer.send('test-result-1', regExp.test(arg)); // As an alternative to RegExp.test, we could use String.search.
 			})
 		},
 		errorMessage: "Oops! It looks like you haven't made any changes to new-file.txt since your last commit, or you aren't inside the 'new-project' directory. Try again and then click the button above."
