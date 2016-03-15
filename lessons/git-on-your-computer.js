@@ -1,4 +1,19 @@
 // Need to make sure all the tests here are valid.
+// We may want to compare our tests to Git-It's.
+
+// Button function template:
+// buttonText: "I've committed - what's next?",
+// // Check whether the user has git-committed new-file.text. Running git status should tell us what we need to know. We could also check for a message.
+// buttonFunction: function() {
+//
+// 	var commandToRun = 'cd ' + currentDirectory// + '; git status';
+// 	ipcRenderer.send('command-to-run', commandToRun);
+// 	ipcRenderer.once('terminal-output', function(event, arg) {
+// 		// Insert test
+// 		ipcRenderer.send('test-result-1', false); // Replace false with Boolean
+// 	})
+// },
+// errorMessage: "Oops! It looks like X IS WRONG, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 // Import React so we can use JSX.
 import React from 'react';
@@ -128,7 +143,7 @@ export default [
 			</div>,
 		buttonText: "So what's a repo?",
 		buttonFunction: function() {
-			// Check whether the user has initialized their repo successfully. Running git status should be sufficient
+			// Check whether the user has initialized their repo successfully
 			var commandToRun = 'cd ' + currentDirectory + '; git status';
 			ipcRenderer.send('command-to-run', commandToRun);
 			ipcRenderer.once('terminal-output', function(event, arg) {
@@ -146,10 +161,7 @@ export default [
 				<p>A repo contains all the files Git is tracking for a project, as well as the revision history for these files. All this information is stored in a special folder called ".git" inside your project folder.</p>
 				<p>Your .git folder is hidden by default, so you won't see it in your file tree. However, you can use the terminal to make sure you've initialized your repository correctly. Just  type <code>git status</code> and then click Enter. As long as you don't see this error message - <code>fatal: Not a git repository</code> - you're good to go.</p>
 			</div>,
-		buttonText: "I'm good to go!",
-		buttonFunction: function() {
-			console.log("If we run a test on the last slide, we don't actually need a test here.");
-		}
+		buttonText: "I'm good to go!"
 
 	}, {
 		lessonText:
@@ -161,8 +173,20 @@ export default [
 			</div>,
 		buttonText: "So what's a commit?",
 		buttonFunction: function() {
-			console.log('Check whether the user has git-added new-file.text. Running git status should tell us what we need to know.');
-		}
+			// Check whether the user has git-added new-file.text
+			var commandToRun = 'cd ' + currentDirectory + '; git status'; // same as the last test
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				// If new-file.txt hasn't been added, arg will contain 'Untracked files' AND 'new-file.txt' will come after 'Untracked files'.
+				var didUserPass = true;
+				var indexOfUntrackedFiles = arg.indexOf('Untracked files');
+				if (indexOfUntrackedFiles > -1) {
+					if (arg.indexOf('new-file.txt') > indexOfUntrackedFiles) didUserPass = false;
+				}
+				ipcRenderer.send('test-result-1', didUserPass);
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't added new-file.txt to your staging area, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -174,9 +198,25 @@ export default [
 				<p>It's a best practice to commit early and often, and to write descriptive commit messages. The more descriptive your commit messages are, the easier it will be to find specific commits when you want to refer back to them in the future!</p>
 			</div>,
 		buttonText: "I've committed - what's next?",
+		//  Running git status should tell us what we need to know. We could also check for a message.
 		buttonFunction: function() {
-			console.log('Check whether the user has git-committed new-file.text. Running git status should tell us what we need to know. We could also check for a message.');
-		}
+			// Check whether the user has git-committed new-file.text.
+			var commandToRun = 'cd ' + currentDirectory + '; git log; git status'; // same as the last test. Or would running git log make more sense?
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				// Insert test
+				var didUserPass = true;
+				// Check the git log to be sure there's a commit. We don't want arg to start with 'fatal' (which is probably an error).
+				if (!arg.indexOf('fatal')) {
+					didUserPass = false;
+				// Then check the git status. If it contains 'Changes not staged for commit' or 'Changes to be committed', we don't want to see 'new-file.txt' after that. For now, though it's probably easier to check for 'nothing to commit, working directory clean';
+				} else {
+					if (arg.indexOf('nothing to commit, working directory clean') === -1) didUserPass = false;
+				}
+				ipcRenderer.send('test-result-1', didUserPass);
+			})
+		},
+		errorMessage: "Oops! It looks like you have changes that you haven't committed, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
