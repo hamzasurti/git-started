@@ -64,9 +64,7 @@ header {
 }
 
 #Animation,
-#Terminal {
-  min-height: 4rem;
-}
+
 
 #left {
   min-height: 14rem;
@@ -84,6 +82,11 @@ footer {
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
+}
+#Terminal {
+  /*min-height: 4rem;*/
+  background-color: lightgray;
+  padding-left: 0!important;
 }
 
 .marker {
