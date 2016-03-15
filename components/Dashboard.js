@@ -17,6 +17,7 @@ export default class Dashboard extends Component {
 		super(props);
 		this.state = {
 			slideNumber: props.initialSlideNumber,
+			totalNumberOfSlides: props.initialTotalNumberOfSlides,
 			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
 			buttonText: lesson1[props.initialSlideNumber].buttonText,
 			errorMessage: ''
@@ -83,7 +84,7 @@ export default class Dashboard extends Component {
       <div id='Dashboard' className='row'>
 
         <div className='one-third column' id='left'>
-        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
         	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 					<p><strong>{this.state.errorMessage}</strong></p>
       	</div>
@@ -99,8 +100,9 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	initialLesson: lesson1, // We're not currently using this prop.
-	initialSlideNumber: 0
+	// initialLesson: lesson1, // We're not currently using this prop. I don't want to pass the whole lesson down as a prop, because that's a lot of data. But it would be nice to have the lesson reflected in the state in some way.
+	initialSlideNumber: 0,
+	initialTotalNumberOfSlides: lesson1.length
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));

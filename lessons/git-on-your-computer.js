@@ -87,8 +87,7 @@ export default [
 			// If we can't cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user should fail the test, so we'll return a falsy value: zero. Otherwise, the user should pass.
 				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
 			})
-			// For testing only
-			currentDirectory += '/new-project';
+
 		},
 		errorMessage: "Oops! It looks like you haven't created a new directory called 'new-project'. Try again and then click the button above."
 
@@ -121,6 +120,8 @@ export default [
 			</div>,
 		buttonText: "OK, I'm ready for step three!",
 		buttonFunction: function() {
+			// For testing only
+			currentDirectory = '~/Desktop/new-project';
 			// console.log('Check whether the user has created new-file.txt');
 			var commandToRun = 'cd ' + currentDirectory + '; ls';
 			ipcRenderer.send('command-to-run', commandToRun);
