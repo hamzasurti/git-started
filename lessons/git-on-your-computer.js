@@ -2,16 +2,19 @@
 
 // BUTTON FUNCTION TEMPLATE
 // buttonFunction: function() {
-// 	var commandToRun = 'cd ' + currentDirectory// + '; git status';
+//  // Check whether X
+// 	var commandToRun; // Define
+// 	// Send a command to the terminal via main.js.
 // 	ipcRenderer.send('command-to-run', commandToRun);
+//  // Listen for the terminal's response.
 // 	ipcRenderer.once('terminal-output', function(event, arg) {
-// 		// Insert test
+// 		// Upon receiving the response, run a test and send the result (a Boolean) to main.js.
 // 		ipcRenderer.send('test-result-1', false); // Replace false with Boolean
 // 	})
 // },
 // errorMessage: "Oops! It looks like X IS WRONG, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
-// Import React so we can use JSX. (For some reason, we don't have to import ipcRenderer.)
+// Import React so we can use JSX. (For some reason, we don't have to import ipcRenderer. I believe that's because gulpfile.js, which 'imports' Dashboard.js, has access to ipcRenderer.)
 import React from 'react';
 
 var currentDirectory;
@@ -61,18 +64,17 @@ var slides = [
 				<p>If not, you can download Git from <a href='http://git-scm.com/downloads'>git-scm.com/downloads</a>. Then follow the directions at the top of this page to confirm that Git is installed correctly.</p>
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
-		buttonFunction: function() { // Check whether the user has installed Git
-			// Send a command to the terminal via main.js.
+		buttonFunction: function() {
+			// Check whether the user has installed Git
 			ipcRenderer.send('command-to-run', 'git --version');
-			// Listen for the terminal's response.
 			ipcRenderer.once('terminal-output', function(event, arg) {
-				// Upon receiving the response, send a Boolean to main.js. If terminal-output contains the text 'git version', the user passed. If not, the user did not pass.
+				// If terminal-output contains the text 'git version', the user should pass. If not, the user shouldn't.
 				ipcRenderer.send('test-result-1', arg.indexOf('git version') > -1);
 			});
 		},
 		errorMessage: "Oops! It looks like you haven't installed Git. Try again and then click the button above."
 
-	// I'll need to edit "you'll see"
+	// Does the user actually see the visualization mentioned below?
 	}, {
 		lessonText:
 			<div>
@@ -85,14 +87,15 @@ var slides = [
 				</p>
 			</div>,
 		buttonText: 'I typed, I saw, I conquered.',
-		buttonFunction: function() { // Check whether the user has created new-project
-			var commandToRun = 'cd ' + currentDirectory + '; cd new-project'; // If I'm doing this all the time, how can I make my code DRY?
-			ipcRenderer.send('command-to-run', commandToRun); // need to replace '~/Desktop' with the user's current directory.
+		buttonFunction: function() {
+			// Check whether the user has created new-project
+			// BUG: If we don't know the user's currentDirectory yet, this test will return a false negative.
+			var commandToRun = 'cd ' + currentDirectory + '; cd new-project';
+			ipcRenderer.send('command-to-run', commandToRun);
 			ipcRenderer.once('terminal-output', function(event, arg) {
 			// If we can't cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user should fail the test, so we'll return a falsy value: zero. Otherwise, the user should pass.
 				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
 			})
-
 		},
 		errorMessage: "Oops! It looks like you haven't created a new directory called 'new-project'. Try again and then click the button above."
 
@@ -104,14 +107,14 @@ var slides = [
 				<p>As you just saw, you just created a new folder called "my-project." (The "mkdir" command is short for "make directory," and "directory" is just a fancy word for folder.)</p>
 				<p>Now type <code>cd new-project</code> and click Enter to navigate to your new directory. (The "cd" command is short for "change directory.") This is where you'll  store all the files for your project.
 				</p>
-			</div>,
+			</div>,//' REMOVE ME
 		buttonText: 'Got it!',
-		// buttonFunction: function() {
-		// 	// I want to see which directory the user is in. Simply running pwd won't work.
-		// 	ipcRenderer.once('terminal-output', function(event, arg) {
-		// 		console.log('result of pwd', arg);
-		// 	})
-		// },
+		buttonFunction: function() {
+			// Check whether the user has navigated into new-project. If so, currentDirectory will end with 'new-project'
+			var endOfCurrentPath = currentDirectory.slice(-11);
+			// console.log('endOfCurrentPath:', endOfCurrentPath);
+			ipcRenderer.send('test-result-1', endOfCurrentPath === 'new-project');
+		},
 		errorMessage: "Oops! It looks like you haven't navigated into the 'new-project' directory. Try again and then click the button above."
 
 	}, {
