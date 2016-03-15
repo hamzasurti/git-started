@@ -1,5 +1,3 @@
-// Need to make sure all the tests here are valid.
-
 // BUTTON FUNCTION TEMPLATE
 // buttonFunction: function() {
 //  // Check whether X
@@ -89,7 +87,7 @@ var slides = [
 		buttonText: 'I typed, I saw, I conquered.',
 		buttonFunction: function() {
 			// Check whether the user has created new-project
-			// BUG: If we don't know the user's currentDirectory yet, this test will return a false negative.
+			// BUG (added to board): If we don't know the user's currentDirectory yet, this test will return a false negative.
 			// Note: We repeat "'cd ' + currentDirectory + command" a lot, but since we need to use the most up-to-date value for currentDirectory, I'm not sure there's any way around this.
 			var commandToRun = 'cd ' + currentDirectory + '; cd new-project';
 			ipcRenderer.send('command-to-run', commandToRun);
