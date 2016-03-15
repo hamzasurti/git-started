@@ -7,7 +7,7 @@ import Lesson from './Lesson';
 import Terminal from './Terminal';
 
 // Import lesson content
-import {lesson1, currentDirectory} from './../lessons/git-on-your-computer';
+import {lesson1} from './../lessons/git-on-your-computer';
 
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
@@ -49,7 +49,8 @@ export default class Dashboard extends Component {
 
 	// I'll eventually need to add logic to see whether the user passed the test. The test will depend on this.state.slideNumber. I could potentially pull the tests and buttonText from lesson1.
 	handleClick() {
-
+		// For testing only
+		// console.log('currentDirectory:', currentDirectory); // Why is currentDirectory undefined?
 		// If this slide has a buttonFunction, run it.
 		if(lesson1[this.state.slideNumber].buttonFunction) {
 			lesson1[this.state.slideNumber].buttonFunction();
@@ -84,7 +85,6 @@ export default class Dashboard extends Component {
       <div id='Dashboard' className='row'>
 
         <div className='one-third column' id='left'>
-					For testing only: current directory: {currentDirectory}
         	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
         	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 					<p><strong>{this.state.errorMessage}</strong></p>

@@ -13,7 +13,13 @@
 
 // Import React so we can use JSX. (For some reason, we don't have to import ipcRenderer.)
 import React from 'react';
-import currentDirectory from ''; // Could I then stop exporting currentDirectory?
+console.log('React:', React);
+import currentDirectory from './../directory-finder.js'; // When directory-finder.js does not contain an export statement, currentDirectory is an empty object. When I add an export statement to directory-finder.js, currentDirectory becomes undefined. Seriously, WTF?
+// Would I still need to export currentDirectory to Dashboard.js?
+// Is the path just wrong? No, I tried moving the file, and that makes Gulp show an error, so I'm pretty sure the file path is correct.
+console.log('currentDirectory:', currentDirectory);
+var cd = currentDirectory();
+console.log('cd:', cd); // This works!
 
 
 // var currentDirectory;
@@ -62,6 +68,8 @@ var slides = [
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
 		buttonFunction: function() { // Check whether the user has installed Git
+			// For testing only
+			console.log('Hello from the lesson file. currentDirectory is', currentDirectory); // Why is currentDirectory undefined?
 			// Send a command to the terminal via main.js.
 			ipcRenderer.send('command-to-run', 'git --version');
 			// Listen for the terminal's response.
@@ -126,7 +134,7 @@ var slides = [
 		buttonText: "OK, I'm ready for step three!",
 		buttonFunction: function() {
 			// For testing only
-			currentDirectory = '~/Desktop/new-project';
+			// currentDirectory = '~/Desktop/new-project';
 			// console.log('Check whether the user has created new-file.txt');
 			var commandToRun = 'cd ' + currentDirectory + '; ls';
 			ipcRenderer.send('command-to-run', commandToRun);
@@ -290,4 +298,4 @@ var slides = [
 
 // '" Stop the madness
 
-export {slides as lesson1, currentDirectory};
+export {slides as lesson1};
