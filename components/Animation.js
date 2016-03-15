@@ -1,23 +1,40 @@
 import React, {Component} from 'react';
+import treeData from './../AnimationData/treeStructure';
 var d3 = require('d3');
 var ReactDOM = require('react-dom');
 
+
 export default class Animation extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      treeData: treeData
+    }
+  }
 
   componentDidMount(){
     var mountNode = ReactDOM.findDOMNode(this.refs.treeRender);
     // Render the tree usng d3 after first component mount
-    renderTree(this.props.treeData, mountNode);
+    renderTree(this.state.treeData, mountNode);
+    ipcRenderer.on('curr-dir', (e,arg)=>{
+      console.log(arg);
+    })
   }
 
   shouldComponentUpdate(nextProps, nextState){
+    console.log(nextState);
     // Delegate rendering the tree to a d3 function on prop change
-    renderTree(nextProps.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
+    renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
     // Do not allow react to render the component on prop change
     return false;
   }
 
-
+  updateTree(){
+    var tempTree = this.state.treeData;
+    tempTree[0].name = "banana"
+    console.log(tempTree);
+  }
 
   render() {
     return (

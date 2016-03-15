@@ -31,6 +31,11 @@ var currDir;
 		env: process.env
 	});
 
+	mainWindow.webContents.on('did-finish-load', function() {
+	mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
+});
+
+
 	ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
 	ipcMain.on('command-message', function(event, arg) {
 		ptyTerm.write(arg);
