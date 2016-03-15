@@ -4,7 +4,7 @@ const Terminal = require('term.js'); // terminal written in JS: https://github.c
 const pty = require('pty.js'); // low-level terminal spawner: https://github.com/chjj/pty.js
 const ipcRenderer = require('electron').ipcRenderer; // allows render process and main process to communicate: http://electron.atom.io/docs/v0.36.8/api/ipc-renderer
 const elem = document.getElementById("Terminal");
-console.log(elem);
+
 
 const term = new Terminal({ // creates a new term.js terminal
   cursorBlink: true,
@@ -13,6 +13,7 @@ const term = new Terminal({ // creates a new term.js terminal
   rows: 20
 });
 
+
 term.open(elem);
 var ptyProcess = pty.fork('bash', [], {
   cwd: process.env.HOME,
@@ -20,22 +21,16 @@ var ptyProcess = pty.fork('bash', [], {
   name: 'xterm-256color'
 });
 
-
 term.on("data", function(data) {
-  console.log('term on data ++++>', data);
   ipcRenderer.send('command-message', data);
-  console.log(ptyProcess);
-
 });
 
 ptyProcess.on('data', (data) => {
-  console.log('ptyProcess data +++>',data);
-  // term.write(eval(`PS1=$("\h: \W $ ")`);
+  term.write(process.env.HOME + ' $ ');
 })
 
 ipcRenderer.on('terminal-reply', (event, arg) => {
  term.write(arg);
- console.log('ipcReneder on terminal-reply +++>',arg);
 });
 
 
