@@ -9,9 +9,6 @@ import Terminal from './Terminal';
 // Import lesson content
 import lesson1 from './../lessons/git-on-your-computer';
 
-// ****ADD ipcRenderer.on('test-passed')
-// setState based on that.
-
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
@@ -20,6 +17,7 @@ export default class Dashboard extends Component {
 		super(props);
 		this.state = {
 			slideNumber: props.initialSlideNumber,
+			totalNumberOfSlides: props.initialTotalNumberOfSlides,
 			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
 			buttonText: lesson1[props.initialSlideNumber].buttonText,
 			errorMessage: ''
@@ -56,14 +54,13 @@ export default class Dashboard extends Component {
 		if(lesson1[this.state.slideNumber].buttonFunction) {
 			lesson1[this.state.slideNumber].buttonFunction();
 			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler). I changed .on to .once
-			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pul out and name this function.
+			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pull out and name this function.
 				console.log(`Test result for slide ${this.state.slideNumber}: ${arg}`);
 				// If the user passed the test (if arg is true), advance.
 				if (arg) {
 					this.advance();
 				} else {
 					this.showError();
-					// console.log('Oops! Try again.') // I could customize this error message for each slide.
 				}
 			}.bind(this));
 
@@ -87,7 +84,7 @@ export default class Dashboard extends Component {
       <div id='Dashboard' className='row'>
 
         <div className='one-third column' id='left'>
-        	<Lesson slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
         	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 					<p><strong>{this.state.errorMessage}</strong></p>
       	</div>
@@ -103,8 +100,9 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	initialLesson: lesson1, // We're not currently using this prop.
-	initialSlideNumber: 0
+	// initialLesson: lesson1, // We're not currently using this prop. I don't want to pass the whole lesson down as a prop, because that's a lot of data. But it would be nice to have the lesson reflected in the state in some way.
+	initialSlideNumber: 0,
+	initialTotalNumberOfSlides: lesson1.length
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
