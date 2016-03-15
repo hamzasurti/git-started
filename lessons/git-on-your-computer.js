@@ -2,10 +2,7 @@
 // We may want to compare our tests to Git-It's.
 
 // Button function template:
-// buttonText: "I've committed - what's next?",
-// // Check whether the user has git-committed new-file.text. Running git status should tell us what we need to know. We could also check for a message.
 // buttonFunction: function() {
-//
 // 	var commandToRun = 'cd ' + currentDirectory// + '; git status';
 // 	ipcRenderer.send('command-to-run', commandToRun);
 // 	ipcRenderer.once('terminal-output', function(event, arg) {
@@ -228,9 +225,18 @@ export default [
 				<p>In the terminal, type <code>echo "<strong>This will be the best project ever.</strong>" > new-file.txt</code> and click Enter. (Again, you can replace the bolded part with whatever text you wish.)</p>
 			</div>,
 		buttonText: 'Done!',
+		// Running git status should tell us what we need to know.
 		buttonFunction: function() {
-			console.log('Check whether the user has edited new-file.text. Running git status should tell us what we need to know.');
-		}
+			// Check whether the user has edited new-file.text
+			var commandToRun = 'cd ' + currentDirectory + '; git status';
+			ipcRenderer.send('command-to-run', commandToRun);
+			ipcRenderer.once('terminal-output', function(event, arg) {
+				// If the user has modified new-file.txt, arg should contain 'modified:' + whitespace + 'new-file.txt'.
+				var regularExpression = /(modified:\s+new-file[.]txt)/;
+				ipcRenderer.send('test-result-1', regularExpression.test(arg)); // As an alternative to RegExp.test, we could use String.search.
+			})
+		},
+		errorMessage: "Oops! It looks like you haven't made any changes to new-file.txt since your last commit, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
@@ -241,9 +247,16 @@ export default [
 				<p>This will show us the differences between the current version of the project and our most recent commit. Remember: last time we committed, new-file.txt was empty.</p>
 			</div>,
 		buttonText: 'Great - I see the changes I made!',
-		buttonFunction: function() {
-			console.log('Can we check whether the user has run git diff?');
-		}
+			// 'To check whether the user has run git diff, I'd need to be able to access the contents of their command line.'
+		// buttonFunction: function() {
+		// 	var commandToRun = 'cd ' + currentDirectory// + '; git status';
+		// 	ipcRenderer.send('command-to-run', commandToRun);
+		// 	ipcRenderer.once('terminal-output', function(event, arg) {
+		// 		// Insert test
+		// 		ipcRenderer.send('test-result-1', false); // Replace false with Boolean
+		// 	})
+		// },
+		errorMessage: "Oops! It looks like you didn't run the git diff command, or you aren't inside the 'new-project' directory. Try again and then click the button above."
 
 	}, {
 		lessonText:
