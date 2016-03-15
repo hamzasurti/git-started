@@ -20,7 +20,33 @@ export default class Dashboard extends Component {
 			totalNumberOfSlides: props.initialTotalNumberOfSlides,
 			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
 			buttonText: lesson1[props.initialSlideNumber].buttonText,
-			errorMessage: ''
+			errorMessage: '',
+			treeData: [
+				{
+					"name": "Top Level",
+					"parent": "null",
+					"children": [
+						{
+							"name": "Level 2: A",
+							"parent": "Top Level",
+							"children": [
+								{
+									"name": "Son of A",
+									"parent": "Level 2: A"
+								},
+								{
+									"name": "Daughter of A",
+									"parent": "Level 2: A"
+								}
+							]
+						},
+						{
+							"name": "Level 2: B",
+							"parent": "Top Level"
+						}
+					]
+				}
+			]
 		};
 	}
 
@@ -90,7 +116,7 @@ export default class Dashboard extends Component {
       	</div>
 
         <div className='two-thirds column'>
-        	<Animation />
+        	<Animation treeData={this.state.treeData}/>
         	<Terminal />
         </div>
 
