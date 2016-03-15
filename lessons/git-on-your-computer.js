@@ -278,8 +278,15 @@ var slides = [
 			<div>
 				<p>The GitHub lesson is coming soon, but it isn't ready yet. Would you like to repeat the lesson you just finished?</p>
 			</div>,
-		buttonText: "Let's do it!"
+		buttonText: "Let's do it!"//' REMOVE THIS COMMENT
 	}
 ];
 
 export {slides as lesson1};
+
+/* A valuable resource for this lesson was https://github.com/jlord/git-it-electron.
+Some notes on it:
+- lib/verify/ contains a file for each challenge. Each file exports a verifyXChallenge function (where X is the challenge name).
+- lib/challenge.js handles clicks on the 'Verify' button. On click, it runs the appropriate verifyXChallenge function.
+- You can run the application by downloading and opening the zip file, navigating into the appropriate directory, and typing 'electron .' into your command line.
+*/
