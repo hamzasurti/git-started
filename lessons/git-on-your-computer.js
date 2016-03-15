@@ -13,8 +13,8 @@
 
 // Import React so we can use JSX. (For some reason, we don't have to import ipcRenderer.)
 import React from 'react';
-// import currentDirectory from './../directory-finder.js'; // Would I still need to export currentDirectory to Dashboard.js?
-// Figuring out the import/export syntax for currentDirectory was tricky. I kept running into situations where currentDirectory was defined when I console-logged it from directory-finder.js but not when I console-logged it from this file.
+
+var currentDirectory;
 
 // Export an array. Alternatively, we could use a linked list.
 var slides = [
@@ -32,7 +32,14 @@ var slides = [
 				</ul>
 				<p>Don't worry - we'll walk you through each step. Ready to get started?</p>
 			</div>,
-		buttonText: "Yes - let's do this!"
+		buttonText: "Yes - let's do this!",
+		buttonFunction: function() {
+			// Start listening for updates to currentDirectory
+			ipcRenderer.on('curr-dir', function(event, arg) {
+					currentDirectory = arg;
+			});
+			ipcRenderer.send('test-result-1', true);
+		}
 
 	}, {
 		lessonText:
@@ -55,8 +62,6 @@ var slides = [
 			</div>,
 		buttonText: "OK - I'm ready for step two!",
 		buttonFunction: function() { // Check whether the user has installed Git
-			// For testing only
-			console.log('Hello from the lesson file. currentDirectory is', currentDirectory); // Why is currentDirectory undefined?
 			// Send a command to the terminal via main.js.
 			ipcRenderer.send('command-to-run', 'git --version');
 			// Listen for the terminal's response.
