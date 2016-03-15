@@ -24,7 +24,7 @@ var currentDirectory = '~/Desktop';
 // })
 
 // Export an array. Alternatively, we could use a linked list.
-export default [
+export var lesson1 = [
 	{
 		lessonText:
 			<div>
@@ -289,3 +289,5 @@ export default [
 ];
 
 // '" Stop the madness
+
+// export {slides as lesson1}; // Removing 'slides as' didn't help.

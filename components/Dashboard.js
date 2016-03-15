@@ -7,7 +7,7 @@ import Lesson from './Lesson';
 import Terminal from './Terminal';
 
 // Import lesson content
-import lesson1 from './../lessons/git-on-your-computer';
+import {lesson1} from './../lessons/git-on-your-computer';
 
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
