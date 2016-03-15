@@ -1,6 +1,6 @@
 // Need to make sure all the tests here are valid.
 
-// Button function template:
+// BUTTON FUNCTION TEMPLATE
 // buttonFunction: function() {
 // 	var commandToRun = 'cd ' + currentDirectory// + '; git status';
 // 	ipcRenderer.send('command-to-run', commandToRun);
@@ -13,16 +13,8 @@
 
 // Import React so we can use JSX. (For some reason, we don't have to import ipcRenderer.)
 import React from 'react';
-import currentDirectory from './../directory-finder.js'; // Would I still need to export currentDirectory to Dashboard.js?
-console.log('currentDirectory:', currentDirectory);
+// import currentDirectory from './../directory-finder.js'; // Would I still need to export currentDirectory to Dashboard.js?
 // Figuring out the import/export syntax for currentDirectory was tricky. I kept running into situations where currentDirectory was defined when I console-logged it from directory-finder.js but not when I console-logged it from this file.
-
-// var currentDirectory;
-// // Uncaught ReferenceError: ipcRenderer is not defined
-// ipcRenderer.on('curr-dir', function(event, arg) {
-// 		currentDirectory = arg;
-// 		console.log('currentDirectory:', currentDirectory);
-// });
 
 // Export an array. Alternatively, we could use a linked list.
 var slides = [
