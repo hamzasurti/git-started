@@ -30,6 +30,7 @@ ptyProcess.on('data', (data) => {
 })
 
 ipcRenderer.on('terminal-reply', (event, arg) => {
+  console.log(arg);
  term.write(arg);
 });
 
