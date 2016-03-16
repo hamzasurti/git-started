@@ -31,11 +31,12 @@ var currDir;
 		env: process.env
 	});
 
+//
 	mainWindow.webContents.on('did-finish-load', function() {
 	mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
 });
 
-
+	// sets the terminal prompt to pwd
 	ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
 	ipcMain.on('command-message', function(event, arg) {
 		ptyTerm.write(arg);
@@ -49,11 +50,38 @@ var currDir;
 				temp = temp.replace(re,'');
 				currDir = temp;
 				event.sender.send('curr-dir', currDir);
+				animationDataSchema(event,currDir)
 			}
 		});
 	});
 
+// child process that gets all items in a directory
+function animationDataSchema(event,pwd){
+	var command = 'cd ' + pwd + ';ls';
+	exec(command, function(err, stdout, stderr) {
+			if (err) {
+				console.log(err.toString());
+			} else {
+				var stdoutArr = stdout.split('\n');
+				var current = currDir.replace(/(.*[\\\/])/,'')
+				var schema = schemaMaker(stdoutArr,current);
+				event.sender.send('direc-schema', schema);
+			}
+	});
+}
 
+// makes schema of new directory
+function schemaMaker(termOutput, directoryName){
+	var schema = {
+		"name": directoryName,
+		"children": []
+	};
+	termOutput.forEach((i) => {
+		if (!!i) schema.children.push({"name":i})
+	})
+	schema = [schema]
+	return schema;
+}
 
 // For running tests to see whether the user is ready to advance
 	// Listen for commands from the lesson file.
