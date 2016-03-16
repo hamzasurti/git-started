@@ -6,12 +6,12 @@ var ReactDOM = require('react-dom');
 
 export default class Animation extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      treeData: treeData
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     treeData: treeData
+  //   }
+  // }
 
   componentDidMount(){
     var mountNode = ReactDOM.findDOMNode(this.refs.treeRender);
@@ -30,15 +30,14 @@ export default class Animation extends Component {
     return false;
   }
 
-<<<<<<< HEAD
-=======
+
   updateTree(){
     var tempTree = this.state.treeData;
     tempTree[0].name = "banana"
     console.log(tempTree);
   }
 
->>>>>>> f04f6c97bae51dbb22c8844da64633ae3b4d6e67
+
   render() {
     return (
       <div id='Animation'>
