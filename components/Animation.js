@@ -6,12 +6,12 @@ var ReactDOM = require('react-dom');
 
 export default class Animation extends Component {
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     treeData: treeData
-  //   }
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      treeData: treeData
+    }
+  }
 
   componentDidMount(){
     var mountNode = ReactDOM.findDOMNode(this.refs.treeRender);
