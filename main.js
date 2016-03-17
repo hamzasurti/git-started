@@ -92,9 +92,11 @@ function schemaMaker(termOutput, directoryName, modified){
 			var elementObj = {"name":index}
 			if (index.substring(0,4) === ".git") elementObj.level = "black";
 			// console.log(modified);
-			for (var i = 0; i < modified.length; i++){
-				if (modified[i] === index){
-					elementObj.level = "red"
+			if (modified){
+				for (var i = 0; i < modified.length; i++){
+					if (modified[i] === index){
+						elementObj.level = "red"
+					}
 				}
 			}
 			schema.children.push(elementObj)

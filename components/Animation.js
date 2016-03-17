@@ -36,13 +36,7 @@ export default class Animation extends Component {
       // return false;
   }
 
-<<<<<<< HEAD
 
-  updateTree(){
-    var tempTree = this.state.treeData;
-    tempTree[0].name = "banana"
-    console.log(tempTree);
-=======
   updateTree(newSchema){
     // var tempTree = this.state.treeData;
     // tempTree[0].name = "banana"
@@ -51,7 +45,7 @@ export default class Animation extends Component {
     })
     // console.log('tree data: ', this.state.treeData)
     // console.log(tempTree);
->>>>>>> 1f3858536c291ab67e9d8da4e9270bdfb91671f0
+
   }
 
 
