@@ -5,6 +5,7 @@ const ipcMain = require('electron').ipcMain;
 const	BrowserWindow = electron.BrowserWindow;
 const pty = require('pty.js');
 const net = require('net');
+const simpleGit = require('simple-git');
 
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
@@ -34,6 +35,7 @@ var currDir;
 //
 	mainWindow.webContents.on('did-finish-load', function() {
 	mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
+	mainWindow.webContents.send('curr-dir', process.env.HOME)
 });
 
 	// sets the terminal prompt to pwd
@@ -55,33 +57,66 @@ var currDir;
 		});
 	});
 
+ 
+
+simpleGit().status((err,i) =>{
+	console.log(i);
+})
+
+
 // child process that gets all items in a directory
 function animationDataSchema(event,pwd){
-	var command = 'cd ' + pwd + ';ls';
+	var command = 'cd ' + pwd + ';ls -a';
 	exec(command, function(err, stdout, stderr) {
 			if (err) {
 				console.log(err.toString());
 			} else {
 				var stdoutArr = stdout.split('\n');
 				var current = currDir.replace(/(.*[\\\/])/,'')
-				var schema = schemaMaker(stdoutArr,current);
-				event.sender.send('direc-schema', schema);
+				var modifiedFiles;
+				simpleGit(pwd).status((err, i)=>{
+					modifiedFiles = i.modified;
+					console.log(modifiedFiles);
+					var schema = schemaMaker(stdoutArr,current, modifiedFiles);
+					event.sender.send('direc-schema', schema);
+				})
 			}
 	});
 }
 
 // makes schema of new directory
-function schemaMaker(termOutput, directoryName){
+function schemaMaker(termOutput, directoryName, modified){
 	var schema = {
 		"name": directoryName,
-		"children": []
+		"children": [],
+		"value": 15
 	};
-	termOutput.forEach((i) => {
-		if (!!i) schema.children.push({"name":i})
+
+	termOutput.forEach((index) => {
+		// checks if file has any alphanumeric characters
+		if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
+			var elementObj = {"name":index}
+			if (index.substring(0,4) === ".git") elementObj.level = "black";
+			// console.log(modified);
+			for (var i = 0; i < modified.length; i++){
+				if (modified[i] === index){
+					elementObj.level = "red"
+				}
+			}
+			schema.children.push(elementObj)
+		}
 	})
 	schema = [schema]
 	return schema;
 }
+
+
+
+
+
+
+
+
 
 // For running tests to see whether the user is ready to advance
 	// Listen for commands from the lesson file.

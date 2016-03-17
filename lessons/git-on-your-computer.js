@@ -103,7 +103,7 @@ var slides = [
 			<div>
 				<h2>Step 2: Set up a project</h2>
 				<h3>Navigate to your new directory</h3>
-				<p>As you just saw, you just created a new folder called "my-project." (The "mkdir" command is short for "make directory," and "directory" is just a fancy word for folder.)</p>
+				<p>As you just saw, you just created a new folder called "new-project." (The "mkdir" command is short for "make directory," and "directory" is just a fancy word for folder.)</p>
 				<p>Now type <code>cd new-project</code> and click Enter to navigate to your new directory. (The "cd" command is short for "change directory.") This is where you'll  store all the files for your project.
 				</p>
 			</div>,

@@ -48,7 +48,6 @@ export default class Animation extends Component {
 
   render() {
     ipcRenderer.on('direc-schema', (e,arg)=>{
-      console.log(arg);
       this.updateTree(arg);
     })
     return (
@@ -69,7 +68,7 @@ var renderTree = function(treeData, svgDomNode) {
     var i = 0,
       duration = 450,
       root;
-      console.log(svgDomNode);
+
     // Cleans up the SVG on re-render
     d3.select(svgDomNode).selectAll("*").remove();
 
@@ -112,7 +111,7 @@ var renderTree = function(treeData, svgDomNode) {
 
       nodeEnter.append("circle")
         .attr("r", 1e-6)
-        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+        .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
 
       nodeEnter.append("text")
         .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
@@ -127,8 +126,8 @@ var renderTree = function(treeData, svgDomNode) {
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
       nodeUpdate.select("circle")
-        .attr("r", 10)
-        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+        .attr("r", function(d) { return d.value ? d.value : 5; })
+        .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level;; });
 
       nodeUpdate.select("text")
         .style("fill-opacity", 1);
