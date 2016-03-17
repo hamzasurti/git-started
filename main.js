@@ -36,6 +36,7 @@ var currDir;
 	mainWindow.webContents.on('did-finish-load', function() {
 	mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
 	mainWindow.webContents.send('curr-dir', process.env.HOME)
+	animationDataSchema(mainWindow.webContents, process.env.HOME)
 });
 
 	// sets the terminal prompt to pwd
@@ -52,17 +53,20 @@ var currDir;
 				temp = temp.replace(re,'');
 				currDir = temp;
 				event.sender.send('curr-dir', currDir);
-				animationDataSchema(event,currDir)
+				animationDataSchema(event.sender,currDir)
 			}
 		});
 	});
 
+<<<<<<< HEAD
 
 
 simpleGit().status((err,i) =>{
 	console.log(i);
 })
 
+=======
+>>>>>>> abaed3626c0809e5bc8f252ed23f1b4a54b7ad47
 
 // child process that gets all items in a directory
 function animationDataSchema(event,pwd){
@@ -72,13 +76,12 @@ function animationDataSchema(event,pwd){
 				console.log(err.toString());
 			} else {
 				var stdoutArr = stdout.split('\n');
-				var current = currDir.replace(/(.*[\\\/])/,'')
+				var current = pwd.replace(/(.*[\\\/])/,'')
 				var modifiedFiles;
 				simpleGit(pwd).status((err, i)=>{
 					modifiedFiles = i.modified;
-					console.log(modifiedFiles);
 					var schema = schemaMaker(stdoutArr,current, modifiedFiles);
-					event.sender.send('direc-schema', schema);
+					event.send('direc-schema', schema);
 				})
 			}
 	});
@@ -89,7 +92,8 @@ function schemaMaker(termOutput, directoryName, modified){
 	var schema = {
 		"name": directoryName,
 		"children": [],
-		"value": 15
+		"value": 15,
+		"level": 'darkblue'
 	};
 
 	termOutput.forEach((index) => {
@@ -104,7 +108,7 @@ function schemaMaker(termOutput, directoryName, modified){
 						elementObj.level = "red"
 					}
 				}
-			}	
+			}
 			schema.children.push(elementObj)
 		}
 	})
