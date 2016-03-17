@@ -3,39 +3,74 @@ const ipcRenderer = require('electron').ipcRenderer; // allows render process an
 
 
 var walk    = require('walk');
-var data   = [
-
-];
 var repo;
-
 repo = './components'
-// Walker options
+
 var walker  = walk.walk(repo, { followLinks: true });
 
-walker.on('names', function(root, stat, next) {
-    // Add this file to the list of files
-    // console.log(root, stat)
+// Walker on Files
+var file_data   = [];
+walker.on('file', function(root, stat, next) {
     var temp = {};
-    temp['name'] = root
-    temp['children'] = stat
-    data.push(temp);
-
+    temp['parent_directory'] = root.replace(/(.*[\\\/])/,'');
+    temp['name'] = stat.name;
+    temp['type'] = stat.type;
+    file_data.push(temp);
     next();
 });
 
-// walker.on('directories', function(root, stat, next) {
-//     // Add this file to the list of files
-//     console.log(root, stat)
-//     var temp = {};
-//     temp['name'] = root
-//     temp['children'] = stat
-//     data.push(temp);
-//
-//     next();
-// });
-
-
+// Walker on Directory
+var dir_data = [];
+walker.on('directory', function(root, stat, next){
+  var temp = {};
+  temp['parent_directory'] = root.replace(/(.*[\\\/])/,'');
+  temp['name'] = stat.name;
+  temp['type'] = stat.type;
+  temp['children'] = [];
+  dir_data.push(temp)
+  next();
+})
 
 walker.on('end', function() {
-    console.log(data);
+  var result = [
+    {
+      'name': repo.replace(/(.*[\\\/])/,''),
+      'children': []
+    }
+  ];
+
+  (function file_to_directory(){
+    for(var i = 0; i < dir_data.length; i++){
+      for(var j = 0; j < file_data.length; j++){
+        if(dir_data[i].name === file_data[j].parent_directory){
+          dir_data[i].children.push(file_data[j])
+          file_data.splice(j,1);
+          j = j-1;
+        }
+      }
+    }
+  })();
+
+  (function directory_nesting(){
+
+
+
+
+
+  })();
+
+  (function sibling_to_sibling(){
+    for(var j = 0; j < file_data.length; j++){
+      result[0].children.push(file_data[j]);
+    }
+    file_data = null;
+
+    for(var i = 0; i < dir_data.length; i ++){
+      result[0].children.push(dir_data[i]);
+    }
+    // dir_data = null;
+  })();
+
+  console.log('dir_data', dir_data);
+  console.log(result);
 });

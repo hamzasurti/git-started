@@ -9,7 +9,6 @@ export default class Terminal extends Component {
 
   componentDidMount(){
     var mountTerm = ReactDOM.findDOMNode(this);
-    console.log('hmmm');
     renderTerm(mountTerm);
   }
 
@@ -28,7 +27,6 @@ var renderTerm = (elem) =>{
     cols: 100,
     rows: 20
   });
-console.log('hi');
   term.open(elem);
   var ptyProcess = pty.fork('bash', [], {
     cwd: process.env.HOME,
