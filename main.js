@@ -58,15 +58,11 @@ var currDir;
 		});
 	});
 
-<<<<<<< HEAD
-
 
 simpleGit().status((err,i) =>{
 	console.log(i);
 })
 
-=======
->>>>>>> abaed3626c0809e5bc8f252ed23f1b4a54b7ad47
 
 // child process that gets all items in a directory
 function animationDataSchema(event,pwd){
