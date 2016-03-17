@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import treeData from './../AnimationData/treeStructure';
 var d3 = require('d3');
 var ReactDOM = require('react-dom');
+var _ = require('lodash');
 
 
 export default class Animation extends Component {
@@ -17,28 +18,48 @@ export default class Animation extends Component {
     var mountNode = ReactDOM.findDOMNode(this.refs.treeRender);
     // Render the tree usng d3 after first component mount
     renderTree(this.state.treeData, mountNode);
-    ipcRenderer.on('curr-dir', (e,arg)=>{
-      console.log(arg);
-    })
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    console.log(nextState);
-    // Delegate rendering the tree to a d3 function on prop change
-    renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
-    // Do not allow react to render the component on prop change
-    return false;
+    // console.log(_.isEqual(this.state,nextState));
+    // console.log(this.state, nextState)
+    // if (_.isEqual(this.state,nextState)){
+    //   return false
+    // } else {
+      // Delegate rendering the tree to a d3 function on prop change
+      renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
+      // Do not allow react to render the component on prop change
+      return false;
+    // }
+      // renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
+      // Do not allow react to render the component on prop change
+      // return false;
   }
 
+<<<<<<< HEAD
 
   updateTree(){
     var tempTree = this.state.treeData;
     tempTree[0].name = "banana"
     console.log(tempTree);
+=======
+  updateTree(newSchema){
+    // var tempTree = this.state.treeData;
+    // tempTree[0].name = "banana"
+    this.setState({
+      treeData: newSchema
+    })
+    // console.log('tree data: ', this.state.treeData)
+    // console.log(tempTree);
+>>>>>>> 1f3858536c291ab67e9d8da4e9270bdfb91671f0
   }
 
 
   render() {
+    ipcRenderer.on('direc-schema', (e,arg)=>{
+      console.log(arg);
+      this.updateTree(arg);
+    })
     return (
       <div id='Animation'>
       	Animation
