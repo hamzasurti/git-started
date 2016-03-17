@@ -52,11 +52,6 @@ walker.on('end', function() {
   })();
 
   (function directory_nesting(){
-
-
-
-
-
   })();
 
   (function sibling_to_sibling(){
