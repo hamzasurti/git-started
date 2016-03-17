@@ -51,8 +51,10 @@ walker.on('end', function() {
     }
   })();
 
-  (function directory_nesting(){
-  })();
+  // (function directory_nesting(){
+  //
+  //
+  // })();
 
   (function sibling_to_sibling(){
     for(var j = 0; j < file_data.length; j++){
