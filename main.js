@@ -57,7 +57,7 @@ var currDir;
 		});
 	});
 
-
+ 
 
 simpleGit().status((err,i) =>{
 	console.log(i);
