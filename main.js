@@ -71,7 +71,6 @@ function animationDataSchema(event,pwd){
 				var modifiedFiles;
 				simpleGit(pwd).status((err, i)=>{
 					modifiedFiles = i.modified;
-					console.log(modifiedFiles);
 					var schema = schemaMaker(stdoutArr,current, modifiedFiles);
 					event.send('direc-schema', schema);
 				})
