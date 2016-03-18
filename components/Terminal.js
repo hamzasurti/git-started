@@ -9,7 +9,34 @@ export default class Terminal extends Component {
 
   componentDidMount(){
     var mountTerm = ReactDOM.findDOMNode(this);
-    renderTerm(mountTerm);
+    this.renderTerm(mountTerm);
+  }
+
+  renderTerm(elem){
+    const term = new Term({ // creates a new term.js terminal
+      cursorBlink: true,
+      useStyle: true,
+      cols: 100,
+      rows: 20
+    });
+
+    term.open(elem);
+    var ptyProcess = pty.fork('bash', [], {
+      cwd: process.env.HOME,
+      env: process.env,
+      name: 'xterm-256color'
+    });
+
+    ipcRenderer.once('term-start-data', (e, arg) => {
+      term.write(arg)
+    });
+    term.on("data", function(data) {
+      ipcRenderer.send('command-message', data);
+    });
+
+    ipcRenderer.on('terminal-reply', (event, arg) => {
+      term.write(arg);
+    });
   }
 
   render() {
@@ -18,31 +45,4 @@ export default class Terminal extends Component {
       </div>
     )
   }
-}
-
-var renderTerm = (elem) =>{
-  const term = new Term({ // creates a new term.js terminal
-    cursorBlink: true,
-    useStyle: true,
-    cols: 100,
-    rows: 20
-  });
-
-  term.open(elem);
-  var ptyProcess = pty.fork('bash', [], {
-    cwd: process.env.HOME,
-    env: process.env,
-    name: 'xterm-256color'
-  });
-
-  ipcRenderer.once('term-start-data', (e, arg) => {
-    term.write(arg)
-  });
-  term.on("data", function(data) {
-    ipcRenderer.send('command-message', data);
-  });
-
-  ipcRenderer.on('terminal-reply', (event, arg) => {
-   term.write(arg);
-  });
 }
