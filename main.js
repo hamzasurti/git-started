@@ -9,6 +9,7 @@ const simpleGit = require('simple-git');
 
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
+const fork = require('child_process').fork;
 
 var mainWindow = null;
 // What does it mean for a JS object to be garbage collected?
@@ -23,6 +24,9 @@ app.on('ready', function() {
 	mainWindow = new BrowserWindow({width: 1200, height: 700});
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
+
+// fork('--eval', ())
+
 var currDir;
 	var ptyTerm = pty.spawn('bash', [], {
 		name: 'xterm-color',
@@ -32,11 +36,7 @@ var currDir;
 		env: process.env
 	});
 
-//
-	mainWindow.webContents.on('did-finish-load', function() {
-	mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
-	mainWindow.webContents.send('curr-dir', process.env.HOME)
-});
+	// "require('coffee-script');\nrequire('coffee-cache').setCacheDir('/tmp/atom-coffee-cache');\nrequire('" + processPath + "');";
 
 	// sets the terminal prompt to pwd
 	ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
@@ -52,11 +52,16 @@ var currDir;
 				temp = temp.replace(re,'');
 				currDir = temp;
 				event.sender.send('curr-dir', currDir);
-				animationDataSchema(event,currDir)
+				animationDataSchema(event.sender,currDir)
 			}
 		});
 	});
 
+	mainWindow.webContents.on('did-finish-load', function() {
+		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
+		mainWindow.webContents.send('curr-dir', process.env.HOME)
+		animationDataSchema(mainWindow.webContents, process.env.HOME)
+	});
 
 // child process that gets all items in a directory
 function animationDataSchema(event,pwd){
@@ -66,13 +71,12 @@ function animationDataSchema(event,pwd){
 				console.log(err.toString());
 			} else {
 				var stdoutArr = stdout.split('\n');
-				var current = currDir.replace(/(.*[\\\/])/,'')
+				var current = pwd.replace(/(.*[\\\/])/,'')
 				var modifiedFiles;
 				simpleGit(pwd).status((err, i)=>{
 					modifiedFiles = i.modified;
-					console.log('modifFiles+++++>',modifiedFiles);
 					var schema = schemaMaker(stdoutArr,current, modifiedFiles);
-					event.sender.send('direc-schema', schema);
+					event.send('direc-schema', schema);
 				})
 			}
 	});
@@ -83,7 +87,8 @@ function schemaMaker(termOutput, directoryName, modified){
 	var schema = {
 		"name": directoryName,
 		"children": [],
-		"value": 15
+		"value": 15,
+		"level": '#33C3F0'
 	};
 
 	termOutput.forEach((index) => {
@@ -137,7 +142,7 @@ function schemaMaker(termOutput, directoryName, modified){
 	});
 
 	// For testing only
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
 	mainWindow.on('closed', function() {

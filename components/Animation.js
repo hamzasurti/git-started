@@ -21,31 +21,24 @@ export default class Animation extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    // console.log(_.isEqual(this.state,nextState));
-    // console.log(this.state, nextState)
-    // if (_.isEqual(this.state,nextState)){
-    //   return false
-    // } else {
+    console.log(_.isEqual(this.lastState,nextState));
+    console.log(this.lastState, nextState)
+    if (_.isEqual(this.lastState,nextState)){
+      return false
+    } else {
       // Delegate rendering the tree to a d3 function on prop change
       renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
       // Do not allow react to render the component on prop change
       return false;
-    // }
-      // renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
-      // Do not allow react to render the component on prop change
-      // return false;
+    }
   }
 
 
   updateTree(newSchema){
-    // var tempTree = this.state.treeData;
-    // tempTree[0].name = "banana"
+    this.lastState = this.state
     this.setState({
       treeData: newSchema
     })
-    // console.log('tree data: ', this.state.treeData)
-    // console.log(tempTree);
-
   }
 
 
@@ -64,7 +57,7 @@ export default class Animation extends Component {
 
 var renderTree = function(treeData, svgDomNode) {
 
-  var margin = {top: 0, right: 20, bottom: 0, left: 90},
+  var margin = {top: 0, right: 90, bottom: 0, left: 180},
   	width = 660 - margin.right - margin.left,
   	height = 200 - margin.top - margin.bottom;
 
@@ -117,7 +110,7 @@ var renderTree = function(treeData, svgDomNode) {
         .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
 
       nodeEnter.append("text")
-        .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+        .attr("x", function(d) { return d.children || d._children ? -20 : 20; })
         .attr("dy", ".35em")
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
         .text(function(d) { return d.name; })
