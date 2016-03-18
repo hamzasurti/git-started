@@ -21,29 +21,23 @@ export default class Animation extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    // console.log(_.isEqual(this.state,nextState));
-    // console.log(this.state, nextState)
-    // if (_.isEqual(this.state,nextState)){
-    //   return false
-    // } else {
+    console.log(_.isEqual(this.lastState,nextState));
+    console.log(this.lastState, nextState)
+    if (_.isEqual(this.lastState,nextState)){
+      return false
+    } else {
       // Delegate rendering the tree to a d3 function on prop change
       renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
       // Do not allow react to render the component on prop change
       return false;
-    // }
-      // renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
-      // Do not allow react to render the component on prop change
-      // return false;
+    }
   }
 
   updateTree(newSchema){
-    // var tempTree = this.state.treeData;
-    // tempTree[0].name = "banana"
+    this.lastState = this.state
     this.setState({
       treeData: newSchema
     })
-    // console.log('tree data: ', this.state.treeData)
-    // console.log(tempTree);
   }
 
   render() {
