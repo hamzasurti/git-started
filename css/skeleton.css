@@ -31,71 +31,33 @@ body {
   min-width: 900px; /*900 might be better*/
 }
 
-div {
-  border: 1px solid black;
-}
-
-.column,
-.columns,
-#Animation,
-#Terminal {
-  /*border: 1px solid black;*/
-}
-
-#github {
-  text-align: right;
-}
-
-.row {
-  /*border: 1px solid red;*/
-}
-
 body,
 .container {
-  /*border: 1px solid blue;*/
   background-color: lightgray;
 }
 
+#Sidebar,
+#left,
+#Animation {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+}
+
+#Sidebar,
 #left,
 #Animation,
 #Terminal {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
-header {
-  margin-top: 2rem;
-}
-
-#Animation,
-
-
-#left {
-  min-height: 14rem;
+#Terminal {
+  padding-left: 0!important;
 }
 
 .terminal {
     border-radius: 1rem;
-}
-
-header,
-#left,
-#Animation,
-#Terminal,
-footer {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 1rem;
-}
-#Terminal {
-  /*min-height: 4rem;*/
-  background-color: lightgray;
-  padding-left: 0!important;
-}
-
-.marker {
-  border: 1px solid black;
-  text-align: center;
 }
 
 /*End of code added by Isaac*/

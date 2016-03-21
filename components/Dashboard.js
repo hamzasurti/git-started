@@ -86,19 +86,16 @@ export default class Dashboard extends Component {
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
     return (
-      <div id='Dashboard' className='row'>
-
-        <div className='one-half column' id='left'>
-        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
-        	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
-					<p><strong>{this.state.errorMessage}</strong></p>
+      <div id='Dashboard'>
+				<Animation />
+				<div className='row'>
+	        <div className='one-half column' id='left'>
+	        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+	        	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+						<p><strong>{this.state.errorMessage}</strong></p>
+					</div>
+					<Terminal />
       	</div>
-
-        <div className='one-half column'>
-        	<Animation />
-        	<Terminal />
-        </div>
-
       </div>
     )
   }

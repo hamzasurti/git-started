@@ -41,7 +41,7 @@ export default class Terminal extends Component {
 
   render() {
     return (
-      <div id='Terminal'>
+      <div id='Terminal' className='one-half column'>
       </div>
     )
   }
