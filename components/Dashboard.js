@@ -88,13 +88,13 @@ export default class Dashboard extends Component {
     return (
       <div id='Dashboard' className='row'>
 
-        <div className='one-third column' id='left'>
+        <div className='one-half column' id='left'>
         	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
         	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 					<p><strong>{this.state.errorMessage}</strong></p>
       	</div>
 
-        <div className='two-thirds column'>
+        <div className='one-half column'>
         	<Animation />
         	<Terminal />
         </div>

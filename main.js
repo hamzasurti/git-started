@@ -150,7 +150,7 @@ function schemaMaker(termOutput, directoryName, modified){
 	});
 
 	// For testing only
-	// mainWindow.webContents.openDevTools();
+	mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
 	mainWindow.on('closed', function() {

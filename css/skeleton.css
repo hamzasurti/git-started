@@ -31,6 +31,10 @@ body {
   min-width: 900px; /*900 might be better*/
 }
 
+div {
+  border: 1px solid black;
+}
+
 .column,
 .columns,
 #Animation,

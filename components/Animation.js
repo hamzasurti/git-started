@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import treeData from './../AnimationData/treeStructure';
+import GitAnimation from './GitAnimation';
+import StructureAnimation from './StructureAnimation';
 var d3 = require('d3');
 var ReactDOM = require('react-dom');
 var _ = require('lodash');
@@ -21,8 +23,8 @@ export default class Animation extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    console.log(_.isEqual(this.lastState,nextState));
-    console.log(this.lastState, nextState)
+    // console.log(_.isEqual(this.lastState,nextState));
+    // console.log(this.lastState, nextState)
     if (_.isEqual(this.lastState,nextState)){
       return false
     } else {
