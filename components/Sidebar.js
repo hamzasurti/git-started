@@ -4,8 +4,9 @@ import React, {Component} from 'react';
 export default class Sidebar extends Component {
   render() {
     return (
-      //JSX
-      <div></div>
+      <div className='two columns' id='Sidebar'>
+        Sidebar!
+      </div>
     )
   }
 }

@@ -4,6 +4,7 @@ import {render} from 'react-dom';
 // Import other components here
 import Animation from './Animation';
 import Lesson from './Lesson';
+import Sidebar from './Sidebar';
 import Terminal from './Terminal';
 
 // Import lesson content
@@ -87,9 +88,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div id='Dashboard' className='row'>
-				<div className='two columns'>
-					SB
-				</div>
+				<Sidebar />
 				<div className='ten columns'>
 					<div className='container'>
 						<Animation />
