@@ -87,16 +87,21 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
-		var mainWidth;
+		console.log('this.state.sidebarVisible:', this.state.sidebarVisible)
+		var mainWidth, sidebarStyle;
 		if (this.state.sidebarVisible) {
 			mainWidth = 'ten columns';
+			sidebarStyle = {display: 'block'};
 		} else {
 			mainWidth = 'twelve columns';
+			sidebarStyle = {display: 'none'};
 		}
 
     return (
       <div id='Dashboard' className='row'>
-				<Sidebar visible={this.state.sidebarVisible} />
+				<div className='two columns' style={sidebarStyle}>
+					<Sidebar />
+				</div>
 				<div className={mainWidth} id='main'>
 					<div className='container'>
 						<Animation />
@@ -119,7 +124,7 @@ Dashboard.defaultProps = {
 	// initialLesson: lesson1, // We're not currently using this prop. I don't want to pass the whole lesson down as a prop, because that's a lot of data. But it would be nice to have the lesson reflected in the state in some way.
 	initialSlideNumber: 0,
 	initialTotalNumberOfSlides: lesson1.length,
-	initialSidebarVisible: false
+	initialSidebarVisible: true
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
