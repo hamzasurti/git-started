@@ -15,6 +15,10 @@ var lessons = [
 	{
 		name: 'Git on your computer',
 		content: lesson1
+	},
+	{
+		name: 'fake lesson',
+		content: 'hola'
 	}
 ];
 
@@ -100,6 +104,10 @@ export default class Dashboard extends Component {
 		})
 	}
 
+	showLesson(index) {
+		console.log('Time to show lesson', index);
+	}
+
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
 		var dashboardStyle = {
@@ -171,7 +179,7 @@ export default class Dashboard extends Component {
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)} lessonNames={lessonNames}/>
+						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames}/>
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
