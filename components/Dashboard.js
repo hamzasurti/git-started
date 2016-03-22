@@ -93,38 +93,54 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
-		console.log('this.state.sidebarVisible:', this.state.sidebarVisible)
-		console.log('updated at 7:39');
-
+		var dashboardStyle = {
+			width: '95%',
+			float: 'left'
+		};
 		var sidebarContainerStyle, mainStyle;
+
 		if (this.state.sidebarVisible) {
 			sidebarContainerStyle = {
-				width: '10%',
+				width: '17.5%',
+				marginRight: '2.5%',
 				float: 'left'
 			};
 			mainStyle = {
-				width: '10%',
+				width: '80%',
 				float: 'left'
 			};
 		} else {
+			sidebarContainerStyle = {
+				width: '7.5%',
+				marginRight: '2.5%',
+				float: 'left'
+			};
+			mainStyle = {
+				width: '90%',
+				float: 'left'
+			};
 		}
 
 		// If !sidebarVisible, I don't really want to render a Sidebar at all.
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
-      <div id='Dashboard'>
-				<div id='Sidebar-container' style={sidebarContainerStyle}>
-					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-					<Sidebar />
+      <div id='Dashboard' style={dashboardStyle}>
+				<div id='sidebar-container' style={sidebarContainerStyle}>
+					<div className='add-padding'>
+						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
+						<Sidebar />
+					</div>
 				</div>
 				<div id='main' style={mainStyle}>
 					<div>
 						<Animation />
 						<div>
 			        <div id='left'>
-			        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
-			        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
-								<p><strong>{this.state.errorMessage}</strong></p>
+								<div className='add-padding'>
+				        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+				        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+									<p><strong>{this.state.errorMessage}</strong></p>
+								</div>
 							</div>
 							<Terminal />
 		      	</div>
@@ -142,7 +158,7 @@ Dashboard.defaultProps = {
 	initialSidebarVisible: true
 };
 
-render(<Dashboard />, document.getElementById('Dashboard-container'));
+render(<Dashboard />, document.getElementById('dashboard-container'));
 
 // Here's an ES5 version in case we need it later.
 

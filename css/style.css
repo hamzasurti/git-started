@@ -1,0 +1,64 @@
+/*Beginning of code added by Isaac*/
+
+body {
+  min-width: 900px; /*900 might be better*/
+}
+
+body {
+  background-color: lightgray;
+}
+
+/* Add media query to ensure that #sidebar-container is always at least 64px wide */
+
+#sidebar-container,
+#left,
+#Animation {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+}
+
+/* side padding here will mess up the %s */
+#sidebar-container,
+#left,
+#Animation,
+#Terminal {
+  border-radius: 1rem;
+}
+
+.add-padding {
+  padding: 1rem;
+}
+
+#Terminal {
+  /*padding-left: 0!important;*/
+}
+
+.terminal {
+    border-radius: 1rem;
+}
+
+/*End of code added by Isaac*/
+/*Beginning of code added by Hamza*/
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+/*End of code added by Hamza*/

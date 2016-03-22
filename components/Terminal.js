@@ -39,6 +39,7 @@ export default class Terminal extends Component {
     });
   }
 
+  // Do we need a div.padding here?
   render() {
     return (
       <div id='Terminal'>
