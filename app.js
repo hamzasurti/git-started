@@ -1,6 +1,7 @@
 const pty = require('pty.js'); // low-level terminal spawner: https://github.com/chjj/pty.js
 const ipcRenderer = require('electron').ipcRenderer; // allows render process and main process to communicate: http://electron.atom.io/docs/v0.36.8/api/ipc-renderer
-var fs = require('fs');
+
+// var fs = require('fs');
 
 // if (process.argv.length <= 2) {
 //     console.log("Usage: " + __filename + " path/to/directory");
