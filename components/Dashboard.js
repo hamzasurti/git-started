@@ -24,13 +24,14 @@ export default class Dashboard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			lessonNumber: props.initialLessonNumber,
-			lessonContent: lessons[props.initialLessonNumber].content, // Does it make sense to have this in state? It's a lot to load an entire lesson, but better than loading every lesson.
-			slideNumber: props.initialSlideNumber,
-			totalNumberOfSlides: lessons[props.initialLessonNumber].content.length,
-			lessonText: lessons[props.initialLessonNumber].content[props.initialSlideNumber].lessonText,
-			buttonText: lessons[props.initialLessonNumber].content[props.initialSlideNumber].buttonText,
-			errorMessage: '',
+			// Does it matter whether we use null or undefined here?
+			lessonNumber: undefined,
+			lessonContent: undefined,
+			slideNumber: undefined,
+			totalNumberOfSlides: undefined,
+			lessonText: undefined,
+			buttonText: undefined,
+			errorMessage: undefined,
 			sidebarVisible: props.initialSidebarVisible,
 			lessonVisible: props.initialLessonVisible
 		};
@@ -208,8 +209,8 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	initialLessonNumber: 0,
-	initialSlideNumber: 0,
+	// initialLessonNumber: 0,
+	// initialSlideNumber: 0,
 	initialSidebarVisible: true,
 	initialLessonVisible: false
 };
