@@ -93,7 +93,7 @@ export default class Dashboard extends Component {
 			mainClass = 'ten columns';
 			sidebarClass = 'two columns';
 			mainStyle = null; // or {}?
-			sidebarStyle = null; // ditto
+			sidebarStyle = null // I tried {height: '100%'}, but that didn't make the sidebar expand to fill the whole height of #Dashboard.
 		} else {
 			mainClass = '';
 			sidebarClass = '';
@@ -108,12 +108,12 @@ export default class Dashboard extends Component {
 			};
 		}
 
-		// had style={sidebarStyle}
 		// If !sidebarVisible, I don't really want to render a Sidebar at all.
+		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' className='row'>
 				<div className={sidebarClass} id='Sidebar-container' style={sidebarStyle}>
-					<button>Hi</button>
+					<img src='assets/setting-icon.png' />
 					<Sidebar />
 				</div>
 				<div className={mainClass} style={mainStyle} id='main'>
@@ -138,7 +138,7 @@ Dashboard.defaultProps = {
 	// initialLesson: lesson1, // We're not currently using this prop. I don't want to pass the whole lesson down as a prop, because that's a lot of data. But it would be nice to have the lesson reflected in the state in some way.
 	initialSlideNumber: 0,
 	initialTotalNumberOfSlides: lesson1.length,
-	initialSidebarVisible: false
+	initialSidebarVisible: true
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
