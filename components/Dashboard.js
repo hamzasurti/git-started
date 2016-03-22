@@ -100,7 +100,7 @@ export default class Dashboard extends Component {
 			width: '95%',
 			float: 'left'
 		};
-		var sidebarContainerStyle, sidebarStyle, mainStyle, leftStyle, terminalStyle;
+		var sidebarContainerStyle, sidebarStyle, sidebarButtonStyle, mainStyle, leftStyle, terminalStyle;
 
 		if (this.state.sidebarVisible) {
 			sidebarContainerStyle = {
@@ -131,6 +131,9 @@ export default class Dashboard extends Component {
 		}
 
 		if (this.state.lessonVisible) {
+			sidebarButtonStyle = {
+				display: 'inline'
+			};
 			leftStyle = {
 				width: '22%',
 				marginRight: '2%',
@@ -141,6 +144,9 @@ export default class Dashboard extends Component {
 				float: 'left'
 			}
 		} else {
+			sidebarButtonStyle = {
+				display: 'none'
+			};
 			leftStyle = {
 				display: 'none'
 			};
@@ -156,7 +162,7 @@ export default class Dashboard extends Component {
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} hideLesson={this.hideLesson.bind(this)}/>
+						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)}/>
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>

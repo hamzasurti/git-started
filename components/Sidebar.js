@@ -16,7 +16,9 @@ export default class Sidebar extends Component {
         <ul>
           <li>Example</li>
         </ul>
-        <button onClick={this.handleClick.bind(this)}>Hide tutorial panel</button>
+        <button onClick={this.handleClick.bind(this)} style={this.props.buttonStyle}>
+          Hide tutorial panel
+        </button>
       </div>
     )
   }
