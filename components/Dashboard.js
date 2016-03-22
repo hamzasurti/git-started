@@ -177,7 +177,7 @@ Dashboard.defaultProps = {
 	initialSlideNumber: 0,
 	initialTotalNumberOfSlides: lesson1.length,
 	initialSidebarVisible: true,
-	initialLessonVisible: true
+	initialLessonVisible: false
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
