@@ -85,6 +85,12 @@ export default class Dashboard extends Component {
 		});
 	}
 
+	toggleSidebar() {
+		this.setState({
+			sidebarVisible: !this.state.sidebarVisible
+		});
+	}
+
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
 		console.log('this.state.sidebarVisible:', this.state.sidebarVisible)
@@ -113,7 +119,7 @@ export default class Dashboard extends Component {
     return (
       <div id='Dashboard' className='row'>
 				<div className={sidebarClass} id='Sidebar-container' style={sidebarStyle}>
-					<img src='assets/setting-icon.png' />
+					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
 					<Sidebar />
 				</div>
 				<div className={mainClass} style={mainStyle} id='main'>
