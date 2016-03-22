@@ -3,116 +3,53 @@ const electron = require('electron');
 const app = electron.app;
 const ipcMain = require('electron').ipcMain;
 const	BrowserWindow = electron.BrowserWindow;
-const pty = require('pty.js');
-const net = require('net');
-const simpleGit = require('simple-git');
+const animationDataSchema = require('./AnimationData/StructureSchema')
+const async = require('async');
 
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
 const fork = require('child_process').fork;
 
 var mainWindow = null;
-// What does it mean for a JS object to be garbage collected?
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
 });
 
-app.on('ready', function() {
+app.on('ready', () => {
 	mainWindow = new BrowserWindow({width: 1200, height: 700});
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-
-// fork('--eval', ())
-
-var currDir;
-	var ptyTerm = pty.spawn('bash', [], {
-		name: 'xterm-color',
-		cols: 80,
-		rows: 50,
-		cwd: process.env.HOME,
-		env: process.env
-	});
-
-	// "require('coffee-script');\nrequire('coffee-cache').setCacheDir('/tmp/atom-coffee-cache');\nrequire('" + processPath + "');";
-
-	// sets the terminal prompt to pwd
-	ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
-	ipcMain.on('command-message', function(event, arg) {
-		ptyTerm.write(arg);
-		ptyTerm.removeAllListeners('data');
-		ptyTerm.on('data', function(data) {
-			event.sender.send('terminal-reply', data);
-			//crude way to find path, need to improve
-			var re = /\s[$]\s/g;
-			if (data.match(re)) {
-				var temp = data;
-				temp = temp.replace(re,'');
-				currDir = temp;
-				event.sender.send('curr-dir', currDir);
-				animationDataSchema(event.sender,currDir)
-			}
-		});
-	});
-
-	mainWindow.webContents.on('did-finish-load', function() {
+// when window finished loading, send current directory and animation structure
+	mainWindow.webContents.on('did-finish-load', () => {
 		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
-		mainWindow.webContents.send('curr-dir', process.env.HOME)
-		animationDataSchema(mainWindow.webContents, process.env.HOME)
+		async.waterfall([
+			async.apply(animationDataSchema.DataSchema, process.env.HOME),
+			(data) => {mainWindow.webContents.send('direc-schema', data)}
+		]);
 	});
 
-// child process that gets all items in a directory
-function animationDataSchema(event,pwd){
-	var command = 'cd ' + pwd + ';ls -a';
-	exec(command, function(err, stdout, stderr) {
-			if (err) {
-				console.log(err.toString());
-			} else {
-				var stdoutArr = stdout.split('\n');
-				var current = pwd.replace(/(.*[\\\/])/,'')
-				var modifiedFiles;
-				simpleGit(pwd).status((err, i)=>{
-					modifiedFiles = i.modified;
-					var schema = schemaMaker(stdoutArr,current, modifiedFiles);
-					event.send('direc-schema', schema);
-				})
+// initialize fork
+	var forkProcess = fork('ptyInternal');
+
+// when user inputs data in terminal, start fork and run pty inside
+	ipcMain.on('command-message', (event, arg) => {
+		forkProcess.send({message: arg});
+		forkProcess.removeAllListeners('message')
+		forkProcess.on('message', (message) =>{
+			// sends what is diplayed in terminal
+			if (message.data){
+				event.sender.send('terminal-reply', message.data);
 			}
+			// sends animation schema
+			if (message.schema) {
+				event.sender.send('direc-schema', message.schema);
+			}
+
+		})
 	});
-}
-
-// makes schema of new directory
-function schemaMaker(termOutput, directoryName, modified){
-	var schema = {
-		"name": directoryName,
-		"children": [],
-		"value": 15,
-		"level": '#33C3F0'
-	};
-
-	termOutput.forEach((index) => {
-		// checks if file has any alphanumeric characters
-		if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
-			var elementObj = {"name":index}
-			if (index.substring(0,4) === ".git") elementObj.level = "black";
-			// console.log(modified);
-			if (modified) {
-				for (var i = 0; i < modified.length; i++){
-					if (modified[i] === index){
-						elementObj.level = "red"
-					}
-				}
-			}
-			schema.children.push(elementObj)
-		}
-	})
-	schema = [schema]
-	return schema;
-}
-
-
-
 
 
 
