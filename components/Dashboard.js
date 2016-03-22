@@ -98,42 +98,42 @@ export default class Dashboard extends Component {
 		var widthOfDashboard = window.innerWidth * .95;
 		console.log('widthOfDashboard', widthOfDashboard); // This looks right too.
 		var sidebarWidthInPixels = 50;
-		console.log('updated at 7:17 again');
+		console.log('updated at 7:21 again');
 
 		var mainClass, mainStyle, sidebarClass, sidebarStyle;
 		if (this.state.sidebarVisible) {
 			mainClass = 'ten columns';
 			sidebarClass = 'two columns';
-			mainStyle = null; // or {}?
-			sidebarStyle = null // I tried {height: '100%'}, but that didn't make the sidebar expand to fill the whole height of #Dashboard.
+			// mainStyle = null; // or {}?
+			// sidebarStyle = null // I tried {height: '100%'}, but that didn't make the sidebar expand to fill the whole height of #Dashboard.
 		} else {
-			mainClass = '';
-			sidebarClass = '';
-			mainStyle = {
-				// Could go back to specifying display and width with no float
-				// display: 'inline-block',
-				// width: '800px',
-				width: widthOfDashboard - sidebarWidthInPixels - 20 + 'px', // constant accounts for the sidebar's padding
-				float: 'left'
-			};
-			sidebarStyle = {
-				// display: 'inline-block',
-				// width: '50px',
-				width: sidebarWidthInPixels + 'px',
-				float: 'left',
-				verticalAlign: 'top'
-			};
+			mainClass = 'eleven columns';
+			sidebarClass = 'one column';
+			// mainStyle = {
+			// 	// Could go back to specifying display and width with no float
+			// 	// display: 'inline-block',
+			// 	// width: '800px',
+			// 	width: widthOfDashboard - sidebarWidthInPixels - 20 + 'px', // constant accounts for the sidebar's padding
+			// 	float: 'left'
+			// };
+			// sidebarStyle = {
+			// 	// display: 'inline-block',
+			// 	// width: '50px',
+			// 	width: sidebarWidthInPixels + 'px',
+			// 	float: 'left',
+			// 	verticalAlign: 'top'
+			// };
 		}
 
 		// If !sidebarVisible, I don't really want to render a Sidebar at all.
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' className='row'>
-				<div className={sidebarClass} id='Sidebar-container' style={sidebarStyle}>
+				<div className={sidebarClass} id='Sidebar-container'>
 					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
 					<Sidebar />
 				</div>
-				<div className={mainClass} style={mainStyle} id='main'>
+				<div className={mainClass} id='main'>
 					<div className='container'>
 						<Animation />
 						<div className='row'>
