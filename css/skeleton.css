@@ -1,3 +1,5 @@
+/* Note from Isaac: I've kept this file for reference in case we want to steal any of Skeleton's styling. */
+
 /*
 * Skeleton V2.0.4
 * Copyright 2014, Dave Gamache
@@ -24,66 +26,6 @@
 - Clearing
 - Media Queries
 */
-
-/*Beginning of code added by Isaac*/
-
-body {
-  min-width: 900px; /*900 might be better*/
-}
-
-body,
-.container {
-  background-color: lightgray;
-}
-
-#Sidebar-container,
-#left,
-#Animation {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  background-color: white;
-}
-
-#Sidebar-container,
-#left,
-#Animation,
-#Terminal {
-  padding: 1rem;
-  border-radius: 1rem;
-}
-
-#Terminal {
-  padding-left: 0!important;
-}
-
-.terminal {
-    border-radius: 1rem;
-}
-
-/*End of code added by Isaac*/
-/*Beginning of code added by Hamza*/
-
-.node {
-  cursor: pointer;
-}
-
-.node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.node text {
-  font: 10px sans-serif;
-}
-
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
-
-/*End of code added by Hamza*/
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

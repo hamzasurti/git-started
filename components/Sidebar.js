@@ -5,7 +5,7 @@ export default class Sidebar extends Component {
   render() {
     return (
       <div style={this.props.style} id='Sidebar'>
-        Sidebar!
+        Awesome logo here!
       </div>
     )
   }
