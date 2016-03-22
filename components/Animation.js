@@ -43,10 +43,26 @@ export default class Animation extends Component {
     })
   }
 
+  showGit() {
+    console.log('showing Git');
+    this.setState({
+      structureAnimationVisible: false
+    })
+  }
+
+  showStructure() {
+    console.log('showing Structure');
+    this.setState({
+      structureAnimationVisible: true
+    })
+  }
+
   render() {
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTree(arg);
     })
+
+    console.log('rendering');
 
     var selectedAnimation;
     var gitStyle = {
@@ -71,8 +87,8 @@ export default class Animation extends Component {
       <div id='Animation' style={{overflow: 'auto'}}>
         <div className='add-padding'>
           <div style={{float: 'right', border: '1px solid black'}}>
-            <div style={gitStyle}>Git view</div>
-            <div style={structureStyle}>Directory view</div>
+            <div style={gitStyle} onClick={this.showGit.bind(this)}>Git view</div>
+            <div style={structureStyle} onClick={this.showStructure.bind(this)}>Directory view</div>
           </div>
           {selectedAnimation}
           <svg ref="treeRender"></svg>
