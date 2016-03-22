@@ -48,16 +48,31 @@ export default class Animation extends Component {
       this.updateTree(arg);
     })
 
-    var selectedAnimation = this.state.structureAnimationVisible ?
-      <StructureAnimation /> :
-      <GitAnimation />;
+    var selectedAnimation;
+    var gitStyle = {
+      borderBottom: '1px solid black',
+      padding: '1rem'
+     };
+    var structureStyle = {padding: '1rem'};
+
+    if (this.state.structureAnimationVisible) {
+      // What to show for structure Animation
+      selectedAnimation = <StructureAnimation />;
+      gitStyle.backgroundColor = 'transparent';
+      structureStyle.backgroundColor = 'lightBlue';
+    } else {
+      // What to show for Git Animation
+      selectedAnimation = <GitAnimation />;
+      gitStyle.backgroundColor = 'lightBlue';
+      structureStyle.backgroundColor = 'transparent';
+    }
 
     return (
       <div id='Animation' style={{overflow: 'auto'}}>
         <div className='add-padding'>
-          <div style={{float: 'right'}}>
-            <div>Git view</div>
-            <div>Directory view</div>
+          <div style={{float: 'right', border: '1px solid black'}}>
+            <div style={gitStyle}>Git view</div>
+            <div style={structureStyle}>Directory view</div>
           </div>
           {selectedAnimation}
           <svg ref="treeRender"></svg>
