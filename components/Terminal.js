@@ -16,7 +16,7 @@ export default class Terminal extends Component {
     const term = new Term({ // creates a new term.js terminal
       cursorBlink: true,
       useStyle: true,
-      cols: 30, // I changed this from 100.
+      cols: 100,
       rows: 20
     });
 
@@ -42,7 +42,7 @@ export default class Terminal extends Component {
   // Do we need a div.padding here?
   render() {
     return (
-      <div id='Terminal'>
+      <div id='Terminal' style={this.props.style}>
       </div>
     )
   }

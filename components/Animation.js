@@ -49,7 +49,6 @@ export default class Animation extends Component {
     return (
       <div id='Animation'>
         <div className='add-padding'>
-        	Animation
           <svg ref="treeRender"></svg>
         </div>
       </div>

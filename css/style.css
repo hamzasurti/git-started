@@ -13,9 +13,13 @@ body {
 #sidebar-container,
 #left,
 #Animation {
-  margin-top: 1rem;
   margin-bottom: 1rem;
   background-color: white;
+}
+
+#sidebar-container,
+#Animation {
+  margin-top: 1rem;
 }
 
 /* side padding here will mess up the %s */

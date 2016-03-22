@@ -14,7 +14,6 @@ import {lesson1} from './../lessons/git-on-your-computer';
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
 
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -23,11 +22,10 @@ export default class Dashboard extends Component {
 			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
 			buttonText: lesson1[props.initialSlideNumber].buttonText,
 			errorMessage: '',
-			sidebarVisible: props.initialSidebarVisible
+			sidebarVisible: props.initialSidebarVisible,
+			lessonVisible: props.initialLessonVisible
 		};
 	}
-
-
 
 	// Helper function that advances to the next slide
 	advance() {
@@ -78,7 +76,6 @@ export default class Dashboard extends Component {
   }
 
 	// Down the line, we might want a function that runs when a user hits the Enter key in the terminal.
-
 	showError() {
 		this.setState({
 			errorMessage: lesson1[this.state.slideNumber].errorMessage
@@ -97,7 +94,7 @@ export default class Dashboard extends Component {
 			width: '95%',
 			float: 'left'
 		};
-		var sidebarContainerStyle, sidebarStyle, mainStyle;
+		var sidebarContainerStyle, sidebarStyle, mainStyle, leftStyle, terminalStyle;
 
 		if (this.state.sidebarVisible) {
 			sidebarContainerStyle = {
@@ -127,7 +124,25 @@ export default class Dashboard extends Component {
 			}
 		}
 
-		// If !sidebarVisible, I don't really want to render a Sidebar at all.
+		if (this.state.lessonVisible) {
+			leftStyle = {
+				width: '50%',
+				float: 'left'
+			};
+			terminalStyle = {
+				width: '50%',
+				float: 'left'
+			}
+		} else {
+			leftStyle = {
+				display: 'none'
+			};
+			terminalStyle = {
+				width: '100%',
+				float: 'left'
+			}
+		}
+
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' style={dashboardStyle}>
@@ -141,14 +156,14 @@ export default class Dashboard extends Component {
 					<div>
 						<Animation />
 						<div>
-			        <div id='left'>
+			        <div id='left' style={leftStyle}>
 								<div className='add-padding'>
-				        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+				        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
 				        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 									<p><strong>{this.state.errorMessage}</strong></p>
 								</div>
 							</div>
-							<Terminal />
+							<Terminal style={terminalStyle} />
 		      	</div>
 					</div>
 	      </div>
@@ -161,7 +176,8 @@ Dashboard.defaultProps = {
 	// initialLesson: lesson1, // We're not currently using this prop. I don't want to pass the whole lesson down as a prop, because that's a lot of data. But it would be nice to have the lesson reflected in the state in some way.
 	initialSlideNumber: 0,
 	initialTotalNumberOfSlides: lesson1.length,
-	initialSidebarVisible: true
+	initialSidebarVisible: true,
+	initialLessonVisible: true
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
