@@ -88,21 +88,35 @@ export default class Dashboard extends Component {
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
 		console.log('this.state.sidebarVisible:', this.state.sidebarVisible)
-		var mainWidth, sidebarStyle;
+		var mainClass, mainStyle, sidebarClass, sidebarStyle;
 		if (this.state.sidebarVisible) {
-			mainWidth = 'ten columns';
-			sidebarStyle = {display: 'block'};
+			mainClass = 'ten columns';
+			sidebarClass = 'two columns';
+			mainStyle = null; // or {}?
+			sidebarStyle = null; // ditto
 		} else {
-			mainWidth = 'twelve columns';
-			sidebarStyle = {display: 'none'};
+			mainClass = '';
+			sidebarClass = '';
+			mainStyle = {
+				display: 'inline-block',
+				width: '800px'
+			};
+			sidebarStyle = {
+				display: 'inline-block',
+				width: '50px',
+				verticalAlign: 'top'
+			};
 		}
 
+		// had style={sidebarStyle}
+		// If !sidebarVisible, I don't really want to render a Sidebar at all.
     return (
       <div id='Dashboard' className='row'>
-				<div className='two columns' style={sidebarStyle}>
+				<div className={sidebarClass} id='Sidebar-container' style={sidebarStyle}>
+					<button>Hi</button>
 					<Sidebar />
 				</div>
-				<div className={mainWidth} id='main'>
+				<div className={mainClass} style={mainStyle} id='main'>
 					<div className='container'>
 						<Animation />
 						<div className='row'>
@@ -124,7 +138,7 @@ Dashboard.defaultProps = {
 	// initialLesson: lesson1, // We're not currently using this prop. I don't want to pass the whole lesson down as a prop, because that's a lot of data. But it would be nice to have the lesson reflected in the state in some way.
 	initialSlideNumber: 0,
 	initialTotalNumberOfSlides: lesson1.length,
-	initialSidebarVisible: true
+	initialSidebarVisible: false
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
