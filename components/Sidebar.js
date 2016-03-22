@@ -3,11 +3,7 @@ import React, {Component} from 'react';
 // We could add navigation, contact/help, search, progress indicators, and login here if we have these features.
 export default class Sidebar extends Component {
 
-  handleButtonClick() {
-    this.props.hideLesson();
-  }
-
-  handleLessonClick(index) {
+  handleClick(index) {
     this.props.showLesson(index);
   }
 
@@ -27,7 +23,7 @@ export default class Sidebar extends Component {
       } else {
         return (
           <li key={index}>
-            <a href='#' onClick={this.handleLessonClick.bind(this, index)}>
+            <a href='#' onClick={this.handleClick.bind(this, index)}>
               {lessonName}
             </a>
           </li>
@@ -42,9 +38,6 @@ export default class Sidebar extends Component {
         <ul>
           {lessons}
         </ul>
-        <button onClick={this.handleButtonClick.bind(this)} style={this.props.buttonStyle}>
-          Hide tutorial panel
-        </button>
       </div>
     )
   }
