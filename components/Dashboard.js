@@ -97,7 +97,7 @@ export default class Dashboard extends Component {
 			width: '95%',
 			float: 'left'
 		};
-		var sidebarContainerStyle, mainStyle;
+		var sidebarContainerStyle, sidebarStyle, mainStyle;
 
 		if (this.state.sidebarVisible) {
 			sidebarContainerStyle = {
@@ -109,6 +109,9 @@ export default class Dashboard extends Component {
 				width: '80%',
 				float: 'left'
 			};
+			sidebarStyle = {
+				display: 'block'
+			}
 		} else {
 			sidebarContainerStyle = {
 				width: '7.5%',
@@ -119,6 +122,9 @@ export default class Dashboard extends Component {
 				width: '90%',
 				float: 'left'
 			};
+			sidebarStyle = {
+				display: 'none'
+			}
 		}
 
 		// If !sidebarVisible, I don't really want to render a Sidebar at all.
@@ -128,7 +134,7 @@ export default class Dashboard extends Component {
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar />
+						<Sidebar style={sidebarStyle} />
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>

@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 export default class Sidebar extends Component {
   render() {
     return (
-      <div id='Sidebar'>
+      <div style={this.props.style} id='Sidebar'>
         Sidebar!
       </div>
     )
