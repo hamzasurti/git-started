@@ -94,6 +94,12 @@ export default class Dashboard extends Component {
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
 		console.log('this.state.sidebarVisible:', this.state.sidebarVisible)
+		console.log('window width', window.innerWidth); // This looks right.
+		var widthOfDashboard = window.innerWidth * .95;
+		console.log('widthOfDashboard', widthOfDashboard); // This looks right too.
+		var sidebarWidthInPixels = 50;
+		console.log('updated at 7:17 again');
+
 		var mainClass, mainStyle, sidebarClass, sidebarStyle;
 		if (this.state.sidebarVisible) {
 			mainClass = 'ten columns';
@@ -104,12 +110,17 @@ export default class Dashboard extends Component {
 			mainClass = '';
 			sidebarClass = '';
 			mainStyle = {
-				display: 'inline-block',
-				width: '800px'
+				// Could go back to specifying display and width with no float
+				// display: 'inline-block',
+				// width: '800px',
+				width: widthOfDashboard - sidebarWidthInPixels - 20 + 'px', // constant accounts for the sidebar's padding
+				float: 'left'
 			};
 			sidebarStyle = {
-				display: 'inline-block',
-				width: '50px',
+				// display: 'inline-block',
+				// width: '50px',
+				width: sidebarWidthInPixels + 'px',
+				float: 'left',
 				verticalAlign: 'top'
 			};
 		}

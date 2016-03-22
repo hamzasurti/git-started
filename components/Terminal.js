@@ -16,7 +16,7 @@ export default class Terminal extends Component {
     const term = new Term({ // creates a new term.js terminal
       cursorBlink: true,
       useStyle: true,
-      cols: 100,
+      cols: 30, // I changed this from 100.
       rows: 20
     });
 
