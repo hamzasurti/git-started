@@ -46,8 +46,11 @@ export default class Animation extends Component {
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTree(arg);
     })
+
+    var style = {overflow: 'auto'};
+
     return (
-      <div id='Animation'>
+      <div id='Animation' style={style}>
         <div className='add-padding'>
           <svg ref="treeRender"></svg>
         </div>

@@ -88,6 +88,12 @@ export default class Dashboard extends Component {
 		});
 	}
 
+	hideLesson() {
+		this.setState({
+			lessonVisible: false
+		})
+	}
+
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
 		var dashboardStyle = {
@@ -150,7 +156,7 @@ export default class Dashboard extends Component {
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} />
+						<Sidebar style={sidebarStyle} hideLesson={this.hideLesson.bind(this)}/>
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
@@ -182,26 +188,3 @@ Dashboard.defaultProps = {
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
-
-// Here's an ES5 version in case we need it later.
-
-// var React = require('react');
-// var ReactDOM = require('react-dom');
-
-// // Import other components here
-
-// var Dashboard = React.createClass({
-//   render: function () {
-//     return (
-//       <div id='Dashboard'>
-//         Dashboard
-//       </div>
-//     )
-//   }
-// });
-
-// module.exports = Dashboard;
-
-// // if (typeof window !== "undefined") { // For testing only
-// 	ReactDOM.render(<Dashboard />, document.getElementById('dashboard-container'));
-// // }
