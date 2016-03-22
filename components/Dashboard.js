@@ -94,52 +94,36 @@ export default class Dashboard extends Component {
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
   render() {
 		console.log('this.state.sidebarVisible:', this.state.sidebarVisible)
-		console.log('window width', window.innerWidth); // This looks right.
-		var widthOfDashboard = window.innerWidth * .95;
-		console.log('widthOfDashboard', widthOfDashboard); // This looks right too.
-		var sidebarWidthInPixels = 50;
-		console.log('updated at 7:21 again');
+		console.log('updated at 7:39');
 
-		var mainClass, mainStyle, sidebarClass, sidebarStyle;
+		var sidebarContainerStyle, mainStyle;
 		if (this.state.sidebarVisible) {
-			mainClass = 'ten columns';
-			sidebarClass = 'two columns';
-			// mainStyle = null; // or {}?
-			// sidebarStyle = null // I tried {height: '100%'}, but that didn't make the sidebar expand to fill the whole height of #Dashboard.
+			sidebarContainerStyle = {
+				width: '10%',
+				float: 'left'
+			};
+			mainStyle = {
+				width: '10%',
+				float: 'left'
+			};
 		} else {
-			mainClass = 'eleven columns';
-			sidebarClass = 'one column';
-			// mainStyle = {
-			// 	// Could go back to specifying display and width with no float
-			// 	// display: 'inline-block',
-			// 	// width: '800px',
-			// 	width: widthOfDashboard - sidebarWidthInPixels - 20 + 'px', // constant accounts for the sidebar's padding
-			// 	float: 'left'
-			// };
-			// sidebarStyle = {
-			// 	// display: 'inline-block',
-			// 	// width: '50px',
-			// 	width: sidebarWidthInPixels + 'px',
-			// 	float: 'left',
-			// 	verticalAlign: 'top'
-			// };
 		}
 
 		// If !sidebarVisible, I don't really want to render a Sidebar at all.
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
-      <div id='Dashboard' className='row'>
-				<div className={sidebarClass} id='Sidebar-container'>
+      <div id='Dashboard'>
+				<div id='Sidebar-container' style={sidebarContainerStyle}>
 					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
 					<Sidebar />
 				</div>
-				<div className={mainClass} id='main'>
-					<div className='container'>
+				<div id='main' style={mainStyle}>
+					<div>
 						<Animation />
-						<div className='row'>
-			        <div className='one-half column' id='left'>
+						<div>
+			        <div id='left'>
 			        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
-			        	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+			        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 								<p><strong>{this.state.errorMessage}</strong></p>
 							</div>
 							<Terminal />
@@ -158,7 +142,7 @@ Dashboard.defaultProps = {
 	initialSidebarVisible: true
 };
 
-render(<Dashboard />, document.getElementById('dashboard-container'));
+render(<Dashboard />, document.getElementById('Dashboard-container'));
 
 // Here's an ES5 version in case we need it later.
 
