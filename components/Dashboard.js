@@ -20,7 +20,6 @@ var lessons = [
 
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 export default class Dashboard extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -39,7 +38,6 @@ export default class Dashboard extends Component {
 
 	// Helper function that advances to the next slide
 	advance() {
-
 		// What to do if we're already on the last slide.
 		if (this.state.slideNumber === this.state.totalNumberOfSlides - 1) {
 			this.setState({
@@ -62,7 +60,6 @@ export default class Dashboard extends Component {
 	}
 
 	handleClick() {
-
 		// If this slide has a buttonFunction, run it.
 		if(this.state.lessonContent[this.state.slideNumber].buttonFunction) {
 			this.state.lessonContent[this.state.slideNumber].buttonFunction();
@@ -97,7 +94,9 @@ export default class Dashboard extends Component {
 
 	hideLesson() {
 		this.setState({
-			lessonVisible: false
+			lessonVisible: false,
+			// Do we need to reset all lesson-related properties? Or is just resetting the lessonNumber sufficient?
+			lessonNumber: undefined
 		})
 	}
 
@@ -185,7 +184,7 @@ export default class Dashboard extends Component {
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames}/>
+						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber}/>
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
@@ -209,8 +208,6 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	// initialLessonNumber: 0,
-	// initialSlideNumber: 0,
 	initialSidebarVisible: true,
 	initialLessonVisible: false
 };

@@ -14,7 +14,25 @@ export default class Sidebar extends Component {
   render() {
 
     var lessons = this.props.lessonNames.map((lessonName, index) => {
-      return <li key={index} onClick={this.handleLessonClick.bind(this, index)}>{lessonName}</li>
+      // How to render the current lesson
+      if (this.props.lessonNumber === index) {
+        return (
+          <li key={index}>
+            <strong>
+              {lessonName}
+            </strong>
+          </li>
+        )
+      // How to render all other lessons
+      } else {
+        return (
+          <li key={index}>
+            <a href='#' onClick={this.handleLessonClick.bind(this, index)}>
+              {lessonName}
+            </a>
+          </li>
+        )
+      }
     });
 
     return (
