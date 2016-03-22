@@ -126,11 +126,12 @@ export default class Dashboard extends Component {
 
 		if (this.state.lessonVisible) {
 			leftStyle = {
-				width: '50%',
+				width: '22%',
+				marginRight: '2%',
 				float: 'left'
 			};
 			terminalStyle = {
-				width: '50%',
+				width: '75%',
 				float: 'left'
 			}
 		} else {
@@ -177,7 +178,7 @@ Dashboard.defaultProps = {
 	initialSlideNumber: 0,
 	initialTotalNumberOfSlides: lesson1.length,
 	initialSidebarVisible: true,
-	initialLessonVisible: false
+	initialLessonVisible: true
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
