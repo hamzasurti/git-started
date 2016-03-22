@@ -5,7 +5,7 @@ export default class Lesson extends Component {
   render() {
     return (
       <div id='Lesson'>
-        <em>Slide {this.props.slideNumber} of {this.props.totalNumberOfSlides}</em>
+        <em>Slide {this.props.slideNumber + 1} of {this.props.totalNumberOfSlides}</em>
       	{this.props.lessonText}
       </div>
     )

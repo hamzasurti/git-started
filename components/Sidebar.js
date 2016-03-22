@@ -10,11 +10,9 @@ export default class Sidebar extends Component {
 
   render() {
 
-    console.log('this.props.lessonNames', this.props.lessonNames);
     var lessons = this.props.lessonNames.map((lessonName, index) => {
       return <li key={index}>{lessonName}</li>
     });
-    console.log('lessons', lessons);
 
     return (
       <div style={this.props.style} id='Sidebar'>
