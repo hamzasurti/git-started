@@ -15,7 +15,7 @@ export default class Sidebar extends Component {
 
     var lessons = this.props.lessonNames.map((lessonName, index) => {
       // How to render the current lesson
-      if (this.props.lessonNumber === index) {
+      if (this.props.lessonNumber === index && this.props.lessonVisible) {
         return (
           <li key={index}>
             <strong>

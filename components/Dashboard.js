@@ -94,9 +94,7 @@ export default class Dashboard extends Component {
 
 	hideLesson() {
 		this.setState({
-			lessonVisible: false,
-			// Do we need to reset all lesson-related properties? Or is just resetting the lessonNumber sufficient?
-			lessonNumber: undefined
+			lessonVisible: false
 		})
 	}
 
@@ -184,7 +182,7 @@ export default class Dashboard extends Component {
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber}/>
+						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
@@ -193,7 +191,8 @@ export default class Dashboard extends Component {
 						<div>
 			        <div id='left' style={leftStyle}>
 								<div className='add-padding'>
-				        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
+				        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText}
+									hideLesson={this.hideLesson.bind(this)} />
 				        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
 									<p><strong>{this.state.errorMessage}</strong></p>
 								</div>
