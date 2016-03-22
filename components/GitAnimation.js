@@ -4,7 +4,7 @@ export default class GitAnimation extends Component {
   render() {
     return (
       //JSX
-      <div></div>
+      <div>Git Animation</div>
     )
   }
 }

@@ -4,7 +4,7 @@ export default class StructureAnimation extends Component {
   render() {
     return (
       //JSX
-      <div></div>
+      <div>Structure Animation</div>
     )
   }
 }

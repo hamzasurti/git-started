@@ -12,7 +12,8 @@ export default class Animation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      treeData: treeData
+      treeData: this.props.initialTreeData,
+      structureAnimationVisible: this.props.initialStructureAnimationVisible
     }
   }
 
@@ -47,11 +48,18 @@ export default class Animation extends Component {
       this.updateTree(arg);
     })
 
-    var style = {overflow: 'auto'};
+    var selectedAnimation = this.state.structureAnimationVisible ?
+      <StructureAnimation /> :
+      <GitAnimation />;
 
     return (
-      <div id='Animation' style={style}>
+      <div id='Animation' style={{overflow: 'auto'}}>
         <div className='add-padding'>
+          <div style={{float: 'right'}}>
+            <div>Git view</div>
+            <div>Directory view</div>
+          </div>
+          {selectedAnimation}
           <svg ref="treeRender"></svg>
         </div>
       </div>
@@ -188,4 +196,9 @@ var renderTree = function(treeData, svgDomNode) {
       }
       update(d);
     }
+}
+
+Animation.defaultProps = {
+  initialTreeData: treeData,
+  initialStructureAnimationVisible: true
 }
