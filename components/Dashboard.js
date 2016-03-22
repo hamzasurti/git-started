@@ -15,10 +15,6 @@ var lessons = [
 	{
 		name: 'Git on your computer',
 		content: lesson1
-	},
-	{
-		name: 'fake lesson',
-		content: 'hola'
 	}
 ];
 
@@ -59,7 +55,7 @@ export default class Dashboard extends Component {
 	  		// Would it be better to make the value of lessonText the result of a function?
 	  		lessonText: this.state.lessonContent[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
 	  		buttonText: this.state.lessonContent[this.state.slideNumber + 1].buttonText,
-				errorMessage: '',
+				errorMessage: ''
 	  	});
 		}
 	}
@@ -105,7 +101,16 @@ export default class Dashboard extends Component {
 	}
 
 	showLesson(index) {
-		console.log('Time to show lesson', index);
+		this.setState({
+			lessonNumber: index,
+			lessonContent: lessons[index].content,
+			slideNumber: 0,
+			totalNumberOfSlides: lessons[index].content.length,
+			lessonText: lessons[index].content[0].lessonText,
+			buttonText: lessons[index].content[0].buttonText,
+			errorMessage: '',
+			lessonVisible: true
+		})
 	}
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
@@ -206,7 +211,7 @@ Dashboard.defaultProps = {
 	initialLessonNumber: 0,
 	initialSlideNumber: 0,
 	initialSidebarVisible: true,
-	initialLessonVisible: true
+	initialLessonVisible: false
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
