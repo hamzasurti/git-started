@@ -10,6 +10,14 @@ import Terminal from './Terminal';
 // Import lesson content
 import {lesson1} from './../lessons/git-on-your-computer';
 
+// As we create new lessons, we can add new objects to the lessons array.
+var lessons = [
+	{
+		name: 'Git on your computer',
+		content: lesson1
+	}
+];
+
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
 // We can add a column before the animation and terminal if we want a bigger left margin.
 export default class Dashboard extends Component {
@@ -156,13 +164,16 @@ export default class Dashboard extends Component {
 			}
 		}
 
+		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
+		var lessonNames = lessons.map(lesson => lesson.name);
+
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' style={dashboardStyle}>
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)}/>
+						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} hideLesson={this.hideLesson.bind(this)} lessonNames={lessonNames}/>
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
