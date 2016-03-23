@@ -148,7 +148,7 @@ export default class Dashboard extends Component {
 
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
-      <div id='Dashboard' style={{height: '100%'}}>
+      <div id='Dashboard' style={{height: '100%', width: '100%'}}>
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
