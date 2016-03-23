@@ -1,48 +1,26 @@
 /*Beginning of code added by Isaac*/
 
 body {
-  min-width: 900px; /*900 might be better*/
-}
-
-body {
-  background-color: lightgray;
+  min-width: 900px;
+  margin: 0px;
 }
 
 /* Add media query to ensure that #sidebar-container is always at least 64px wide */
-
-#sidebar-container,
-#left,
-#Animation {
-  margin-bottom: 1rem;
-  background-color: white;
-}
-
-#sidebar-container,
-#Animation {
-  margin-top: 1rem;
-}
-
-/* side padding here will mess up the %s */
-#sidebar-container,
-#left,
-#Animation,
-#Terminal {
-  border-radius: 1rem;
-}
 
 .add-padding {
   padding: 1rem;
 }
 
-#Terminal {
-  /*padding-left: 0!important;*/
-}
+/*#Terminal {
+  padding-left: 0!important;
+}*/
 
-.terminal {
+/*.terminal {
     border-radius: 1rem;
-}
+}*/
 
 /*End of code added by Isaac*/
+
 /*Beginning of code added by Hamza*/
 
 .node {

@@ -120,16 +120,11 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var dashboardStyle = {
-			width: '95%',
-			float: 'left'
-		};
 		var sidebarContainerStyle, sidebarStyle, sidebarButtonStyle, mainStyle, leftStyle, terminalStyle;
 
 		if (this.state.sidebarVisible) {
 			sidebarContainerStyle = {
-				width: '17.5%',
-				marginRight: '2.5%',
+				width: '20%',
 				float: 'left'
 			};
 			mainStyle = {
@@ -141,8 +136,7 @@ export default class Dashboard extends Component {
 			}
 		} else {
 			sidebarContainerStyle = {
-				width: '7.5%',
-				marginRight: '2.5%',
+				width: '10%',
 				float: 'left'
 			};
 			mainStyle = {
@@ -159,8 +153,7 @@ export default class Dashboard extends Component {
 				display: 'inline'
 			};
 			leftStyle = {
-				width: '22%',
-				marginRight: '2%',
+				width: '25%',
 				float: 'left'
 			};
 			terminalStyle = {
@@ -185,7 +178,7 @@ export default class Dashboard extends Component {
 
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
-      <div id='Dashboard' style={dashboardStyle}>
+      <div id='Dashboard' >
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
