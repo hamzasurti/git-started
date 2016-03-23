@@ -117,57 +117,28 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var sidebarContainerStyle, sidebarStyle, sidebarButtonStyle, mainStyle, leftStyle, terminalStyle;
+		var sidebarStyle;
+		var sidebarContainerStyle = {float: 'left'};
+		var mainStyle = {float: 'left'};
+		var leftStyle = {float: 'left'};
+		var terminalStyle = {float: 'left'};
 
 		if (this.state.sidebarVisible) {
-			sidebarContainerStyle = {
-				width: '20%',
-				float: 'left'
-			};
-			mainStyle = {
-				width: '80%',
-				float: 'left'
-			};
-			sidebarStyle = {
-				display: 'block'
-			}
+				sidebarContainerStyle.width = '20%';
+				mainStyle.width = '80%';
+				sidebarStyle = {display: 'block'};
 		} else {
-			sidebarContainerStyle = {
-				width: '10%',
-				float: 'left'
-			};
-			mainStyle = {
-				width: '90%',
-				float: 'left'
-			};
-			sidebarStyle = {
-				display: 'none'
-			}
+				sidebarContainerStyle.width = '10%';
+				mainStyle.width = '90%';
+				sidebarStyle = {display: 'none'};
 		}
 
 		if (this.state.lessonVisible) {
-			sidebarButtonStyle = {
-				display: 'inline'
-			};
-			leftStyle = {
-				width: '25%',
-				float: 'left'
-			};
-			terminalStyle = {
-				width: '75%',
-				float: 'left'
-			}
+			leftStyle.width = '25%';
+			terminalStyle.width = '75%';
 		} else {
-			sidebarButtonStyle = {
-				display: 'none'
-			};
-			leftStyle = {
-				display: 'none'
-			};
-			terminalStyle = {
-				width: '100%',
-				float: 'left'
-			}
+			leftStyle.display = 'none';
+			terminalStyle.width = '100%';
 		}
 
 		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
@@ -179,7 +150,7 @@ export default class Dashboard extends Component {
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
+						<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
