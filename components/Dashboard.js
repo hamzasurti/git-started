@@ -122,7 +122,7 @@ export default class Dashboard extends Component {
 		var upperHalfStyle = {height: '50%', width: '100%'};
 		var lowerHalfStyle = {height: '50%', width: '100%'};
 		var leftStyle = {float: 'left', height: '50%'};
-		var terminalStyle = {float: 'left'};
+		var terminalStyle = {float: 'left', height: '100%'};
 
 		if (this.state.sidebarVisible) {
 				sidebarContainerStyle.width = '20%';
