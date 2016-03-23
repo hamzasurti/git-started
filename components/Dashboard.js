@@ -22,7 +22,6 @@ export default class Dashboard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// Does it matter whether we use null or undefined here?
 			lessonNumber: undefined,
 			lessonContent: undefined,
 			slideNumber: undefined,

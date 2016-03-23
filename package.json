@@ -7,14 +7,18 @@
     "task": "gulp"
   },
   "devDependencies": {
+    "assert": "^1.3.0",
     "babel-preset-es2015": "^6.0.15",
     "babel-preset-react": "^6.0.15",
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.2.0",
     "browserify": "^10.2.4",
+    "chromedriver": "^2.21.2",
     "electron-prebuilt": "^0.36.9",
     "gulp": "^3.9.0",
     "gulp-notify": "^2.2.0",
+    "mocha": "^2.4.5",
+    "selenium-webdriver": "^2.53.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.2"
   },
@@ -27,6 +31,7 @@
     "react-dom": "^0.14.0",
     "simple-git": "^1.28.1",
     "term.js": "0.0.7",
-    "tty.js": "^0.2.15"
+    "tty.js": "^0.2.15",
+    "walk": "^2.3.9"
   }
 }

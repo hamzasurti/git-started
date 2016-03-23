@@ -22,6 +22,7 @@ app.on('ready', () => {
 	mainWindow = new BrowserWindow({width: 1200, height: 700});
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
+
 // when window finished loading, send current directory and animation structure
 	mainWindow.webContents.on('did-finish-load', () => {
 		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
@@ -47,7 +48,6 @@ app.on('ready', () => {
 			if (message.schema) {
 				event.sender.send('direc-schema', message.schema);
 			}
-
 		})
 	});
 

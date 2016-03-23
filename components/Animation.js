@@ -33,7 +33,6 @@ export default class Animation extends Component {
       structureStyle.backgroundColor = 'transparent';
     }
 
-    // It might be better to use margins rather than textAlign.
     return (
       <div id='Animation'>
         <div className='add-padding'>
