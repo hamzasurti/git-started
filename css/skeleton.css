@@ -27,6 +27,100 @@
 - Media Queries
 */
 
+/*Beginning of code added by Isaac*/
+
+body {
+  min-width: 900px; /*900 might be better*/
+}
+
+.column,
+.columns,
+#Animation,
+#Terminal {
+  /*border: 1px solid black;*/
+}
+
+#github {
+  text-align: right;
+}
+
+.row {
+  /*border: 1px solid red;*/
+}
+
+body,
+.container {
+  /*border: 1px solid blue;*/
+  background-color: lightgray;
+}
+
+#left,
+#Animation,
+#Terminal {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+header {
+  margin-top: 2rem;
+}
+
+#Animation,
+
+
+#left {
+  min-height: 14rem;
+}
+
+.terminal {
+    border-radius: 1rem;
+}
+
+header,
+#left,
+#Animation,
+#Terminal,
+footer {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+#Terminal {
+  min-height: 40rem;
+  background-color: black;
+  padding: 0!important;
+}
+
+.marker {
+  border: 1px solid black;
+  text-align: center;
+}
+
+/*End of code added by Isaac*/
+/*Beginning of code added by Hamza*/
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+/*End of code added by Hamza*/
+
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .container {

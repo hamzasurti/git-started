@@ -13,7 +13,7 @@ var currDir;
   // sets the terminal prompt to pwd
 ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
     process.on('message', function(data) {
-      ptyTerm.write(data.message);
+			data.message.cols ? ptyTerm.resize(data.message.cols,data.message.rows) :ptyTerm.write(data.message)
     });
 
     ptyTerm.on('data', function(data) {

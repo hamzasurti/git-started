@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-
 // Import other components here
 import Animation from './Animation';
 import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
-
 // Import lesson content
 import {lesson1} from './../lessons/git-on-your-computer';
 
@@ -19,6 +17,7 @@ var lessons = [
 ];
 
 // Should I replace the occurrences of 'div' below with 'Dashboard'?
+
 export default class Dashboard extends Component {
 	constructor(props) {
 		super(props);
@@ -74,8 +73,6 @@ export default class Dashboard extends Component {
 					this.showError();
 				}
 			}.bind(this));
-
-		// If not, advance.
 		} else {
 			this.advance();
 		}
