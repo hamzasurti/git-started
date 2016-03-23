@@ -11,53 +11,19 @@ export default class Animation extends Component {
     }
   }
 
-  // componentDidMount(){
-  //   var mountNode = ReactDOM.findDOMNode(this.refs.treeRender);
-  //   // Render the tree usng d3 after first component mount
-  //   renderTree(this.state.treeData, mountNode);
-  // }
-  //
-  // shouldComponentUpdate(nextProps, nextState){
-  //   // console.log(_.isEqual(this.lastState,nextState));
-  //   // console.log(this.lastState, nextState)
-  //   if (_.isEqual(this.lastState,nextState)){
-  //     return false
-  //   } else {
-  //     // Delegate rendering the tree to a d3 function on prop change
-  //     renderTree(nextState.treeData, ReactDOM.findDOMNode(this.refs.treeRender));
-  //     // Do not allow react to render the component on prop change
-  //     return false;
-  //   }
-  // }
-  //
-  // updateTree(newSchema){
-  //   this.lastState = this.state
-  //   this.setState({
-  //     treeData: newSchema
-  //   })
-  // }
-
   showGit() {
-    console.log('showing Git');
     this.setState({
       structureAnimationVisible: false
     })
   }
 
   showStructure() {
-    console.log('showing Structure');
     this.setState({
       structureAnimationVisible: true
     })
   }
 
   render() {
-    // ipcRenderer.on('direc-schema', (e,arg)=>{
-    //   this.updateTree(arg);
-    // })
-
-    console.log('Animation rendering');
-
     var selectedAnimation;
     var gitStyle = {
       borderBottom: '1px solid black',

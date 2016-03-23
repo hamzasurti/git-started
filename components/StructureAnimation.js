@@ -20,8 +20,6 @@ export default class StructureAnimation extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    // console.log(_.isEqual(this.lastState,nextState));
-    // console.log(this.lastState, nextState)
     if (_.isEqual(this.lastState,nextState)){
       return false
     } else {
@@ -33,7 +31,6 @@ export default class StructureAnimation extends Component {
   }
 
   updateTree(newSchema){
-    console.log('updating tree');
     this.lastState = this.state
     this.setState({
       treeData: newSchema
@@ -41,8 +38,6 @@ export default class StructureAnimation extends Component {
   }
 
   render() {
-    console.log('StructureAnimation rendering');
-
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTree(arg);
     })
