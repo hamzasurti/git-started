@@ -3,31 +3,48 @@ import {render} from 'react-dom';
 // Import other components here
 import Animation from './Animation';
 import Lesson from './Lesson';
+import Sidebar from './Sidebar';
 import Terminal from './Terminal';
 // Import lesson content
 import {lesson1} from './../lessons/git-on-your-computer';
+
+// As we create new lessons, we can add new objects to the lessons array.
+var lessons = [
+	{
+		name: 'Git on your computer',
+		content: lesson1
+	}
+];
+
+// Should I replace the occurrences of 'div' below with 'Dashboard'?
 
 export default class Dashboard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			slideNumber: props.initialSlideNumber,
-			totalNumberOfSlides: props.initialTotalNumberOfSlides,
-			lessonText: lesson1[props.initialSlideNumber].lessonText, // Down the line (not in the MVP), it would be nice to be able to set the lesson (rather than having 'lesson1' hard-coded in). Could I have a 'lesson number' prop?
-			buttonText: lesson1[props.initialSlideNumber].buttonText,
-			errorMessage: '',
-			windowWidth: null
+			// Does it matter whether we use null or undefined here?
+			lessonNumber: undefined,
+			lessonContent: undefined,
+			slideNumber: undefined,
+			totalNumberOfSlides: undefined,
+			lessonText: undefined,
+			buttonText: undefined,
+			errorMessage: undefined,
+			sidebarVisible: props.initialSidebarVisible,
+			lessonVisible: props.initialLessonVisible,
+			structureAnimationVisible: props.initialStructureAnimationVisible
 		};
 	}
 
 	// Helper function that advances to the next slide
 	advance() {
 		// What to do if we're already on the last slide.
-		if (this.state.slideNumber === lesson1.length - 1) {
+		if (this.state.slideNumber === this.state.totalNumberOfSlides - 1) {
 			this.setState({
 				slideNumber: 0,
-				lessonText: lesson1[0].lessonText,
-				buttonText: lesson1[0].buttonText
+				lessonText: this.state.lessonContent[0].lessonText,
+				buttonText: this.state.lessonContent[0].buttonText,
+				errorMessage: '',
 			});
 
 		// What to do on every other slide
@@ -35,18 +52,17 @@ export default class Dashboard extends Component {
 			this.setState({
 	  		slideNumber: this.state.slideNumber + 1,
 	  		// Would it be better to make the value of lessonText the result of a function?
-	  		lessonText: lesson1[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
-	  		buttonText: lesson1[this.state.slideNumber + 1].buttonText,
-				errorMessage: '',
+	  		lessonText: this.state.lessonContent[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
+	  		buttonText: this.state.lessonContent[this.state.slideNumber + 1].buttonText,
+				errorMessage: ''
 	  	});
 		}
 	}
 
-	// I'll eventually need to add logic to see whether the user passed the test. The test will depend on this.state.slideNumber. I could potentially pull the tests and buttonText from lesson1.
 	handleClick() {
 		// If this slide has a buttonFunction, run it.
-		if(lesson1[this.state.slideNumber].buttonFunction) {
-			lesson1[this.state.slideNumber].buttonFunction();
+		if(this.state.lessonContent[this.state.slideNumber].buttonFunction) {
+			this.state.lessonContent[this.state.slideNumber].buttonFunction();
 			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler). I changed .on to .once
 			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pull out and name this function.
 				console.log(`Test result for slide ${this.state.slideNumber}: ${arg}`);
@@ -62,36 +78,135 @@ export default class Dashboard extends Component {
 		}
   }
 
-	// Down the line, we might want a function that runs when a user hits the Enter key in the terminal.
 	showError() {
 		this.setState({
-			errorMessage: lesson1[this.state.slideNumber].errorMessage
+			errorMessage: this.state.lessonContent[this.state.slideNumber].errorMessage
 		});
 	}
 
-  // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson. But I believe this file is the only place we should use this.setState.
-  render() {
-    return (
-      <div id='Dashboard' className='row'>
-        <div className='one-third column' id='left'>
-        	<Lesson totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText} />
-        	<button className='button-primary' onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
-					<p><strong>{this.state.errorMessage}</strong></p>
-      	</div>
+	toggleSidebar() {
+		this.setState({
+			sidebarVisible: !this.state.sidebarVisible
+		});
+	}
 
-        <div className='two-thirds column'>
-        	<Animation />
-        	<Terminal />
-        </div>
-      </div>
+	hideLesson() {
+		this.setState({
+			lessonVisible: false
+		})
+	}
+
+	showLesson(index) {
+		this.setState({
+			lessonNumber: index,
+			lessonContent: lessons[index].content,
+			slideNumber: 0,
+			totalNumberOfSlides: lessons[index].content.length,
+			lessonText: lessons[index].content[0].lessonText,
+			buttonText: lessons[index].content[0].buttonText,
+			errorMessage: '',
+			lessonVisible: true
+		})
+	}
+
+	setStructureAnimationVisibility(boolean) {
+		this.setState({
+			structureAnimationVisible: boolean
+		})
+	}
+
+  // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
+  render() {
+		var sidebarContainerStyle, sidebarStyle, sidebarButtonStyle, mainStyle, leftStyle, terminalStyle;
+
+		if (this.state.sidebarVisible) {
+			sidebarContainerStyle = {
+				width: '20%',
+				float: 'left'
+			};
+			mainStyle = {
+				width: '80%',
+				float: 'left'
+			};
+			sidebarStyle = {
+				display: 'block'
+			}
+		} else {
+			sidebarContainerStyle = {
+				width: '10%',
+				float: 'left'
+			};
+			mainStyle = {
+				width: '90%',
+				float: 'left'
+			};
+			sidebarStyle = {
+				display: 'none'
+			}
+		}
+
+		if (this.state.lessonVisible) {
+			sidebarButtonStyle = {
+				display: 'inline'
+			};
+			leftStyle = {
+				width: '25%',
+				float: 'left'
+			};
+			terminalStyle = {
+				width: '75%',
+				float: 'left'
+			}
+		} else {
+			sidebarButtonStyle = {
+				display: 'none'
+			};
+			leftStyle = {
+				display: 'none'
+			};
+			terminalStyle = {
+				width: '100%',
+				float: 'left'
+			}
+		}
+
+		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
+		var lessonNames = lessons.map(lesson => lesson.name);
+
+		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
+    return (
+      <div id='Dashboard' >
+				<div id='sidebar-container' style={sidebarContainerStyle}>
+					<div className='add-padding'>
+						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
+						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
+					</div>
+				</div>
+				<div id='main' style={mainStyle}>
+					<div>
+						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)}/>
+						<div>
+			        <div id='left' style={leftStyle}>
+								<div className='add-padding'>
+				        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText}
+									hideLesson={this.hideLesson.bind(this)} />
+				        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+									<p><strong>{this.state.errorMessage}</strong></p>
+								</div>
+							</div>
+							<Terminal style={terminalStyle} />
+		      	</div>
+					</div>
+	      </div>
+			</div>
     )
   }
 }
 
 Dashboard.defaultProps = {
-	// initialLesson: lesson1, // We're not currently using this prop. I don't want to pass the whole lesson down as a prop, because that's a lot of data. But it would be nice to have the lesson reflected in the state in some way.
-	initialSlideNumber: 0,
-	initialTotalNumberOfSlides: lesson1.length
+	initialSidebarVisible: true,
+	initialLessonVisible: false,
+	initialStructureAnimationVisible: true
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
