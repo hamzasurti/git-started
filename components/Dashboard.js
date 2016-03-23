@@ -129,8 +129,9 @@ export default class Dashboard extends Component {
 				mainStyle.width = '80%';
 				sidebarStyle.display = 'block';
 		} else {
-				sidebarContainerStyle.width = '5%'; // was 10
-				mainStyle.width = '95%';
+				sidebarContainerStyle.position = 'fixed';
+				sidebarContainerStyle.width = '28px'; // was 10%
+				mainStyle.width = '100%';
 				sidebarStyle.display = 'none';
 		}
 
