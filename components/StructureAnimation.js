@@ -128,6 +128,8 @@ var renderTree = function(treeData, svgDomNode) {
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
+      console.log('nodeUpdate', nodeUpdate);
+
       nodeUpdate.select("circle")
         .attr("r", function(d) { return d.value ? d.value : 5; })
         .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level;; });
@@ -182,6 +184,7 @@ var renderTree = function(treeData, svgDomNode) {
 
     // Toggle children on click.
     function click(d) {
+      // d is an object - what you clicked
       if (d.children) {
       d._children = d.children;
       d.children = null;

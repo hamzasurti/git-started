@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 var treeVisualization = {};
 
 treeVisualization.enter = (selection, duration) =>{
-  // I need to define source.
+  // selection is equivalent to nodeEnter
   selection.attr("transform", function(d) {
       // console.log('this', this); // this is the <g> element, not a node.
       // console.log('selection', selection); // I think this is a node
@@ -23,9 +23,9 @@ treeVisualization.enter = (selection, duration) =>{
     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6);
-    // I think I just need to run the nodeUpdate and nodeExit stuff now. I've done nodeEnter.
 
   // Transition nodes to their new position.
+  // transition is equivalent to nodeUpdate. What about nodeExit?
   var transition = selection.transition()
     .duration(duration)
     .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
@@ -39,34 +39,9 @@ treeVisualization.enter = (selection, duration) =>{
 }
 
 export default class Tree extends Component {
-  // BEGIN EXAMPLE code
-  // componentDidMount() {
-  //  // wrap element in d3
-  //  // getDOMNode is deprecated and has been replaced with ReactDOM.findDOMNode().
-  //  this.d3Node = d3.select(this.getDOMNode());
-  //  this.d3Node.datum(this.props.data)
-  //   .call(ExpenseVisualization.enter);
-  // }
-  // shouldComponentUpdate(nextProps) {
-  //  if (nextProps.data.update) {
-  //   // use d3 to update component
-  //   this.d3Node.datum(nextProps.data)
-  //    .call(ExpenseVisualization.update);
-  //   return false;
-  //  }
-  //  return true;
-  // },
-  // componentDidUpate() {
-  //  this.d3Node.datum(this.props.data)
-  //   .call(ExpenseVisualization.update);
-  // },
-  //END EXAMPLE code
 
   componentDidMount() {
-  // console.log(ReactDOM.findDOMNode(this)); // ReactDOM.findDOMNode(this) returns <g.Tree>
-
-  // Should I use a variable declaration in place of this.d3Node (as I'm doing below)?
-  this.d3Node = d3.select(ReactDOM.findDOMNode(this));
+  this.d3Node = d3.select(ReactDOM.findDOMNode(this)); // ReactDOM.findDOMNode(this) returns <g.Tree>
   this.d3Node.datum(this.props.data)
     .call(treeVisualization.enter, this.props.duration);
 
@@ -76,6 +51,21 @@ export default class Tree extends Component {
   // Select g.Trees and bind them to nodes based on d.id? Have I already done this?
   // Update node attributes
   }
+
+  // shouldComponentUpdate(nextProps) {
+  //  if (nextProps.data.update) {
+  //   // use d3 to update component
+  //   this.d3Node.datum(nextProps.data)
+  //    .call(treeVisualization.update);
+  //   return false;
+  //  }
+  //  return true;
+  // }
+  //
+  // componentDidUpate() {
+  //  this.d3Node.datum(this.props.data)
+  //   .call(treeVisualization.update);
+  // }
 
   // I think I want to use this.props.data.name instead of this.props.name...
   // I had the className 'Tree' before.

@@ -49,14 +49,13 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   updateTreeData(newSchema) {
-    console.log('updating tree');
+    // console.log('updating tree with', newSchema);
       this.setState({
         treeData: newSchema
       })
   }
 
   render() {
-    console.log('rendering HalfwayFinished with', this.state.treeData);
     // How do we set treeData[0].x0 and treeData[0].y0? I believe this needs to happen before render (I shouldn't modify state in render.)
     // Right now, I'm manually setting these properties on treeStructure.js. In the future, I'll need to account for subsequent renders.
     // treeData[0].x0: this.height / 2,
@@ -84,7 +83,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     nodes.forEach(function(d, i) {
       d.y = d.depth * 180;
-      d.id = i + 1;
+      // d.id = i + 1; // I'm trying to use d.name rather than d.id. If I use i + 1, I'm assigning an id (which will later become a React key) based just on the node's position in the array. node.name isn't perfect (there could be duplicates), but it's better.
       // I don't think the next two lines are quite right; they will need to change eventually.
       d.x0 = d.x;
       d.y0 = d.y;
@@ -94,11 +93,12 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     });
 
     var links = linkSelection && linkSelection.map((link) => {
-      return (<Link key={link.target.id} data={link} diagonal={diagonal} duration={duration} />)
+      return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
     });
 
     var trees = nodes && nodes.map((node) => {
-      return (<Tree key={node.id} data={node} duration={duration} />)
+      var treeToRender = <Tree key={node.name} data={node} duration={duration} />;
+      return (treeToRender);
     });
 
     return(
@@ -115,6 +115,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 }
 
 HalfwayFinishedStructureAnimation.defaultProps = {
-  initialTreeData: treeData, // To start with an empty tree: [{}]
+  initialTreeData: [{}], // treeData, // To start with an empty tree: [{}]
   initialMargin: {top: 0, right: 20, bottom: 0, left: 90}
 }
