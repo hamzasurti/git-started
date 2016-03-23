@@ -124,7 +124,7 @@ export default class Dashboard extends Component {
 		var lowerHalfStyle = {height: '50%', width: '100%'};
 		// Isaac: I'm not sure whether overflow should be auto or scroll.
 		var leftStyle = {float: 'left', height: '100%', overflow: 'scroll'};
-		var terminalStyle = {float: 'left', height: '100%'};
+		var terminalStyle = {float: 'left', height: '100%', backgroundColor: 'black'};
 
 		if (this.state.sidebarVisible) {
 			sidebarContainerStyle.float = 'left';

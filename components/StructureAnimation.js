@@ -43,9 +43,12 @@ export default class StructureAnimation extends Component {
   }
 
   render() {
-    ipcRenderer.on('direc-schema', (e,arg)=>{
-      this.updateTree(arg);
-    })
+    console.log('rendering regular StructureAnimation');
+
+    // Isaac: I'm commenting this out for testing purposes.
+    // ipcRenderer.on('direc-schema', (e,arg)=>{
+    //   this.updateTree(arg);
+    // })
 
     return (
       <div id='Structure-Animation'>

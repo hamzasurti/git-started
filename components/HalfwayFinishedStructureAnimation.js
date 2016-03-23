@@ -45,6 +45,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   render() {
+    console.log('rendering HalfwayFinishedStructureAnimation');
     // How do we set treeData[0].x0 and treeData[0].y0? I believe this needs to happen before render (I shouldn't modify state in render.)
     // Right now, I'm manually setting these properties on treeStructure.js. In the future, I'll need to account for subsequent renders.
     // treeData[0].x0: this.height / 2,
@@ -84,7 +85,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     var links = linkSelection && linkSelection.map((link) => {
       return (<Link key={link.target.id} data={link} diagonal={diagonal} duration={duration} />)
     });
-    console.log('links:', links);
 
     var trees = nodes && nodes.map((node) => {
       return (<Tree key={node.id} data={node} duration={duration} />)

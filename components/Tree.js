@@ -78,8 +78,9 @@ export default class Tree extends Component {
   }
 
   // I think I want to use this.props.data.name instead of this.props.name...
+  // I had the className 'Tree' before.
   render() {
-    return <g className='Tree'>
+    return <g className='node'>
       <circle></circle>
       <text>{this.props.data.name}</text>
     </g>

@@ -47,7 +47,8 @@ export default class Path extends Component {
   }
 
   // I think I want to use this.props.data.name instead of this.props.name...
+  // I had the className capitalized before
   render() {
-    return <path className='Link'></path>
+    return <path className='link'></path>
   }
 }
