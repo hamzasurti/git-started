@@ -117,21 +117,25 @@ export default class Dashboard extends Component {
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
 		var sidebarStyle = {padding: '8px'};
-		var sidebarContainerStyle = {float: 'left', height: '100%', backgroundColor: 'lightGray'};
-		var mainStyle = {float: 'left', height: '100%'};
+		var sidebarContainerStyle = {height: '100%', backgroundColor: 'lightGray'};
+		var mainStyle = {height: '100%'};
 		var upperHalfStyle = {height: '50%', width: '100%'};
 		var lowerHalfStyle = {height: '50%', width: '100%'};
 		var leftStyle = {float: 'left', height: '50%'};
 		var terminalStyle = {float: 'left', height: '100%'};
 
 		if (this.state.sidebarVisible) {
+				sidebarContainerStyle.float = 'left';
 				sidebarContainerStyle.width = '20%';
+				mainStyle.float = 'left';
 				mainStyle.width = '80%';
 				sidebarStyle.display = 'block';
 		} else {
-				sidebarContainerStyle.position = 'fixed';
+				sidebarContainerStyle.position = 'absolute';
 				sidebarContainerStyle.width = '28px'; // was 10%
-				mainStyle.width = '100%';
+				mainStyle.position = 'absolute';
+				mainStyle.left = '28px';
+				mainStyle.right = 0;
 				sidebarStyle.display = 'none';
 		}
 
