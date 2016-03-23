@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import treeData from './../AnimationData/treeStructure';
-import Tree from './Tree'; // Tree is a new component used by IsaacsHalfwayFinishedComponent.
+
+// Tree and Link are two new components used by IsaacsHalfwayFinishedComponent.
+import Tree from './Tree';
+import Link from './Link';
+
 var d3 = require('d3');
 var ReactDOM = require('react-dom');
 var _ = require('lodash');
