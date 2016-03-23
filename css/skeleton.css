@@ -84,9 +84,9 @@ footer {
   border-radius: 1rem;
 }
 #Terminal {
-  /*min-height: 4rem;*/
-  background-color: lightgray;
-  padding-left: 0!important;
+  min-height: 40rem;
+  background-color: black;
+  padding: 0!important;
 }
 
 .marker {
