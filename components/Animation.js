@@ -6,18 +6,13 @@ export default class Animation extends Component {
 
   showGit() {
     this.props.setStructureAnimationVisibility(false);
-    // this.setState({
-    //   structureAnimationVisible: false
-    // })
   }
 
   showStructure() {
     this.props.setStructureAnimationVisibility(true);
-    // this.setState({
-    //   structureAnimationVisible: true
-    // })
   }
 
+  // Images from https://www.iconfinder.com/icons/172515/folder_opened_icon#size=32 and https://www.iconfinder.com/icons/83306/git_icon#size=32
   render() {
     var selectedAnimation;
     var gitStyle = {
@@ -38,12 +33,17 @@ export default class Animation extends Component {
       structureStyle.backgroundColor = 'transparent';
     }
 
+    // It might be better to use margins rather than textAlign.
     return (
       <div id='Animation' style={{overflow: 'auto'}}>
         <div className='add-padding'>
-          <div style={{float: 'right', border: '1px solid black'}}>
-            <div style={gitStyle} onClick={this.showGit.bind(this)}>Git view</div>
-            <div style={structureStyle} onClick={this.showStructure.bind(this)}>Directory view</div>
+          <div style={{float: 'right', border: '1px solid black', textAlign: 'center', marginBottom: '1rem'}}>
+            <div style={gitStyle} onClick={this.showGit.bind(this)}>
+              <img src='assets/git-icon.png' alt='Git view' />
+            </div>
+            <div style={structureStyle} onClick={this.showStructure.bind(this)}>
+              <img src='assets/folder-icon.png' alt='Directory view' />
+            </div>
           </div>
           {selectedAnimation}
         </div>
