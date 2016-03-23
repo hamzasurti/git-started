@@ -4,23 +4,18 @@ import StructureAnimation from './StructureAnimation';
 
 export default class Animation extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      structureAnimationVisible: this.props.initialStructureAnimationVisible
-    }
-  }
-
   showGit() {
-    this.setState({
-      structureAnimationVisible: false
-    })
+    this.props.setStructureAnimationVisibility(false);
+    // this.setState({
+    //   structureAnimationVisible: false
+    // })
   }
 
   showStructure() {
-    this.setState({
-      structureAnimationVisible: true
-    })
+    this.props.setStructureAnimationVisibility(true);
+    // this.setState({
+    //   structureAnimationVisible: true
+    // })
   }
 
   render() {
@@ -31,7 +26,7 @@ export default class Animation extends Component {
      };
     var structureStyle = {padding: '1rem'};
 
-    if (this.state.structureAnimationVisible) {
+    if (this.props.structureAnimationVisible) {
       // What to show for structure Animation
       selectedAnimation = <StructureAnimation />;
       gitStyle.backgroundColor = 'transparent';
@@ -55,8 +50,4 @@ export default class Animation extends Component {
       </div>
     )
   }
-}
-
-Animation.defaultProps = {
-  initialStructureAnimationVisible: true
 }

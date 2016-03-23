@@ -32,7 +32,8 @@ export default class Dashboard extends Component {
 			buttonText: undefined,
 			errorMessage: undefined,
 			sidebarVisible: props.initialSidebarVisible,
-			lessonVisible: props.initialLessonVisible
+			lessonVisible: props.initialLessonVisible,
+			structureAnimationVisible: props.initialStructureAnimationVisible
 		};
 	}
 
@@ -108,6 +109,12 @@ export default class Dashboard extends Component {
 			buttonText: lessons[index].content[0].buttonText,
 			errorMessage: '',
 			lessonVisible: true
+		})
+	}
+
+	setStructureAnimationVisibility(boolean) {
+		this.setState({
+			structureAnimationVisible: boolean
 		})
 	}
 
@@ -187,7 +194,7 @@ export default class Dashboard extends Component {
 				</div>
 				<div id='main' style={mainStyle}>
 					<div>
-						<Animation />
+						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)}/>
 						<div>
 			        <div id='left' style={leftStyle}>
 								<div className='add-padding'>
@@ -208,7 +215,8 @@ export default class Dashboard extends Component {
 
 Dashboard.defaultProps = {
 	initialSidebarVisible: true,
-	initialLessonVisible: false
+	initialLessonVisible: false,
+	initialStructureAnimationVisible: true
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
