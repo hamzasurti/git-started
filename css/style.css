@@ -11,6 +11,11 @@ body {
   padding: 1rem;
 }
 
+#dashboard-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
 /*End of code added by Isaac*/
 
 /*Beginning of code added by Hamza*/

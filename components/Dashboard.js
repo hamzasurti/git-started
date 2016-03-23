@@ -117,20 +117,22 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var sidebarStyle;
-		var sidebarContainerStyle = {float: 'left'};
-		var mainStyle = {float: 'left'};
-		var leftStyle = {float: 'left'};
+		var sidebarStyle = {};
+		var sidebarContainerStyle = {float: 'left', height: '100%', backgroundColor: 'lightGray'};
+		var mainStyle = {float: 'left', height: '100%'};
+		var upperHalfStyle = {height: '50%', width: '100%'};
+		var lowerHalfStyle = {height: '50%', width: '100%'};
+		var leftStyle = {float: 'left', height: '50%'};
 		var terminalStyle = {float: 'left'};
 
 		if (this.state.sidebarVisible) {
 				sidebarContainerStyle.width = '20%';
 				mainStyle.width = '80%';
-				sidebarStyle = {display: 'block'};
+				sidebarStyle.display = 'block';
 		} else {
 				sidebarContainerStyle.width = '10%';
 				mainStyle.width = '90%';
-				sidebarStyle = {display: 'none'};
+				sidebarStyle.display = 'none';
 		}
 
 		if (this.state.lessonVisible) {
@@ -146,7 +148,7 @@ export default class Dashboard extends Component {
 
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
-      <div id='Dashboard' >
+      <div id='Dashboard' style={{height: '100%'}}>
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
@@ -154,21 +156,21 @@ export default class Dashboard extends Component {
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
-					<div>
-						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)}/>
-						<div>
-			        <div id='left' style={leftStyle}>
-								<div className='add-padding'>
-				        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText}
-									hideLesson={this.hideLesson.bind(this)} />
-				        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
-									<p><strong>{this.state.errorMessage}</strong></p>
-								</div>
-							</div>
-							<Terminal style={terminalStyle} />
-		      	</div>
+					<div id='upper-half' style={upperHalfStyle}>
+						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)} />
 					</div>
-	      </div>
+					<div id='lower-half' style={lowerHalfStyle}>
+		        <div id='left' style={leftStyle}>
+							<div className='add-padding'>
+			        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText}
+								hideLesson={this.hideLesson.bind(this)} />
+			        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+								<p><strong>{this.state.errorMessage}</strong></p>
+							</div>
+						</div>
+						<Terminal style={terminalStyle} />
+					</div>
+		    </div>
 			</div>
     )
   }

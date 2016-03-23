@@ -35,7 +35,7 @@ export default class Animation extends Component {
 
     // It might be better to use margins rather than textAlign.
     return (
-      <div id='Animation' style={{overflow: 'auto'}}>
+      <div id='Animation'>
         <div className='add-padding'>
           <div style={{float: 'right', border: '1px solid black', textAlign: 'center', marginBottom: '1rem'}}>
             <div style={gitStyle} onClick={this.showGit.bind(this)}>
