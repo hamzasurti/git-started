@@ -36,6 +36,7 @@ export default class StructureAnimation extends Component {
   }
 
   updateTree(newSchema){
+    console.log('updating tree with', newSchema);
     this.lastState = this.state
     this.setState({
       treeData: newSchema
@@ -43,12 +44,11 @@ export default class StructureAnimation extends Component {
   }
 
   render() {
-    console.log('rendering regular StructureAnimation');
+    console.log('rendering StructureAnimation with', this.state.treeData);
 
-    // Isaac: I'm commenting this out for testing purposes.
-    // ipcRenderer.on('direc-schema', (e,arg)=>{
-    //   this.updateTree(arg);
-    // })
+    ipcRenderer.on('direc-schema', (e,arg)=>{
+      this.updateTree(arg);
+    })
 
     return (
       <div id='Structure-Animation'>

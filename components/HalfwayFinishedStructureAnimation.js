@@ -27,6 +27,10 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
   // Should we size the svg and main g here or earlier? This function is called after all the Tree.componentDidMounts.
   componentDidMount() {
+    ipcRenderer.on('direc-schema', (e,arg)=>{
+      this.updateTreeData(arg);
+    })
+
     // Can we use selection.select for these?
     // Update our svg's width and height.
     var svg = ReactDOM.findDOMNode(this.refs.ourSVG);
@@ -44,8 +48,15 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // We should avoid using findDOMNode if possible (https://facebook.github.io/react/docs/top-level-api.html), but it may be inevitable here.
   }
 
+  updateTreeData(newSchema) {
+    console.log('updating tree');
+      this.setState({
+        treeData: newSchema
+      })
+  }
+
   render() {
-    console.log('rendering HalfwayFinishedStructureAnimation');
+    console.log('rendering HalfwayFinished with', this.state.treeData);
     // How do we set treeData[0].x0 and treeData[0].y0? I believe this needs to happen before render (I shouldn't modify state in render.)
     // Right now, I'm manually setting these properties on treeStructure.js. In the future, I'll need to account for subsequent renders.
     // treeData[0].x0: this.height / 2,
@@ -104,6 +115,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 }
 
 HalfwayFinishedStructureAnimation.defaultProps = {
-  initialTreeData: treeData,
+  initialTreeData: treeData, // To start with an empty tree: [{}]
   initialMargin: {top: 0, right: 20, bottom: 0, left: 90}
 }
