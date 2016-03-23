@@ -1,3 +1,5 @@
+/* Note from Isaac: I've kept this file for reference in case we want to steal any of Skeleton's styling. */
+
 /*
 * Skeleton V2.0.4
 * Copyright 2014, Dave Gamache
@@ -84,9 +86,9 @@ footer {
   border-radius: 1rem;
 }
 #Terminal {
-  /*min-height: 4rem;*/
-  background-color: lightgray;
-  padding-left: 0!important;
+  min-height: 40rem;
+  background-color: black;
+  padding: 0!important;
 }
 
 .marker {

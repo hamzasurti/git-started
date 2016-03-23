@@ -2,17 +2,19 @@ import React, {Component} from 'react';
 
 export default class Lesson extends Component {
 
+  handleClick() {
+    this.props.hideLesson();
+  }
+
+  // The image is from https://www.iconfinder.com/icons/118584/x_icon#size=32
   render() {
+
     return (
       <div id='Lesson'>
-        <em>Slide {this.props.slideNumber} of {this.props.totalNumberOfSlides}</em>
+        <img src='assets/x-icon.png' alt='Click here to close this tutorial' style={{float: 'right'}} onClick={this.handleClick.bind(this)}/>
+        <em>Slide {this.props.slideNumber + 1} of {this.props.totalNumberOfSlides}</em>
       	{this.props.lessonText}
       </div>
     )
   }
 }
-
-// Isaac: I added the 'em' tag above for testing only.
-
-// Should I show the lesson name somewhere?
-// <p>For testing only: Slide #{this.props.slideNumber}</p>
