@@ -22,41 +22,25 @@ const webdriver = require('selenium-webdriver');
 // mocha webdriver.js
 
 describe("4 Main React Components Render onto DOM", function(){
-  var driver = new webdriver.Builder()
-    .usingServer('http://localhost:9515')
-    .withCapabilities({chromeOptions: {
-      // Here is the path to your Electron binary.
-      binary: 'node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron'}})
-    .forBrowser('electron')
-    .build();
-
-  it('Animation element must render', function(){
-    var AnimationElem = driver.findElements(webdriver.By.id('Animation'))
-      .then(function(value){
-        assert(AnimationElem).to.equal(!null);
-      });
+  beforeEach(function(){
+    var driver = new webdriver.Builder()
+      .usingServer('http://localhost:9515')
+      .withCapabilities({chromeOptions: {
+        // Here is the path to your Electron binary.
+        binary: 'node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron'}})
+      .forBrowser('electron')
+      .buildAsync();
   })
 
-  it('Terminal element must render', function(){
-    var TerminalElem = driver.findElements(webdriver.By.id('Terminal'))
+  it('Animation element must render', function(done){
+    driver.getElement(webdriver.By.id("Animation"))
       .then(function(value){
-        assert(TerminalElem).to.equal(!null);
-      });
+        console.log(value)
+        done();
+      })
   })
 
-  it('Dashboard element must render', function(){
-    var DashElem = driver.findElements(webdriver.By.id('Dashboard'))
-      .then(function(value){
-        assert(DashElem).to.equal(!null);
-      });
-  })
 
-  it('Lesson element must render', function(){
-    var LessonElem = driver.findElements(webdriver.By.id('Lesson'))
-      .then(function(value){
-        assert(LessonElem).to.equal(!null);
-      });
-  })
 
 // driver.wait(function() {
 //     return driver.getTitle().then(function(title) {
@@ -64,6 +48,6 @@ describe("4 Main React Components Render onto DOM", function(){
 //       console.log(1)
 //     });
 // }, 1000);
-driver.quit();
+// driver.quit();
 
 })
