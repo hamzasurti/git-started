@@ -22,9 +22,9 @@ export default class Animation extends Component {
     var selectedAnimation;
     var gitStyle = {
       borderBottom: '1px solid black',
-      padding: '1rem'
+      padding: '2px 2px 0px 2px'
      };
-    var structureStyle = {padding: '1rem'};
+    var structureStyle = {padding: '2px 2px 0px 2px'};
 
     if (this.props.structureAnimationVisible) {
       // What to show for structure Animation
@@ -41,7 +41,7 @@ export default class Animation extends Component {
     return (
       <div id='Animation'>
         <div className='add-padding'>
-          <div style={{float: 'right', border: '1px solid black', textAlign: 'center', marginBottom: '1rem'}}>
+          <div style={{float: 'right', border: '1px solid black', textAlign: 'center'}}>
             <div style={gitStyle} onClick={this.showGit.bind(this)}>
               <img src='assets/git-icon.png' alt='Git view' height='12' width='12'/>
             </div>

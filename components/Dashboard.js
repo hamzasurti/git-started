@@ -150,7 +150,7 @@ export default class Dashboard extends Component {
       <div id='Dashboard' style={{height: '100%', width: '100%'}}>
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
-						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
+						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)} height='12px' width='12px'/>
 						<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
 					</div>
 				</div>
