@@ -8,25 +8,30 @@ export default class Sidebar extends Component {
   }
 
   render() {
+    var buttonStyle = {textAlign: 'left'};
+    var textStyle = {paddingLeft: '16px'};
 
-    var lessons = this.props.lessonNames.map((lessonName, index) => {
+    var lessons = this.props.lessonInfo.map((lesson, index) => {
+      var image = <div style={{float: 'left', paddingTop: '2px', paddingBottom: '2px'}}><img src={lesson.iconPath} alt='' height='12px' width='12px' /></div>;
       // How to render the current lesson
       if (this.props.lessonNumber === index && this.props.lessonVisible) {
         return (
-          <li key={index}>
-            <strong>
-              {lessonName}
-            </strong>
-          </li>
+          <button key={index} style={buttonStyle}>
+            {image}
+            <div style={textStyle}>
+              <strong>{lesson.name}</strong>
+            </div>
+          </button>
         )
       // How to render all other lessons
       } else {
         return (
-          <li key={index}>
-            <a href='#' onClick={this.handleClick.bind(this, index)}>
-              {lessonName}
-            </a>
-          </li>
+          <button key={index} style={buttonStyle} onClick={this.handleClick.bind(this, index)}>
+            {image}
+            <div style={textStyle}>
+              <span>{lesson.name}</span>
+            </div>
+          </button>
         )
       }
     });
@@ -35,9 +40,7 @@ export default class Sidebar extends Component {
       <div style={this.props.style} id='Sidebar'>
         <img src='' alt='Awesome logo here!' />
         <p>Choose a tutorial:</p>
-        <ul>
-          {lessons}
-        </ul>
+        {lessons}
       </div>
     )
   }
