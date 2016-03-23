@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import GitAnimation from './GitAnimation';
+
+// Notes from Isaac
+// I've included two options here: StructureAnimation (which is what we're currently using) and IsaacsHalfwayFinishedComponent (which we're not currently using).
+// To toggle between them, simply comment out one of the two lines below.
 import StructureAnimation from './StructureAnimation';
+// import StructureAnimation from './HalfwayFinishedStructureAnimation';
 
 export default class Animation extends Component {
 
@@ -34,7 +39,7 @@ export default class Animation extends Component {
     }
 
     return (
-      <div id='Animation' style={{overflow: 'auto'}}>
+      <div id='Animation'>
         <div className='add-padding'>
           <div style={{float: 'right', border: '1px solid black', textAlign: 'center', marginBottom: '1rem'}}>
             <div style={gitStyle} onClick={this.showGit.bind(this)}>

@@ -116,57 +116,30 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var sidebarContainerStyle, sidebarStyle, sidebarButtonStyle, mainStyle, leftStyle, terminalStyle;
+		var sidebarStyle = {};
+		var sidebarContainerStyle = {float: 'left', height: '100%', backgroundColor: 'lightGray'};
+		var mainStyle = {float: 'left', height: '100%'};
+		var upperHalfStyle = {height: '50%', width: '100%'};
+		var lowerHalfStyle = {height: '50%', width: '100%'};
+		var leftStyle = {float: 'left', height: '50%'};
+		var terminalStyle = {float: 'left', height: '100%'};
 
 		if (this.state.sidebarVisible) {
-			sidebarContainerStyle = {
-				width: '20%',
-				float: 'left'
-			};
-			mainStyle = {
-				width: '80%',
-				float: 'left'
-			};
-			sidebarStyle = {
-				display: 'block'
-			}
+				sidebarContainerStyle.width = '20%';
+				mainStyle.width = '80%';
+				sidebarStyle.display = 'block';
 		} else {
-			sidebarContainerStyle = {
-				width: '10%',
-				float: 'left'
-			};
-			mainStyle = {
-				width: '90%',
-				float: 'left'
-			};
-			sidebarStyle = {
-				display: 'none'
-			}
+				sidebarContainerStyle.width = '10%';
+				mainStyle.width = '90%';
+				sidebarStyle.display = 'none';
 		}
 
 		if (this.state.lessonVisible) {
-			sidebarButtonStyle = {
-				display: 'inline'
-			};
-			leftStyle = {
-				width: '25%',
-				float: 'left'
-			};
-			terminalStyle = {
-				width: '75%',
-				float: 'left'
-			}
+			leftStyle.width = '25%';
+			terminalStyle.width = '75%';
 		} else {
-			sidebarButtonStyle = {
-				display: 'none'
-			};
-			leftStyle = {
-				display: 'none'
-			};
-			terminalStyle = {
-				width: '100%',
-				float: 'left'
-			}
+			leftStyle.display = 'none';
+			terminalStyle.width = '100%';
 		}
 
 		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
@@ -174,29 +147,29 @@ export default class Dashboard extends Component {
 
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
-      <div id='Dashboard' >
+      <div id='Dashboard' style={{height: '100%', width: '100%'}}>
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<div className='add-padding'>
 						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} buttonStyle={sidebarButtonStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
+						<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
 					</div>
 				</div>
 				<div id='main' style={mainStyle}>
-					<div>
-						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)}/>
-						<div>
-			        <div id='left' style={leftStyle}>
-								<div className='add-padding'>
-				        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText}
-									hideLesson={this.hideLesson.bind(this)} />
-				        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
-									<p><strong>{this.state.errorMessage}</strong></p>
-								</div>
-							</div>
-							<Terminal style={terminalStyle} />
-		      	</div>
+					<div id='upper-half' style={upperHalfStyle}>
+						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)} />
 					</div>
-	      </div>
+					<div id='lower-half' style={lowerHalfStyle}>
+		        <div id='left' style={leftStyle}>
+							<div className='add-padding'>
+			        	<Lesson	totalNumberOfSlides={this.state.totalNumberOfSlides} slideNumber={this.state.slideNumber} lessonText={this.state.lessonText}
+								hideLesson={this.hideLesson.bind(this)} />
+			        	<button onClick={this.handleClick.bind(this)}>{this.state.buttonText}</button>
+								<p><strong>{this.state.errorMessage}</strong></p>
+							</div>
+						</div>
+						<Terminal style={terminalStyle} />
+					</div>
+		    </div>
 			</div>
     )
   }

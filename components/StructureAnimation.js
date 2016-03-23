@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import treeData from './../AnimationData/treeStructure';
+
 var d3 = require('d3');
 var ReactDOM = require('react-dom');
 var _ = require('lodash');
+
+// StructureAnimation is based on this blog post:
+// http://javascript.tutorialhorizon.com/2014/09/08/render-a-d3js-tree-as-a-react-component/.
+// The problem here is that D3 is creating DOM elements without React's knowledge, using the renderTree component at the bottom of this page.
 
 export default class StructureAnimation extends Component {
 
