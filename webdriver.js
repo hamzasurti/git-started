@@ -19,7 +19,7 @@ const webdriver = require('selenium-webdriver');
 // run this command in terminal before running webdriver
 // node_modules/chromedriver/bin/chromedriver
 // then, run
-// node webdriver.js
+// mocha webdriver.js
 
 describe("4 Main React Components Render onto DOM", function(){
   var driver = new webdriver.Builder()
