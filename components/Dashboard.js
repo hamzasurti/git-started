@@ -116,7 +116,7 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var sidebarStyle = {};
+		var sidebarStyle = {padding: '8px'};
 		var sidebarContainerStyle = {float: 'left', height: '100%', backgroundColor: 'lightGray'};
 		var mainStyle = {float: 'left', height: '100%'};
 		var upperHalfStyle = {height: '50%', width: '100%'};
@@ -149,10 +149,8 @@ export default class Dashboard extends Component {
     return (
       <div id='Dashboard' style={{height: '100%', width: '100%'}}>
 				<div id='sidebar-container' style={sidebarContainerStyle}>
-					<div className='add-padding'>
-						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)} height='12px' width='12px'/>
-						<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
-					</div>
+					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)} height='12px' width='12px' style={{padding: '8px'}}/>
+					<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
 				</div>
 				<div id='main' style={mainStyle}>
 					<div id='upper-half' style={upperHalfStyle}>
