@@ -24,8 +24,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     this.state = {
       treeData: props.initialTreeData,
       margin: props.initialMargin,
-      height: 200 - props.initialMargin.top - props.initialMargin.bottom,
-      width: 660 - props.initialMargin.right - props.initialMargin.left,
       treeHeight: props.initialTreeHeight,
       treeWidth: props.initialTreeWidth
     }
@@ -56,28 +54,47 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // If we don't specify a size for the tree, it collapses.
       .size([this.state.treeHeight, this.state.treeWidth]);
 
-    // Create diagonal for links?
+    // The next line creates a diagonal generator, a type of path data generator.
     var diagonal = d3.svg.diagonal()
+    // Isaac: I don't completely understand the projection yet.
       .projection(function(d) { return [d.y, d.x]; });
 
-    // Create an array of nodes. We will pass one node to each Tree as props.
-    // removed .reverse() from end of next line
+    // The next line creates(?) and returns an array of nodes associated with the specified root node (this.state.treeData[0]).
+    // Each node has several properties.
+    // D3 tree nodes always have parent, child, depth, x, and y properties.
+    // It looks like x values range from 0 to 200 and y values range from 0 to 550.
+    // For our use case, we've added level, name, and value properties. I'm not sure what level and value are or how we're using them.
+    // We will pass one node from this array to each Tree as props.data.
+    // ***Do we want to end the next line with reverse to put the root node at the end? We may want to put the root first so that we can grab its initial position.
     var nodes = tree.nodes(this.state.treeData[0]),
+      // This line creates and returns an array of objects representing all parent-child links in the nodes array we just created.
       linkSelection = tree.links(nodes);
+      console.log('nodes', nodes);
 
-    var root = nodes[nodes.length - 1];
-    var rootX0 = root.x;
-    var rootY0 = root.y;
+    // I think we want to use x0 and y0 to set initial positions.
+    // var root = nodes[nodes.length - 1];
+    // var rootX0 = root.x;
+    // var rootY0 = root.y;
 
-    nodes.forEach(function(d, i) {
+    var that = this;
+
+    nodes.forEach(function(d) {
+      // Update the node's y-coordinate based on its depth.
       d.y = d.depth * 180;
-      // d.id = i + 1; // I'm trying to use d.name rather than d.id. If I use i + 1, I'm assigning an id (which will later become a React key) based just on the node's position in the array. node.name isn't perfect (there could be duplicates), but it's better.
       // I don't think the next two lines are quite right; they will need to change eventually.
       d.x0 = d.x;
       d.y0 = d.y;
       // I added the following two properties.
-      d.rootX0 = rootX0;
-      d.rootY0 = rootY0;
+      // d.rootX0 = rootX0;
+      // d.rootY0 = rootY0;
+      // Taking another approach...
+      if (d.parent) {
+        d.rootX0 = d.parent.x0;
+        d.rootY0 = d.parent.y0;
+      } else {
+        d.rootX0 = 0;
+        d.rootY0 = that.state.treeHeight/2;
+      }
     });
 
     // I think it makes sense to the use target.name as an id, because no two links should ever point to the same target.
@@ -90,7 +107,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: translationValue');
+    console.log('Rendering. Latest update: added that');
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
