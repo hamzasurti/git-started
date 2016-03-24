@@ -45,7 +45,7 @@ treeVisualization.update = (selection, duration) => {
 export default class Tree extends Component {
 
   componentDidMount() {
-    console.log(`${this.props.data.name} did mount - revised`);
+    console.log(`${this.props.data.name} did mount`);
   this.d3Node = d3.select(ReactDOM.findDOMNode(this)); // ReactDOM.findDOMNode(this) returns <g.Tree>
   this.d3Node.datum(this.props.data)
     .call(treeVisualization.enter, this.props.duration);
@@ -68,13 +68,10 @@ export default class Tree extends Component {
   //  return true;
   // }
   //
-  // componentDidUpate() {
-  //  this.d3Node.datum(this.props.data)
-  //   .call(treeVisualization.update);
-  // }
-
   componentDidUpdate() {
-    console.log(`${this.props.data.name} did update`);
+    console.log(`***${this.props.data.name} did update`);
+   this.d3Node.datum(this.props.data)
+    .call(treeVisualization.enter, this.props.duration); // change to .update
   }
 
   componentWillUnmount() {
