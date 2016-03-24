@@ -12,7 +12,8 @@ import {lesson1} from './../lessons/git-on-your-computer';
 var lessons = [
 	{
 		name: 'Git on your computer',
-		content: lesson1
+		content: lesson1,
+		iconPath: 'assets/git-icon.png'
 	}
 ];
 
@@ -116,22 +117,28 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var sidebarStyle = {};
-		var sidebarContainerStyle = {float: 'left', height: '100%', backgroundColor: 'lightGray'};
-		var mainStyle = {float: 'left', height: '100%'};
+		var sidebarStyle = {padding: '8px'};
+		var sidebarContainerStyle = {height: '100%', backgroundColor: 'lightGray'};
+		var mainStyle = {height: '100%'};
 		var upperHalfStyle = {height: '50%', width: '100%'};
 		var lowerHalfStyle = {height: '50%', width: '100%'};
-		var leftStyle = {float: 'left', height: '50%'};
+		// Isaac: I'm not sure whether overflow should be auto or scroll.
+		var leftStyle = {float: 'left', height: '100%', overflow: 'scroll'};
 		var terminalStyle = {float: 'left', height: '100%'};
 
 		if (this.state.sidebarVisible) {
-				sidebarContainerStyle.width = '20%';
-				mainStyle.width = '80%';
-				sidebarStyle.display = 'block';
+			sidebarContainerStyle.float = 'left';
+			sidebarContainerStyle.width = '20%';
+			mainStyle.float = 'left';
+			mainStyle.width = '80%';
+			sidebarStyle.display = 'block';
 		} else {
-				sidebarContainerStyle.width = '10%';
-				mainStyle.width = '90%';
-				sidebarStyle.display = 'none';
+			sidebarContainerStyle.position = 'absolute';
+			sidebarContainerStyle.width = '28px'; // was 10%
+			mainStyle.position = 'absolute';
+			mainStyle.left = '28px';
+			mainStyle.right = 0;
+			sidebarStyle.display = 'none';
 		}
 
 		if (this.state.lessonVisible) {
@@ -143,16 +150,19 @@ export default class Dashboard extends Component {
 		}
 
 		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
-		var lessonNames = lessons.map(lesson => lesson.name);
+		var lessonInfo = lessons.map(lesson => {
+			return {
+				name: lesson.name,
+				iconPath: lesson.iconPath
+			}
+		});
 
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' style={{height: '100%', width: '100%'}}>
 				<div id='sidebar-container' style={sidebarContainerStyle}>
-					<div className='add-padding'>
-						<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)}/>
-						<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonNames={lessonNames} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
-					</div>
+					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)} height='12px' width='12px' style={{padding: '8px'}}/>
+					<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonInfo={lessonInfo} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
 				</div>
 				<div id='main' style={mainStyle}>
 					<div id='upper-half' style={upperHalfStyle}>
