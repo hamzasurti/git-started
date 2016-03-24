@@ -23,7 +23,7 @@ export default class Terminal extends Component {
 
   renderTerm(elem){
     var columns = (document.getElementById('Terminal').offsetWidth / 6.71)-1;
-    var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3); // Need to revise this?
+    var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3);
     console.log('hello');
     const term = new Term({ // creates a new term.js terminal
       cursorBlink: true,
