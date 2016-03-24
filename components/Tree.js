@@ -41,6 +41,7 @@ treeVisualization.enter = (selection, duration) =>{
 export default class Tree extends Component {
 
   componentDidMount() {
+    console.log('Tree.cDM running');
   this.d3Node = d3.select(ReactDOM.findDOMNode(this)); // ReactDOM.findDOMNode(this) returns <g.Tree>
   this.d3Node.datum(this.props.data)
     .call(treeVisualization.enter, this.props.duration);
@@ -52,15 +53,16 @@ export default class Tree extends Component {
   // Update node attributes
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //  if (nextProps.data.update) {
-  //   // use d3 to update component
-  //   this.d3Node.datum(nextProps.data)
-  //    .call(treeVisualization.update);
-  //   return false;
-  //  }
-  //  return true;
-  // }
+  shouldComponentUpdate(nextProps) {
+    console.log('sCU running for', nextProps); // currently, this function isn't running at all
+   if (nextProps.data.update) { // what is nextProps.data.update?
+    // use d3 to update component
+    this.d3Node.datum(nextProps.data)
+     .call(treeVisualization.update);
+    return false;
+   }
+   return true;
+  }
   //
   // componentDidUpate() {
   //  this.d3Node.datum(this.props.data)
