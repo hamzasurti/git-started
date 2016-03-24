@@ -25,19 +25,11 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     }
   }
 
-  // Should we size the svg and main g here or earlier? This function is called after all the Tree.componentDidMounts.
+  // This function is called after all the Tree and Link componentDidMount functions have been called.
   componentDidMount() {
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTreeData(arg);
     })
-
-    // Can we use selection.select for these?
-    // Update our svg's width and height.
-    var svg = ReactDOM.findDOMNode(this.refs.ourSVG);
-    // Do we need the d3.select? Or can we just call .attr on svg?
-    d3.select(svg)
-      .attr("width", this.state.width + this.state.margin.right + this.state.margin.left)
-      .attr("height", this.state.height + this.state.margin.top + this.state.margin.bottom);
 
     // Update our main g
     var g = ReactDOM.findDOMNode(this.refs.ourMainG);
@@ -56,17 +48,9 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   render() {
-    console.log('rendering. Most recent change: restored initial treeData');
-    // How do we set treeData[0].x0 and treeData[0].y0? I believe this needs to happen before render (I shouldn't modify state in render.)
-    // Right now, I'm manually setting these properties on treeStructure.js. In the future, I'll need to account for subsequent renders.
-    // treeData[0].x0: this.height / 2,
-    // treeData[0].y0: 0,
+    var duration = 450; // We may want to make this a prop.
 
-    var duration = 450;
-
-    // Create a tree layout of the specified size
-    // (Does this mean we're creating a new tree on each render? I think it's OK to run these D3 functions since they're aren't creating or removing DOM elements.)
-    // (Should we declare tree here or in this.state?)
+    // Create a tree layout of the specified size (whenever this component renders)
     var tree = d3.layout.tree()
       .size([this.state.height, this.state.width]);
 
@@ -104,9 +88,14 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
+    console.log('Latest update: ');
+    // Do I need to set SVG height below? Is that even possible?
+
     return(
+      // Isaac: This StackOverflow response helped me size the svg:
+      // http://stackoverflow.com/questions/8919076/how-to-make-a-svg-element-expand-or-contract-to-its-parent-container
       <div id='Structure-Animation'>
-        <svg ref='ourSVG'>
+        <svg width='100%' height='100%' viewBox='0 0 660 200' preserveAspectRatio='none'>
           <g ref='ourMainG'>
             {links}
             {trees}
