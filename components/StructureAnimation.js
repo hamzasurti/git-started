@@ -36,7 +36,6 @@ export default class StructureAnimation extends Component {
   }
 
   updateTree(newSchema){
-    // console.log('updating tree with', newSchema);
     this.lastState = this.state
     this.setState({
       treeData: newSchema
@@ -44,8 +43,6 @@ export default class StructureAnimation extends Component {
   }
 
   render() {
-    // console.log('rendering StructureAnimation with', this.state.treeData);
-
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTree(arg);
     })
@@ -94,8 +91,6 @@ var renderTree = function(treeData, svgDomNode) {
     update(root);
 
     function update(source) {
-      console.log('Last change: commented out nodeEnter and logged nodeUpdate');
-
       // Compute the new tree layout.
       var nodes = tree.nodes(root).reverse(),
         links = tree.links(nodes);
@@ -129,7 +124,6 @@ var renderTree = function(treeData, svgDomNode) {
       var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-      console.log(nodeUpdate);
 
       nodeUpdate.select("circle")
         .attr("r", function(d) { return d.value ? d.value : 5; })

@@ -142,8 +142,8 @@ export default class Dashboard extends Component {
 		}
 
 		if (this.state.lessonVisible) {
-			leftStyle.width = '25%';
-			terminalStyle.width = '75%';
+			leftStyle.width = '35%';
+			terminalStyle.width = '65%';
 		} else {
 			leftStyle.display = 'none';
 			terminalStyle.width = '100%';
