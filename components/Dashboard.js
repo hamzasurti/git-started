@@ -137,7 +137,7 @@ export default class Dashboard extends Component {
 			sidebarContainerStyle.width = '28px'; // was 10%
 			mainStyle.position = 'absolute';
 			mainStyle.left = '28px';
-			mainStyle.right = 0;
+			mainStyle.right = 0; 
 			sidebarStyle.display = 'none';
 		}
 

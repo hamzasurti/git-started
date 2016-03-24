@@ -2,6 +2,7 @@
 
 const exec = require('child_process').exec;
 const simpleGit = require('simple-git');
+const path = require('path')
 
 
 module.exports = {
@@ -47,12 +48,15 @@ module.exports = {
   				console.log(err.toString());
   			} else {
   				var stdoutArr = stdout.split('\n');
-  				var current = pwd.replace(/(.*[\\\/])/,'')
+          var currentDirectoryName = path.parse(pwd).name;
   				var modifiedFiles;
+          simpleGit(pwd).diff((err,i) => {
+            console.log('THE Branch: ===>',i);
+          })
           // git command to check git status
   				simpleGit(pwd).status((err, i) => {
   					modifiedFiles = i.modified;
-  					var schema = that.schemaMaker(stdoutArr,current, modifiedFiles);
+  					var schema = that.schemaMaker(stdoutArr,currentDirectoryName, modifiedFiles);
             process.send ? process.send({schema: schema}) : asyncWaterfallCallbackcallback(null, schema);
             return schema;
   				})

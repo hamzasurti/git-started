@@ -40,16 +40,17 @@ app.on('ready', () => {
 
 
 
-function initialLoadEvents(){
-	// when window finished loading, send current directory and animation structure
-	mainWindow.webContents.on('did-finish-load', () => {
-		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
-		async.waterfall([
-			async.apply(animationDataSchema.DataSchema, process.env.HOME),
-			(data) => {mainWindow.webContents.send('direc-schema', data)}
-		]);
-	});
-}
+// function initialLoadEvents(){
+// 	// when window finished loading, send current directory and animation structure
+// 	mainWindow.webContents.on('did-finish-load', () => {
+// 		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
+// 		console.log('PROCESENVHOME++++>',process.env.HOME);
+// 		async.waterfall([
+// 			async.apply(animationDataSchema.DataSchema, process.env.HOME),
+// 			(data) => {mainWindow.webContents.send('direc-schema', data)}
+// 		]);
+// 	});
+// }
 
 function ptyChildProcess(forkProcess){
 
