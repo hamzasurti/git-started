@@ -7,7 +7,7 @@ import Link from './Link';
 
 var d3 = require('d3');
 var ReactDOM = require('react-dom');
-var _ = require('lodash');
+var _ = require('lodash'); // Are we using this?
 
 // My goal in creating HalfwayFinishedStructureAnimation was to make React responsible for DOM structure (adding and removing elements) and to make D3 responsible for styling, as described in this blog post:
 // https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3#.ztcxqykek

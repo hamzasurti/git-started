@@ -4,8 +4,8 @@ import GitAnimation from './GitAnimation';
 // Notes from Isaac
 // I've included two options here: StructureAnimation (which is what we're currently using) and IsaacsHalfwayFinishedComponent (which we're not currently using).
 // To toggle between them, simply comment out one of the two lines below.
-import StructureAnimation from './StructureAnimation';
-// import StructureAnimation from './HalfwayFinishedStructureAnimation';
+// import StructureAnimation from './StructureAnimation';
+import StructureAnimation from './HalfwayFinishedStructureAnimation';
 
 export default class Animation extends Component {
 
