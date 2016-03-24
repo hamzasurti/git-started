@@ -4,6 +4,8 @@ var ReactDOM = require('react-dom');
 
 var treeVisualization = {};
 
+// It would be great to fix the tabs on this page!
+
 // Set the attributes for nodes that are new to the DOM
 treeVisualization.enter = (selection, duration) =>{
   // I would like to understand this translation better.
@@ -12,9 +14,8 @@ treeVisualization.enter = (selection, duration) =>{
 
   selection.select("circle")
     .attr("r", 1e-6)
-    // Right now, I don't think our nodes have the d._children property.
+    // Right now, I don't think our nodes have the d._children property (because I didn't add it).
     .style("fill", function(d) {
-      console.log(d);
       return d._children ? "lightsteelblue" : "#fff"; });
 
   selection.select("text")
@@ -64,7 +65,6 @@ export default class Tree extends Component {
   // }
   //
   componentDidUpdate() {
-    console.log(`Updated: ${this.props.data.name}`);
    this.d3Node.datum(this.props.data)
     .call(treeVisualization.update, this.props.duration);
   }

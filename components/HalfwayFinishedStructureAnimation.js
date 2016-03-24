@@ -56,7 +56,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   render() {
-    console.log('rendering. Most recent change: comments and cleaning');
+    console.log('rendering. Most recent change: restored initial treeData');
     // How do we set treeData[0].x0 and treeData[0].y0? I believe this needs to happen before render (I shouldn't modify state in render.)
     // Right now, I'm manually setting these properties on treeStructure.js. In the future, I'll need to account for subsequent renders.
     // treeData[0].x0: this.height / 2,
@@ -94,10 +94,11 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       d.rootY0 = rootY0;
     });
 
-    var links; // removing links for testing
-    // var links = linkSelection && linkSelection.map((link) => {
-    //   return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
-    // });
+    // I think it makes sense to the use target.name as an id, because no two links should ever point to the same target.
+    // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
+    var links = linkSelection && linkSelection.map((link) => {
+      return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
+    });
 
     var trees = nodes && nodes.map((node) => {
       return (<Tree key={node.name} data={node} duration={duration} />);
@@ -117,6 +118,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 }
 
 HalfwayFinishedStructureAnimation.defaultProps = {
-  initialTreeData: [{}], // treeData, // To start with an empty tree: [{}]
+  initialTreeData: treeData, // To start with an empty tree: [{}]
   initialMargin: {top: 0, right: 20, bottom: 0, left: 90}
 }
