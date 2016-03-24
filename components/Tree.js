@@ -74,9 +74,9 @@ export default class Tree extends Component {
   // }
   //
   componentDidUpdate() {
-    console.log(`***${this.props.data.name} did update`);
+    console.log(`Updated: ${this.props.data.name}`);
    this.d3Node.datum(this.props.data)
-    .call(treeVisualization.enter, 900); // change to .update, this.props.duration
+    .call(treeVisualization.update, this.props.duration * 2); // remove '*2'
   }
 
   componentWillUnmount() {

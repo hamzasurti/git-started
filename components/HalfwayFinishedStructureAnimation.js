@@ -56,7 +56,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   render() {
-    console.log('rendering. Most recent change: slowed updates');
+    console.log('rendering. Most recent change: now updated nodes should actually move correctly');
     // How do we set treeData[0].x0 and treeData[0].y0? I believe this needs to happen before render (I shouldn't modify state in render.)
     // Right now, I'm manually setting these properties on treeStructure.js. In the future, I'll need to account for subsequent renders.
     // treeData[0].x0: this.height / 2,
@@ -70,7 +70,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     var tree = d3.layout.tree()
       .size([this.state.height, this.state.width]);
 
-    // Create diagonal?
+    // Create diagonal for links?
     var diagonal = d3.svg.diagonal()
       .projection(function(d) { return [d.y, d.x]; });
 
@@ -99,17 +99,12 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     //   return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
     // });
 
-    var treesRendered = '';
-
     var trees = nodes && nodes.map((node) => {
-      treesRendered += node.name + ', ';
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('treesRendered', treesRendered);
-
     return(
-      <div id='Animation'>
+      <div id='Structure-Animation'>
         <svg ref='ourSVG'>
           <g ref='ourMainG'>
             {links}
