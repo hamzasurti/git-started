@@ -13,6 +13,10 @@ var _ = require('lodash'); // Are we using this?
 // https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3#.ztcxqykek
 // I didn't get all the way there, but I think I'm on the right track.
 
+// We still need to handle window resizes. Here are some useful resources:
+// http://eyeseast.github.io/visible-data/2013/08/28/responsive-charts-with-d3/
+// http://bl.ocks.org/mbostock/3019563
+
 export default class HalfwayFinishedStructureAnimation extends Component {
 
   constructor(props) {
@@ -21,7 +25,9 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       treeData: props.initialTreeData,
       margin: props.initialMargin,
       height: 200 - props.initialMargin.top - props.initialMargin.bottom,
-      width: 660 - props.initialMargin.right - props.initialMargin.left
+      width: 660 - props.initialMargin.right - props.initialMargin.left,
+      treeHeight: props.initialTreeHeight,
+      treeWidth: props.initialTreeWidth
     }
   }
 
@@ -31,20 +37,15 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       this.updateTreeData(arg);
     })
 
-    // Update our main g
-    var g = ReactDOM.findDOMNode(this.refs.ourMainG);
-    // Again, do we need the d3.select?
-    d3.select(g)
-      .attr("transform", "translate(" + this.state.margin.left + "," + this.state.margin.top + ")");
-
-    // We should avoid using findDOMNode if possible (https://facebook.github.io/react/docs/top-level-api.html), but it may be inevitable here.
+    // Reset the tree height and width if needed.
+    // Would it be better to use a ref rather than an id?
+    var upperHeight = document.getElementById('upper-half').offsetHeight;
   }
 
   updateTreeData(newSchema) {
-    // console.log('updating tree with', newSchema);
       this.setState({
         treeData: newSchema
-      })
+      });
   }
 
   render() {
@@ -52,7 +53,8 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     // Create a tree layout of the specified size (whenever this component renders)
     var tree = d3.layout.tree()
-      .size([this.state.height, this.state.width]);
+    // If we don't specify a size for the tree, it collapses.
+      .size([this.state.treeHeight, this.state.treeWidth]);
 
     // Create diagonal for links?
     var diagonal = d3.svg.diagonal()
@@ -88,15 +90,17 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Latest update: ');
-    // Do I need to set SVG height below? Is that even possible?
+    console.log('Rendering. Latest update: translationValue');
 
+    var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
+
+    // Do I need to set SVG height below? Is that even possible? Or will the SVG resize to fit the inner g's inside it? (It doesn't look like it's expanding to fit the tree layout.)
     return(
       // Isaac: This StackOverflow response helped me size the svg:
       // http://stackoverflow.com/questions/8919076/how-to-make-a-svg-element-expand-or-contract-to-its-parent-container
       <div id='Structure-Animation'>
         <svg width='100%' height='100%' viewBox='0 0 660 200' preserveAspectRatio='none'>
-          <g ref='ourMainG'>
+          <g ref='ourMainG' transform={translationValue}>
             {links}
             {trees}
           </g>
@@ -108,5 +112,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
 HalfwayFinishedStructureAnimation.defaultProps = {
   initialTreeData: treeData, // To start with an empty tree: [{}]
-  initialMargin: {top: 0, right: 20, bottom: 0, left: 90}
+  initialMargin: {top: 0, right: 20, bottom: 0, left: 90},
+  initialTreeHeight: 200,
+  initialTreeWidth: 550
 }

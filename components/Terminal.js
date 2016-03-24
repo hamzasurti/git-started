@@ -13,12 +13,11 @@ export default class Terminal extends Component {
   }
 
   handleResize(e) {
-  var columns = (document.getElementById('Terminal').offsetWidth/ 6.71)-1;
-
+    var columns = (document.getElementById('Terminal').offsetWidth/ 6.71)-1;
   }
 
   componentWillUnmount() {
-  document.getElementById('Terminal').removeEventListener('resize', this.handleResize);
+    document.getElementById('Terminal').removeEventListener('resize', this.handleResize);
   }
 
   renderTerm(elem){
