@@ -40,12 +40,17 @@ treeVisualization.enter = (selection, duration) =>{
 
 treeVisualization.update = (selection, duration) => {
   // Move the tree here. First make cWU or something call it.
+  var transition = selection.transition()
+    .duration(duration)
+    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  transition.select("circle")
+    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 }
 
 export default class Tree extends Component {
 
   componentDidMount() {
-    console.log(`${this.props.data.name} did mount`);
   this.d3Node = d3.select(ReactDOM.findDOMNode(this)); // ReactDOM.findDOMNode(this) returns <g.Tree>
   this.d3Node.datum(this.props.data)
     .call(treeVisualization.enter, this.props.duration);
@@ -71,11 +76,10 @@ export default class Tree extends Component {
   componentDidUpdate() {
     console.log(`***${this.props.data.name} did update`);
    this.d3Node.datum(this.props.data)
-    .call(treeVisualization.enter, this.props.duration); // change to .update
+    .call(treeVisualization.enter, 900); // change to .update, this.props.duration
   }
 
   componentWillUnmount() {
-    console.log(`${this.props.data.name} will unmount`);
   }
 
   // I think I want to use this.props.data.name instead of this.props.name...
