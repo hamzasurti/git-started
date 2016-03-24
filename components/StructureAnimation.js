@@ -36,7 +36,7 @@ export default class StructureAnimation extends Component {
   }
 
   updateTree(newSchema){
-    console.log('updating tree with', newSchema);
+    // console.log('updating tree with', newSchema);
     this.lastState = this.state
     this.setState({
       treeData: newSchema
@@ -44,7 +44,7 @@ export default class StructureAnimation extends Component {
   }
 
   render() {
-    console.log('rendering StructureAnimation with', this.state.treeData);
+    // console.log('rendering StructureAnimation with', this.state.treeData);
 
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTree(arg);
@@ -94,6 +94,7 @@ var renderTree = function(treeData, svgDomNode) {
     update(root);
 
     function update(source) {
+      console.log('Last change: commented out nodeEnter and logged nodeUpdate');
 
       // Compute the new tree layout.
       var nodes = tree.nodes(root).reverse(),
@@ -123,12 +124,12 @@ var renderTree = function(treeData, svgDomNode) {
         .text(function(d) { return d.name; })
         .style("fill-opacity", 1e-6);
 
-      // Transition nodes to their new position.
+      // Transition nodes to their new position and make them visible.
+      // We need both nodeEnter and nodeUpdate in order to see the nodes (without nodeEnter, nothing is appended.)
       var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-
-      console.log('nodeUpdate', nodeUpdate);
+      console.log(nodeUpdate);
 
       nodeUpdate.select("circle")
         .attr("r", function(d) { return d.value ? d.value : 5; })
@@ -138,6 +139,7 @@ var renderTree = function(treeData, svgDomNode) {
         .style("fill-opacity", 1);
 
       // Transition exiting nodes to the parent's new position.
+      // I believe this is used only when the user clicks on a parent node to hide its children.
       var nodeExit = node.exit().transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })

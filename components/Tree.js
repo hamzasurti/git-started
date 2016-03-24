@@ -38,36 +38,48 @@ treeVisualization.enter = (selection, duration) =>{
     .style("fill-opacity", 1);
 }
 
+treeVisualization.update = (selection, duration) => {
+  // Move the tree here. First make cWU or something call it.
+}
+
 export default class Tree extends Component {
 
   componentDidMount() {
-    console.log('Tree.cDM running');
+    console.log(`${this.props.data.name} did mount - revised`);
   this.d3Node = d3.select(ReactDOM.findDOMNode(this)); // ReactDOM.findDOMNode(this) returns <g.Tree>
   this.d3Node.datum(this.props.data)
     .call(treeVisualization.enter, this.props.duration);
-
-  // Do this stuff here? Or in helper function?
-  // Set root.x0 and root.y0
-  // Set data.y for each node
-  // Select g.Trees and bind them to nodes based on d.id? Have I already done this?
-  // Update node attributes
+  //
+  // // Do this stuff here? Or in helper function?
+  // // Set root.x0 and root.y0
+  // // Set data.y for each node
+  // // Select g.Trees and bind them to nodes based on d.id? Have I already done this?
+  // // Update node attributes
   }
-
-  shouldComponentUpdate(nextProps) {
-    console.log('sCU running for', nextProps); // currently, this function isn't running at all
-   if (nextProps.data.update) { // what is nextProps.data.update?
-    // use d3 to update component
-    this.d3Node.datum(nextProps.data)
-     .call(treeVisualization.update);
-    return false;
-   }
-   return true;
-  }
+  //
+  // shouldComponentUpdate(nextProps) {
+  //   console.log('sCU running for', nextProps); // currently, this function isn't running at all
+  //  if (nextProps.data.update) { // what is nextProps.data.update?
+  //   // use d3 to update component
+  //   this.d3Node.datum(nextProps.data)
+  //    .call(treeVisualization.update);
+  //   return false;
+  //  }
+  //  return true;
+  // }
   //
   // componentDidUpate() {
   //  this.d3Node.datum(this.props.data)
   //   .call(treeVisualization.update);
   // }
+
+  componentDidUpdate() {
+    console.log(`${this.props.data.name} did update`);
+  }
+
+  componentWillUnmount() {
+    console.log(`${this.props.data.name} will unmount`);
+  }
 
   // I think I want to use this.props.data.name instead of this.props.name...
   // I had the className 'Tree' before.
