@@ -21,8 +21,11 @@ ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
       process.send({
         data:data
       })
+
       var re = /\s[$]\s/g;
+			// var re;
       if (data.match(re)) {
+				console.log(data);
         var temp = data;
         temp = temp.replace(re,'');
         currDir = temp;

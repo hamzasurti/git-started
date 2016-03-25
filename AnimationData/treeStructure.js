@@ -2,7 +2,6 @@ export default [
   {
     "name": "Top Level",
     "value": 15,
-    "level": "darkblue",
     "children": [
       {
         "name": "Level 2: A",
