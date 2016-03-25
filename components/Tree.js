@@ -4,19 +4,15 @@ var ReactDOM = require('react-dom');
 
 var treeVisualization = {};
 
-// It would be great to fix the tabs on this page!
-
-// Set the attributes for nodes that are new to the DOM
+// Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
-  // I would like to understand this translation better.
-  selection.attr("transform", function(d) {
-      return "translate(" + d.y0 + "," + d.x0 + ")"; })
+  // Translate this node d.y0 units right and d.x0 units down.
+  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; })
 
   selection.select("circle")
     .attr("r", 1e-6)
     // Right now, I don't think our nodes have the d._children property (because I didn't add it).
-    .style("fill", function(d) {
-      return d._children ? "lightsteelblue" : "#fff"; });
+    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
   selection.select("text")
     .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
@@ -32,7 +28,6 @@ treeVisualization.enter = (selection, duration) =>{
 treeVisualization.update = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
-    // I'd like to understand this translation better too.
     .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
   transition.select("circle")
