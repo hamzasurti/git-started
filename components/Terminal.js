@@ -23,7 +23,7 @@ export default class Terminal extends Component {
 
   renderTerm(elem){
     var columns = (document.getElementById('Terminal').offsetWidth / 6.71)-1;
-    var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 17.5); // Need to revise this?
+    var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3);
     const term = new Term({ // creates a new term.js terminal
       cursorBlink: true,
       useStyle: true,
@@ -50,7 +50,7 @@ export default class Terminal extends Component {
     });
     window.addEventListener('resize',(e) => {
       var cols = Math.ceil((document.getElementById('Terminal').offsetWidth/ 6.71)-1);
-      var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 17.5);
+      var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3);
       var sizeObj = {
         cols: cols,
         rows: rows

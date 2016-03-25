@@ -4,41 +4,26 @@ var ReactDOM = require('react-dom');
 
 var linkVisualization = {};
 
+// Set the attributes for links that are new to the DOM
 linkVisualization.enter = (selection, diagonal, duration) => {
   selection.attr("d", function(d) {
+    // What is the o doing?
   var o = {x: d.target.rootX0, y: d.target.rootY0};
   // console.log('this', this); // this is a <path>
   return diagonal({source: o, target: o});
   });
 
+  linkVisualization.update(selection, diagonal, duration);
+}
+
+// Transition new and updated links to their new position
+linkVisualization.update = (selection, diagonal, duration) => {
   selection.transition()
     .duration(duration)
     .attr("d", diagonal);
 }
 
 export default class Path extends Component {
-  // BEGIN EXAMPLE code
-  // componentDidMount() {
-  //  // wrap element in d3
-  //  // getDOMNode is deprecated and has been replaced with ReactDOM.findDOMNode().
-  //  this.d3Node = d3.select(this.getDOMNode());
-  //  this.d3Node.datum(this.props.data)
-  //   .call(ExpenseVisualization.enter);
-  // }
-  // shouldComponentUpdate(nextProps) {
-  //  if (nextProps.data.update) {
-  //   // use d3 to update component
-  //   this.d3Node.datum(nextProps.data)
-  //    .call(ExpenseVisualization.update);
-  //   return false;
-  //  }
-  //  return true;
-  // },
-  // componentDidUpate() {
-  //  this.d3Node.datum(this.props.data)
-  //   .call(ExpenseVisualization.update);
-  // },
-  //END EXAMPLE code
 
   componentDidMount() {
     this.d3Node = d3.select(ReactDOM.findDOMNode(this));
@@ -46,8 +31,16 @@ export default class Path extends Component {
       .call(linkVisualization.enter, this.props.diagonal, this.props.duration);
   }
 
-  // I think I want to use this.props.data.name instead of this.props.name...
+  // need shouldComponentUpdate
+
+  // I don't think we'll actually be able to test this until we're showing 3+ levels. (With only two levels, links never persist.)
+  componentDidUpdate() {
+    this.d3Node.datum(this.props.data)
+      .call(linkVisualization.update, this.props.diagonal, this.props.duration);
+  }
+
+  // I had the className capitalized before
   render() {
-    return <path className='Link'></path>
+    return <path className='link'></path>
   }
 }

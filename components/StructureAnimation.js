@@ -91,7 +91,6 @@ var renderTree = function(treeData, svgDomNode) {
     update(root);
 
     function update(source) {
-
       // Compute the new tree layout.
       var nodes = tree.nodes(root).reverse(),
         links = tree.links(nodes);
@@ -120,7 +119,8 @@ var renderTree = function(treeData, svgDomNode) {
         .text(function(d) { return d.name; })
         .style("fill-opacity", 1e-6);
 
-      // Transition nodes to their new position.
+      // Transition nodes to their new position and make them visible.
+      // We need both nodeEnter and nodeUpdate in order to see the nodes (without nodeEnter, nothing is appended.)
       var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
@@ -133,6 +133,7 @@ var renderTree = function(treeData, svgDomNode) {
         .style("fill-opacity", 1);
 
       // Transition exiting nodes to the parent's new position.
+      // I believe this is used only when the user clicks on a parent node to hide its children.
       var nodeExit = node.exit().transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
@@ -179,6 +180,7 @@ var renderTree = function(treeData, svgDomNode) {
 
     // Toggle children on click.
     function click(d) {
+      // d is an object - what you clicked
       if (d.children) {
       d._children = d.children;
       d.children = null;

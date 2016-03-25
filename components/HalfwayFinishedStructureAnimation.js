@@ -27,6 +27,10 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
   // Should we size the svg and main g here or earlier? This function is called after all the Tree.componentDidMounts.
   componentDidMount() {
+    ipcRenderer.on('direc-schema', (e,arg)=>{
+      this.updateTreeData(arg);
+    })
+
     // Can we use selection.select for these?
     // Update our svg's width and height.
     var svg = ReactDOM.findDOMNode(this.refs.ourSVG);
@@ -44,7 +48,15 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // We should avoid using findDOMNode if possible (https://facebook.github.io/react/docs/top-level-api.html), but it may be inevitable here.
   }
 
+  updateTreeData(newSchema) {
+    // console.log('updating tree with', newSchema);
+      this.setState({
+        treeData: newSchema
+      })
+  }
+
   render() {
+    console.log('rendering. Most recent change: restored initial treeData');
     // How do we set treeData[0].x0 and treeData[0].y0? I believe this needs to happen before render (I shouldn't modify state in render.)
     // Right now, I'm manually setting these properties on treeStructure.js. In the future, I'll need to account for subsequent renders.
     // treeData[0].x0: this.height / 2,
@@ -58,12 +70,13 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     var tree = d3.layout.tree()
       .size([this.state.height, this.state.width]);
 
-    // Create diagonal?
+    // Create diagonal for links?
     var diagonal = d3.svg.diagonal()
       .projection(function(d) { return [d.y, d.x]; });
 
     // Create an array of nodes. We will pass one node to each Tree as props.
-    var nodes = tree.nodes(this.state.treeData[0]).reverse(),
+    // removed .reverse() from end of next line
+    var nodes = tree.nodes(this.state.treeData[0]),
       linkSelection = tree.links(nodes);
 
     var root = nodes[nodes.length - 1];
@@ -72,7 +85,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     nodes.forEach(function(d, i) {
       d.y = d.depth * 180;
-      d.id = i + 1;
+      // d.id = i + 1; // I'm trying to use d.name rather than d.id. If I use i + 1, I'm assigning an id (which will later become a React key) based just on the node's position in the array. node.name isn't perfect (there could be duplicates), but it's better.
       // I don't think the next two lines are quite right; they will need to change eventually.
       d.x0 = d.x;
       d.y0 = d.y;
@@ -81,17 +94,18 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       d.rootY0 = rootY0;
     });
 
+    // I think it makes sense to the use target.name as an id, because no two links should ever point to the same target.
+    // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
     var links = linkSelection && linkSelection.map((link) => {
-      return (<Link key={link.target.id} data={link} diagonal={diagonal} duration={duration} />)
+      return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
     });
-    console.log('links:', links);
 
     var trees = nodes && nodes.map((node) => {
-      return (<Tree key={node.id} data={node} duration={duration} />)
+      return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
     return(
-      <div id='Animation'>
+      <div id='Structure-Animation'>
         <svg ref='ourSVG'>
           <g ref='ourMainG'>
             {links}
@@ -104,6 +118,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 }
 
 HalfwayFinishedStructureAnimation.defaultProps = {
-  initialTreeData: treeData,
+  initialTreeData: treeData, // To start with an empty tree: [{}]
   initialMargin: {top: 0, right: 20, bottom: 0, left: 90}
 }
