@@ -46,9 +46,15 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   render() {
     var duration = 450; // We may want to make this a prop.
 
-    // Create a variable to determine the size of the tree and the size of the SVG containing it.
-    var viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
-    var viewBoxHeight = this.state.windowHeight * 7 / 24; // previously hard-coded as 300
+    // Create variables to determine the size of the tree and the size of the SVG containing it (or just the height-width ratio?).
+    var viewBoxHeight; // previously hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
+    // REFACTOR WITH TERNARY
+    var viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660,
+    if (this.props.sidebarVisible) {
+      viewBoxHeight = this.state.windowHeight * 7 / 24;
+    } else {
+      viewBoxHeight = this.state.windowHeight * 5 / 24; // started with 7 / 24
+    }
 
     // Create a tree layout.
     var tree = d3.layout.tree()
@@ -103,14 +109,13 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: removed treeWidth and treeHeight properties');
-
     var viewBoxString = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
     // If you want to see the size of the SVG, add this code before the links and trees:
     // <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left} height={viewBoxHeight - this.state.margin.top} rx='15' ry='15' />
+    // How does the svg know to fill the full width of its containing div?
     return(
       <div id='Structure-Animation'>
         <svg viewBox={viewBoxString}>
@@ -127,7 +132,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 HalfwayFinishedStructureAnimation.defaultProps = {
   initialTreeData: treeData, // To start with an empty tree: [{}]
   // We're not currently using the right or bottom margins.
-  initialMargin: {top: 10, right: 20, bottom: 0, left: 90},
+  initialMargin: {top: 8, right: 20, bottom: 0, left: 90},
   // The initial window dimensions are specified in app.on('ready') in main.js.
   initialWindowWidth: 1200,
   initialWindowHeight: 700

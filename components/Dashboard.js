@@ -166,7 +166,8 @@ export default class Dashboard extends Component {
 				</div>
 				<div id='main' style={mainStyle}>
 					<div id='upper-half' style={upperHalfStyle}>
-						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)} />
+						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)} sidebarVisible=
+						{this.state.sidebarVisible} />
 					</div>
 					<div id='lower-half' style={lowerHalfStyle}>
 		        <div id='left' style={leftStyle}>

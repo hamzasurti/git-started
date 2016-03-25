@@ -28,7 +28,8 @@ export default class Animation extends Component {
 
     if (this.props.structureAnimationVisible) {
       // What to show for structure Animation
-      selectedAnimation = <StructureAnimation />;
+      selectedAnimation = <StructureAnimation sidebarVisible=
+      {this.props.sidebarVisible} />;
       gitStyle.backgroundColor = 'transparent';
       structureStyle.backgroundColor = 'lightBlue';
     } else {
