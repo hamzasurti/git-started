@@ -7,15 +7,16 @@ var treeVisualization = {};
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
-  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; })
+  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; });
+  // .on("click", click);
 
   selection.select("circle")
     .attr("r", 1e-6)
-    // Right now, I don't think our nodes have the d._children property (because I didn't add it).
-    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+    // Right now,the d._children property is undefined (because we haven't added it). Do we need the next line?
+    .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
 
   selection.select("text")
-    .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+    .attr("x", function(d) { return d.children || d._children ? -20 : 20; }) // had 13 rather than 20
     .attr("dy", ".35em")
     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
     .text(function(d) { return d.name; })
@@ -31,8 +32,8 @@ treeVisualization.update = (selection, duration) => {
     .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
   transition.select("circle")
-    .attr("r", 10)
-    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+    .attr("r", function(d) { return d.value ? d.value : 5; })
+    .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
 
   transition.select("text")
     .style("fill-opacity", 1);

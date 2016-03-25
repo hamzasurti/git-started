@@ -14,9 +14,10 @@ module.exports = {
     };
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
+      var elementObj = {"name":index}
+      if(index.substring(index.length -1 ) === '/') elementObj.level = '#33C3F0 ';
       // checks if file has any alphanumeric characters
       if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
-        var elementObj = {"name":index}
         // makes .git foldrs black
         if (index.substring(0,4) === ".git") elementObj.level = "black";
         if (modified){
@@ -40,7 +41,7 @@ module.exports = {
 
   DataSchema: function(pwd,asyncWaterfallCallback) {
     // child process that gets all items in a directory
-  	var command = 'cd ' + pwd + ';ls -a';
+  	var command = 'cd ' + pwd + ';ls -ap';
     var that = this;
 
   	exec(command, (err, stdout, stderr) => {

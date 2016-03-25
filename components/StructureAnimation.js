@@ -127,7 +127,7 @@ var renderTree = function(treeData, svgDomNode) {
 
       nodeUpdate.select("circle")
         .attr("r", function(d) { return d.value ? d.value : 5; })
-        .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level;; });
+        .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
 
       nodeUpdate.select("text")
         .style("fill-opacity", 1);

@@ -6,6 +6,7 @@ import GitAnimation from './GitAnimation';
 // To toggle between them, simply comment out one of the two lines below.
 // import StructureAnimation from './StructureAnimation';
 import StructureAnimation from './HalfwayFinishedStructureAnimation';
+// Uncommitted change!
 
 export default class Animation extends Component {
 
