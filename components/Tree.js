@@ -7,7 +7,7 @@ var treeVisualization = {};
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
-  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; })
+  selection.attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; })
 
   selection.select("circle")
     .attr("r", 1e-6)
@@ -28,7 +28,7 @@ treeVisualization.enter = (selection, duration) =>{
 treeVisualization.update = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
   transition.select("circle")
     .attr("r", 10)

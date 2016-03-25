@@ -48,9 +48,9 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     // Create a tree layout.
     var tree = d3.layout.tree()
-    // Give it arbitrary size coordinates.
-    // (If we don't specify a size for the tree, it collapses.)
-      .size([this.state.treeHeight, this.state.treeWidth]);
+    // The first argument below is the maximum x-coordinate D3 will assign.
+    // The second argument is the maximum y-coordinate.
+      .size([this.state.treeWidth, this.state.treeHeight]);
 
     // Create a diagonal generator, a type of path data generator.
     var diagonal = d3.svg.diagonal()
@@ -59,14 +59,13 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     // We know that the first node in the array is the root of the tree. Let's designate its initial coordinates - where it should enter.
     var root = this.state.treeData[0];
-    root.x0 = this.state.treeHeight / 2;
-    root.y0 = 0;
+    root.x0 = 0;
+    root.y0 = this.state.treeHeight / 2;
 
     // The next line creates and returns an array of nodes associated with the specified root node. (The returned array is basically a flattened version of treeData.)
-    // Each node has several properties.
     // D3 tree nodes always have parent, child, depth, x, and y properties.
-    // It looks like x values range from 0 to 200 and y values range from 0 to 550.
-    // For our use case, we've added level, name, and value properties. I'm not sure what level and value are or how we're using them.
+    // Before the next line runs, each node has children, level, name, and value properties.
+    // After the next line runs, each node also has parent, depth, x, and y properties.
     // We will pass one node from this array to each Tree as props.data.
     // ***Do we want to end the next line with reverse to put the root node at the end?
     var nodes = tree.nodes(root),
@@ -75,7 +74,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     nodes.forEach(function(d) {
       // Update the node's y-coordinate based on its depth.
-      d.y = d.depth * 180;
+      d.x = d.depth * 180; // MAKE PROPORTIONAL.
       // If the node has a parent, set the node's initial coordinates to the parent's initial coordinates.
       // *** Does this make sense?
       if (d.parent) {
@@ -86,15 +85,16 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     // I think it makes sense to the use target.name as an id, because no two links should ever point to the same target.
     // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
-    var links = linkSelection && linkSelection.map((link) => {
-      return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
-    });
+    var links;
+    // var links = linkSelection && linkSelection.map((link) => {
+    //   return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
+    // });
 
     var trees = nodes && nodes.map((node) => {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: comparing nodes with treeData');
+    console.log('Rendering. Latest update: xy');
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 

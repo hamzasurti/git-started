@@ -29,6 +29,7 @@ module.exports = {
         schema.children.push(elementObj)
       }
     })
+    // At this point, schema has name, children, value, and level properties;
     schema = [schema]
     return schema;
   },
