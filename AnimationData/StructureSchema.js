@@ -14,14 +14,21 @@ module.exports = {
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
       // checks if file has any alphanumeric characters
-      var elementObj = {"name":index}
-      if(index.substring(index.length -1 ) === '/') elementObj.level = '#33C3F0';
+      var elementObj = {
+        "name": index,
+        "type": "file",
+      }
+
+      if(index.substring(index.length -1 ) === '/'){
+        elementObj.level = '#33C3F0';
+        elementObj.type = 'directory';
+      }
 
       if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
         // makes .git foldrs black
         if (index.substring(0,4) === ".git") elementObj.level = "black";
         if (modified){
-          for (var i = 0; i < modified.length; i++){
+          for (var i = 0, len = modified.length; i < len; i++){
             if (modified[i] === index){
               elementObj.level = "red"
             }
