@@ -79,11 +79,13 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       currentNode.children;
       currentNode = currentNode.children[0], maxDepth ++);
 
-    var levelOffset = this.state.treeHeight / maxDepth;
-
     nodes.forEach(function(d) {
-      // Update the node's y-coordinate based on its depth.
-      d.y = d.depth * levelOffset;
+      // The default y-coordinates provided by d3.tree will make the tree stretch all the way across the screen.
+      // We want to compress the tree a bit so that there's room for file/directory names to the right of the deepest level.
+      d.y *= .8;
+
+      // We could scale d.x too to prevent the svg from cutting off notes at the top and bottom of a node column.
+
       // If the node has a parent, set the node's initial coordinates to the parent's initial coordinates.
       // *** Does this make sense?
       if (d.parent) {
@@ -102,7 +104,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: level offset');
+    console.log('Rendering. Latest update: d.y *= .8');
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
