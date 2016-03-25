@@ -34,10 +34,6 @@ module.exports = {
     return schema;
   },
 
-  twoPlustwo: function(){
-    return 2 + 2;
-  },
-
   DataSchema: function(pwd,asyncWaterfallCallback) {
     // child process that gets all items in a directory
   	var command = 'cd ' + pwd + ';ls -ap';
