@@ -74,9 +74,16 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       // This line creates and returns an array of objects representing all parent-child links in the nodes array we just created.
       linkSelection = tree.links(nodes);
 
+    // Determine how many levels the tree contains.
+    for (var currentNode = root, maxDepth = 0;
+      currentNode.children;
+      currentNode = currentNode.children[0], maxDepth ++);
+
+    var levelOffset = this.state.treeHeight / maxDepth;
+
     nodes.forEach(function(d) {
       // Update the node's y-coordinate based on its depth.
-      d.y = d.depth * 180; // MAKE PROPORTIONAL.
+      d.y = d.depth * levelOffset;
       // If the node has a parent, set the node's initial coordinates to the parent's initial coordinates.
       // *** Does this make sense?
       if (d.parent) {
@@ -95,7 +102,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: added notes explaining x and y coordinates');
+    console.log('Rendering. Latest update: level offset');
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
