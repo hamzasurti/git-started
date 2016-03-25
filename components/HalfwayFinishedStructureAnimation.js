@@ -47,6 +47,8 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
   render() {
     var duration = 450; // We may want to make this a prop.
+    var viewBoxWidth = this.state.windowWidth * 7 / 12; // was 660
+    var viewBoxHeight = this.state.windowHeight * 7 / 24; // was 300
 
     // Create a tree layout.
     var tree = d3.layout.tree()
@@ -54,7 +56,9 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // The second argument is the maximum y-coordinate.
     // We're switching width and height here because d3 by default makes trees that branch vertically, and we want a tree that branches horizontally.
     // In other words, nodes that are on the same level will have the same y-coordinate but different x-coordinates.
-      .size([this.state.treeHeight, this.state.treeWidth]);
+      .size([viewBoxHeight * 0.9, viewBoxWidth  * 0.9]);
+      // Old:
+      // .size([this.state.treeHeight, this.state.treeWidth]);
 
     // Create a diagonal generator, a type of path data generator.
     var diagonal = d3.svg.diagonal()
@@ -63,7 +67,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     // We know that the first node in the array is the root of the tree. Let's designate its initial coordinates - where it should enter.
     var root = this.state.treeData[0];
-    root.x0 = this.state.treeHeight / 2;
+    root.x0 = viewBoxHeight / 2; // was treeHeight
     root.y0 = 0;
 
     // The next line creates and returns an array of nodes associated with the specified root node. (The returned array is basically a flattened version of treeData.)
@@ -101,23 +105,22 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: blue rectangle.');
+    console.log('Rendering. Latest update: shrinking tree a bit');
     // I need to size the SVG so that it fits the desired space.
     // Then I need to size the tree to fit the SVG.
 
-    var viewBoxWidth = this.state.windowWidth * 7 / 12; // was 660
-    var viewBoxHeight = this.state.windowHeight * 7 / 24; // was 300
+
     var viewBoxString = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
-    console.log('viewBoxString', viewBoxString);
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
     // Removed links and trees.
+    // If you want to see the size of the SVG, add this code before the links and trees:
+    // <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left} height={viewBoxHeight} rx='15' ry='15' />
     return(
       <div id='Structure-Animation'>
         <svg viewBox={viewBoxString}>
           <g transform={translationValue}>
-            <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left} height={viewBoxHeight} rx='15' ry='15' color='blue'/>
             {links}
             {trees}
           </g>
