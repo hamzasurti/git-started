@@ -22,8 +22,10 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     this.state = {
       treeData: props.initialTreeData,
       margin: props.initialMargin,
+      treeWidth: props.initialTreeWidth,
       treeHeight: props.initialTreeHeight,
-      treeWidth: props.initialTreeWidth
+      windowWidth: props.initialWindowWidth,
+      windowHeight: props.initialWindowHeight
     }
   }
 
@@ -74,11 +76,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       // This line creates and returns an array of objects representing all parent-child links in the nodes array we just created.
       linkSelection = tree.links(nodes);
 
-    // Determine how many levels the tree contains.
-    for (var currentNode = root, maxDepth = 0;
-      currentNode.children;
-      currentNode = currentNode.children[0], maxDepth ++);
-
     nodes.forEach(function(d) {
       // The default y-coordinates provided by d3.tree will make the tree stretch all the way across the screen.
       // We want to compress the tree a bit so that there's room for file/directory names to the right of the deepest level.
@@ -104,19 +101,23 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: d.y *= .8');
+    console.log('Rendering. Latest update: I think I want to save this.');
+    // I need to size the SVG so that it fits the desired space.
+    // Then I need to size the tree to fit the SVG.
+
+    var viewBoxWidth = this.state.windowWidth * 7 / 12; // was 660
+    var viewBoxHeight = this.state.windowHeight * 7 / 24; // was 300
+    var viewBoxString = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
+    console.log('viewBoxString', viewBoxString);
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
-    // Do I need to set SVG height below? Is that even possible? Or will the SVG resize to fit the inner g's inside it? (It doesn't look like it's expanding to fit the tree layout.)
-    // This StackOverflow response may help:
-    // http://stackoverflow.com/questions/8919076/how-to-make-a-svg-element-expand-or-contract-to-its-parent-container
+    // Removed links and trees.
     return(
       <div id='Structure-Animation'>
-        <svg width='100%' height='100%' viewBox='0 0 660 200' preserveAspectRatio='none'>
+        <svg viewBox={viewBoxString}>
           <g transform={translationValue}>
-            {links}
-            {trees}
+            <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left} height={viewBoxHeight} rx='15' ry='15'/>
           </g>
         </svg>
       </div>
@@ -127,6 +128,9 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 HalfwayFinishedStructureAnimation.defaultProps = {
   initialTreeData: treeData, // To start with an empty tree: [{}]
   initialMargin: {top: 0, right: 20, bottom: 0, left: 90},
-  initialTreeHeight: 200,
-  initialTreeWidth: 550
+  initialTreeWidth: 660 * .9, // was 550
+  initialTreeHeight: 300 * .9, // was 200
+  // The initial window dimensions are specified in app.on('ready') in main.js.
+  initialWindowWidth: 1200,
+  initialWindowHeight: 700
 }
