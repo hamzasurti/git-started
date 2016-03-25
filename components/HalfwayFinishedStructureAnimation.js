@@ -50,7 +50,9 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     var tree = d3.layout.tree()
     // The first argument below is the maximum x-coordinate D3 will assign.
     // The second argument is the maximum y-coordinate.
-      .size([this.state.treeWidth, this.state.treeHeight]);
+    // We're switching width and height here because d3 by default makes trees that branch vertically, and we want a tree that branches horizontally.
+    // In other words, nodes that are on the same level will have the same y-coordinate but different x-coordinates.
+      .size([this.state.treeHeight, this.state.treeWidth]);
 
     // Create a diagonal generator, a type of path data generator.
     var diagonal = d3.svg.diagonal()
@@ -59,8 +61,8 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     // We know that the first node in the array is the root of the tree. Let's designate its initial coordinates - where it should enter.
     var root = this.state.treeData[0];
-    root.x0 = 0;
-    root.y0 = this.state.treeHeight / 2;
+    root.x0 = this.state.treeHeight / 2;
+    root.y0 = 0;
 
     // The next line creates and returns an array of nodes associated with the specified root node. (The returned array is basically a flattened version of treeData.)
     // D3 tree nodes always have parent, child, depth, x, and y properties.
@@ -74,7 +76,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     nodes.forEach(function(d) {
       // Update the node's y-coordinate based on its depth.
-      d.x = d.depth * 180; // MAKE PROPORTIONAL.
+      d.y = d.depth * 180; // MAKE PROPORTIONAL.
       // If the node has a parent, set the node's initial coordinates to the parent's initial coordinates.
       // *** Does this make sense?
       if (d.parent) {
@@ -85,16 +87,15 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
     // I think it makes sense to the use target.name as an id, because no two links should ever point to the same target.
     // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
-    var links;
-    // var links = linkSelection && linkSelection.map((link) => {
-    //   return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
-    // });
+    var links = linkSelection && linkSelection.map((link) => {
+      return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
+    });
 
     var trees = nodes && nodes.map((node) => {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: xy');
+    console.log('Rendering. Latest update: added notes explaining x and y coordinates');
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
