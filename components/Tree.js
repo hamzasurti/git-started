@@ -10,7 +10,7 @@ var treeVisualization = {};
 treeVisualization.enter = (selection, duration) =>{
   // I would like to understand this translation better.
   selection.attr("transform", function(d) {
-      return "translate(" + d.rootY0 + "," + d.rootX0 + ")"; })
+      return "translate(" + d.y0 + "," + d.x0 + ")"; })
 
   selection.select("circle")
     .attr("r", 1e-6)

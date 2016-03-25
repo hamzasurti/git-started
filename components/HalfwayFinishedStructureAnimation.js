@@ -59,14 +59,19 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // Isaac: I don't completely understand the projection yet.
       .projection(function(d) { return [d.y, d.x]; });
 
-    // The next line creates(?) and returns an array of nodes associated with the specified root node (this.state.treeData[0]).
+    // We know that the first node in the array is the root of the tree. Let's designate its x0 and y0 coordinates - this is where all new nodes should enter.
+    var root = this.state.treeData[0];
+    root.x0 = this.state.treeHeight / 2;
+    root.y0 = 0;
+
+    // The next line creates(?) and returns an array of nodes associated with the specified root node.
     // Each node has several properties.
     // D3 tree nodes always have parent, child, depth, x, and y properties.
     // It looks like x values range from 0 to 200 and y values range from 0 to 550.
     // For our use case, we've added level, name, and value properties. I'm not sure what level and value are or how we're using them.
     // We will pass one node from this array to each Tree as props.data.
-    // ***Do we want to end the next line with reverse to put the root node at the end? We may want to put the root first so that we can grab its initial position.
-    var nodes = tree.nodes(this.state.treeData[0]),
+    // ***Do we want to end the next line with reverse to put the root node at the end?
+    var nodes = tree.nodes(root),
       // This line creates and returns an array of objects representing all parent-child links in the nodes array we just created.
       linkSelection = tree.links(nodes);
       console.log('nodes', nodes);
@@ -82,18 +87,17 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       // Update the node's y-coordinate based on its depth.
       d.y = d.depth * 180;
       // I don't think the next two lines are quite right; they will need to change eventually.
-      d.x0 = d.x;
-      d.y0 = d.y;
+      // d.x0 = d.x;
+      // d.y0 = d.y;
       // I added the following two properties.
       // d.rootX0 = rootX0;
       // d.rootY0 = rootY0;
+
       // Taking another approach...
+      // If the node has a parent, set the node's initial coordinates to the parent's initial coordinates.
       if (d.parent) {
-        d.rootX0 = d.parent.x0;
-        d.rootY0 = d.parent.y0;
-      } else {
-        d.rootX0 = 0;
-        d.rootY0 = that.state.treeHeight/2;
+        d.x0 = d.parent.x0;
+        d.y0 = d.parent.y0;
       }
     });
 
@@ -107,7 +111,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: added that');
+    console.log('Rendering. Latest update: restored links');
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
