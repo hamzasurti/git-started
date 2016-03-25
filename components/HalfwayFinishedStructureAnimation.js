@@ -101,7 +101,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       return (<Tree key={node.name} data={node} duration={duration} />);
     });
 
-    console.log('Rendering. Latest update: I think I want to save this.');
+    console.log('Rendering. Latest update: blue rectangle.');
     // I need to size the SVG so that it fits the desired space.
     // Then I need to size the tree to fit the SVG.
 
@@ -117,7 +117,9 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       <div id='Structure-Animation'>
         <svg viewBox={viewBoxString}>
           <g transform={translationValue}>
-            <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left} height={viewBoxHeight} rx='15' ry='15'/>
+            <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left} height={viewBoxHeight} rx='15' ry='15' color='blue'/>
+            {links}
+            {trees}
           </g>
         </svg>
       </div>
