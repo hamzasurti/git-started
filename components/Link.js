@@ -23,6 +23,15 @@ linkVisualization.update = (selection, diagonal, duration) => {
     .attr("d", diagonal);
 }
 
+linkVisualization.exit = (selection, diagonal, duration) => {
+  selection.transition()
+    .duration(duration)
+    .attr("d", function(d) {
+    var o = {x: d.source.x, y: d.source.y};
+    return diagonal({source: o, target: o});
+    })
+}
+
 export default class Path extends Component {
 
   componentDidMount() {
