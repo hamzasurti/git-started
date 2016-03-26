@@ -33,7 +33,10 @@ treeVisualization.update = (selection, duration) => {
 
   transition.select("circle")
     .attr("r", function(d) { return d.value ? d.value : 5; })
-    .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
+    .style("fill", function(d) {
+      var color = d._children ? "lightsteelblue" : d.level;
+      console.log(`${d.name} | ${color}`)
+      return color; });
 
   transition.select("text")
     .style("fill-opacity", 1);

@@ -16,7 +16,7 @@ module.exports = {
     termOutput.forEach((index) => {
      // checks if file has any alphanumeric characters
      var elementObj = {"name":index}
-     if(index.substring(index.length -1 ) === '/') elementObj.level = '#33C3F0 ';
+     if(index.substring(index.length -1 ) === '/') elementObj.level = '#33C3F0';
      if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
        // makes .git foldrs black
        if (index.substring(0,4) === ".git") elementObj.level = "black";
