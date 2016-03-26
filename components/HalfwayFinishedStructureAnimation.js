@@ -102,13 +102,14 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // I think it makes sense to the use target.name as an id, because no two links should ever point to the same target.
     // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
     var links = linkSelection && linkSelection.map((link) => {
-      var key = link.target.name.indexOf('/') === link.target.name.length - 1 ? link.target.name.slice(0, link.target.name.length - 1) : link.target.name;
-      console.log('link key', key);
+      var nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
+      var key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) : link.target.name;
       return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
     });
 
     var trees = nodes && nodes.map((node) => {
-      var key = node.name.indexOf('/') === node.name.length - 1 ? node.name.slice(0, node.name.length - 1) : node.name;
+      var nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
+      var key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
       return (<Tree key={key} data={node} duration={duration} />);
     });
 
