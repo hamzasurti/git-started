@@ -33,10 +33,7 @@ treeVisualization.update = (selection, duration) => {
 
   transition.select("circle")
     .attr("r", function(d) { return d.value ? d.value : 5; })
-    .style("fill", function(d) {
-      var color = d._children ? "lightsteelblue" : d.level;
-      console.log(`${d.name} | ${color}`)
-      return color; });
+    .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
 
   transition.select("text")
     .style("fill-opacity", 1);
@@ -45,23 +42,12 @@ treeVisualization.update = (selection, duration) => {
 export default class Tree extends Component {
 
   componentDidMount() {
-  this.d3Node = d3.select(ReactDOM.findDOMNode(this));
-  this.d3Node.datum(this.props.data)
-    .call(treeVisualization.enter, this.props.duration);
+    this.d3Node = d3.select(ReactDOM.findDOMNode(this));
+    this.d3Node.datum(this.props.data)
+      .call(treeVisualization.enter, this.props.duration);
   }
   //
-  // I need to add a shouldComponentUpdate function. I could use the Medium blog post for inspiration, but I'd need to create a data.update property (not just copy-paste the Medium code).
-  //
-  // shouldComponentUpdate(nextProps) {
-  //   console.log('sCU running for', nextProps);
-  //  if (nextProps.data.update) { // what is nextProps.data.update?
-  //   // use d3 to update component
-  //   this.d3Node.datum(nextProps.data)
-  //    .call(treeVisualization.update);
-  //   return false;
-  //  }
-  //  return true;
-  // }
+  // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
   //
   componentDidUpdate() {
    this.d3Node.datum(this.props.data)

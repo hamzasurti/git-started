@@ -31,7 +31,7 @@ export default class Path extends Component {
       .call(linkVisualization.enter, this.props.diagonal, this.props.duration);
   }
 
-  // need shouldComponentUpdate
+  // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only links with new data are updated.
 
   // I don't think we'll actually be able to test this until we're showing 3+ levels. (With only two levels, links never persist.)
   componentDidUpdate() {
