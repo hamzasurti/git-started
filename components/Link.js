@@ -49,7 +49,9 @@ export default class Path extends Component {
   }
 
   // I had the className capitalized before
+  // If I add an onClick function here, it will receive a synthetic mouse event as its first argument.
   render() {
-    return <path className='link'></path>
+    var id = 'linkTo' + this.props.data.target.name;
+    return <path className='link' id={id}></path>
   }
 }

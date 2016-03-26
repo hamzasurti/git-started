@@ -5,25 +5,33 @@ var ReactDOM = require('react-dom');
 var treeVisualization = {};
 
 treeVisualization.handleClick = (d) => {
-  console.log('You clicked a node!');
-  if (!d.children) {
-    console.log("This node doesn't have any children, so nothing's gonna happen");
-  } else {
-    console.log('This node has children.')
+  if (d.children) {
+    // If the children are showing, hide them.
     if (!d.childrenHidden) {
-      console.log('Time to hide them!');
+      console.log('It looks like treeNode and treeNode.datum(child) return the same value. What about linkNode? It seems to be in the same format too.');
       d.children.forEach(child => {
-        var d3Node = d3.select(document.getElementById(child.name));
+        var treeNode = d3.select(document.getElementById(child.name));
         // For now, I'm hard-coding the duration as 450.
-        d3Node.datum(child).call(treeVisualization.hide, 450);
+        // console.log('treeNode', treeNode);
+        // console.log('treeNode.datum(child)', treeNode.datum(child));
+        treeNode.datum(child).call(treeVisualization.hide, 450);
+        var linkNode = d3.select(document.getElementById('linkTo' + child.name));
+        // console.log('linkNode', linkNode);
+        // console.log('linkNode.datum()', linkNode.datum());
+        // Darn, the part on the next line is going to be hard - doing the data binding. Can I do this step on linkVisualization?
+        var diagonal = d3.svg.diagonal()
+          .projection(function(d) { return [d.y, d.x]; });
+        linkNode.call(treeVisualization.exitLink, diagonal, 450);
+
       });
       d.childrenHidden = true;
+    // If the children are hidden, show them.
     } else {
-      console.log('Time to show them!');
       d.children.forEach(child => {
-        var d3Node = d3.select(document.getElementById(child.name));
+        var treeNode = d3.select(document.getElementById(child.name));
         // Is showing children the same as updating them?
-        d3Node.datum(child).call(treeVisualization.update, 450);
+        treeNode.datum(child).call(treeVisualization.update, 450);
+        var linkNode = d3.select(document.getElementById('linkTo' + child.name));
       });
       d.childrenHidden = false;
     }
@@ -60,22 +68,7 @@ treeVisualization.enter = (selection, duration) =>{
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6);
 
-  // Toggle children on click.
-  // function click(d) {
-  //   if (d.children) {
-  //   d._children = d.children;
-  //   d.children = null;
-  //   } else {
-  //   d.children = d._children;
-  //   d._children = null;
-  //   }
-  // update(d); // update is no longer defined
-  // }
-
   treeVisualization.update(selection, duration);
-  // window.setTimeout(function() {
-  //   treeVisualization.hideChildren(selection, duration);
-  // }, duration);
 }
 
 // Transition new and updated nodes to their new position
@@ -90,6 +83,16 @@ treeVisualization.update = (selection, duration) => {
 
   transition.select("text")
     .style("fill-opacity", 1);
+}
+
+// Temporary
+treeVisualization.exitLink = (selection, diagonal, duration) => {
+  selection.transition()
+    .duration(duration)
+    .attr("d", function(d) {
+    var o = {x: d.source.x, y: d.source.y};
+    return diagonal({source: o, target: o});
+    })
 }
 
 // treeVisualization.hideChildren = (selection, duration) => {
@@ -129,8 +132,9 @@ export default class Tree extends Component {
 
   // I had the className 'Tree' before.
   // I wanted to add an onClick function here, but that gave me trouble, possibly because of duplicate React keys.
+  // More specifically, I got an "Uncaught TypeError: Cannot read property 'remove' of undefined".
   render() {
-    return <g className='node' id={this.props.data.name}>
+    return <g className='node' id={this.props.data.name} >
       <circle></circle>
       <text>{this.props.data.name}</text>
     </g>
