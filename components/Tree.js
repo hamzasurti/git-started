@@ -10,25 +10,37 @@ treeVisualization.handleClick = (d) => {
     console.log("This node doesn't have any children, so nothing's gonna happen");
   } else {
     console.log('This node has children.')
-    // d.children.forEach(child => treeVisualization.sayName(child));
-    d.children.forEach(child => {
-      var d3Node = d3.select(document.getElementById(child.name));
-      // For now, I'm hard-coding the duration as 450.
-      d3Node.datum(child).call(treeVisualization.hide, 450);
-    });
+    if (!d.childrenHidden) {
+      console.log('Time to hide them!');
+      d.children.forEach(child => {
+        var d3Node = d3.select(document.getElementById(child.name));
+        // For now, I'm hard-coding the duration as 450.
+        d3Node.datum(child).call(treeVisualization.hide, 450);
+      });
+      d.childrenHidden = true;
+    } else {
+      console.log('Time to show them!');
+      d.children.forEach(child => {
+        var d3Node = d3.select(document.getElementById(child.name));
+        // Is showing children the same as updating them?
+        d3Node.datum(child).call(treeVisualization.update, 450);
+      });
+      d.childrenHidden = false;
+    }
   }
 }
 
 treeVisualization.hide = (selection, duration) => {
-  selection.attr('fill', 'green');
-  // .transition()
-    // .duration(duration)
-}
+  var transition = selection.transition()
+    .duration(duration)
+    .attr("transform", function(d) { return "translate(" + d.parent.y + "," + d.parent.x + ")"; });
 
-treeVisualization.sayName = (d) => {
-  // console.log(document.getElementById(d.name));
-  // document.body.querySelector('g .node');
-}
+    transition.select("circle")
+      .attr("r", 1e-6);
+
+    transition.select("text")
+      .style("fill-opacity", 1e-6);
+  }
 
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
