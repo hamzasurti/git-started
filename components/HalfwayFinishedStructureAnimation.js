@@ -28,53 +28,16 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   componentWillMount() {
-    console.log('I will mount');
+    // previously, I set up this event listener in componentDidMount
     ipcRenderer.on('direc-schema', (e,arg)=>{
       console.log('updating treeData');
-      this.updateTreeData(arg);
-    });
-    this.updateWindowDimensions();
-  }
-  // This function is called after all the Tree and Link componentDidMount functions have been called.
-  componentDidMount() {
-    console.log('I did mount');
-    // ipcRenderer.on('direc-schema', (e,arg)=>{
-    //   this.updateTreeData(arg);
-    // })
-
-    // Reset the tree height and width if needed?
-    // Would it be better to use a ref rather than an id?
-  }
-
-  // Isn't logging
-  // componentWillReceiveProps() {
-  //   console.log('I will receive props');
-  // }
-
-  // Updating window dimensions here causes an infinite loop.
-  // shouldComponentUpdate() {
-  //   console.log('should I update');
-  //   return true;
-  // }
-  //
-  // componentWillUpdate() {
-  //   console.log('I will update');
-  // }
-  //
-  // componentDidUpdate() {
-  //   console.log('I did update');
-  //   this.updateWindowDimensions();
-  // }
-
-  updateTreeData(newSchema) {
-    this.setState({
-      treeData: newSchema
+      this.updateTree(arg);
     });
   }
 
-  updateWindowDimensions() {
-    console.log('updating window dimensions');
+  updateTree(newSchema) {
     this.setState({
+      treeData: newSchema,
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth
     });
