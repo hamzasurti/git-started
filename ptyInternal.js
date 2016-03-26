@@ -1,5 +1,6 @@
 const pty = require('pty.js');
 const animationDataSchema = require('./AnimationData/StructureSchema')
+const getGitData = require('./AnimationData/gitData')
 
 var currDir;
 	var ptyTerm = pty.fork('bash', [], {
@@ -27,5 +28,6 @@ ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
         temp = temp.replace(re,'');
         currDir = temp;
         animationDataSchema.DataSchema(currDir);
+				getGitData.gitHistory(currDir);
       }
     });

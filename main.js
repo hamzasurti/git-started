@@ -64,6 +64,10 @@ function ptyChildProcess(forkProcess){
 
 			// sends animation schema
 			if (message.schema) event.sender.send('direc-schema', message.schema);
+
+			if(message.gitGraph) {
+				event.sender.send('git-graph', message.gitGraph)
+			}
 		})
 	});
 }

@@ -21,6 +21,7 @@ export default class StructureAnimation extends Component {
   componentDidMount(){
     var mountNode = ReactDOM.findDOMNode(this.refs.treeRender);
     // Render the tree usng d3 after first component mount
+    
     renderTree(this.state.treeData, mountNode);
   }
 
