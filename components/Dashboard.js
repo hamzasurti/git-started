@@ -117,7 +117,10 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var sidebarStyle = {padding: '8px'};
+		var sidebarStyle = {
+			padding: '8px'
+		};
+
 		var sidebarContainerStyle = {height: '100%', backgroundColor: 'lightGray'};
 		var mainStyle = {height: '100%'};
 		var upperHalfStyle = {height: '50%', width: '100%'};
@@ -144,10 +147,14 @@ export default class Dashboard extends Component {
 		if (this.state.lessonVisible) {
 			leftStyle.width = '35%';
 			terminalStyle.width = '65%';
+			leftStyle.maxWidth = '100px';
+
 		} else {
 			leftStyle.display = 'none';
 			terminalStyle.width = '100%';
 		}
+
+
 
 		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
 		var lessonInfo = lessons.map(lesson => {
