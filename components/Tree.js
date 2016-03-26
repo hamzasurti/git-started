@@ -15,7 +15,8 @@ treeVisualization.handleClick = (d) => {
 }
 
 treeVisualization.sayName = (d) => {
-  console.log(d.name);
+  console.log(document.getElementById(d.name));
+  // document.body.querySelector('g .node');
 }
 
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
@@ -106,7 +107,7 @@ export default class Tree extends Component {
   // I had the className 'Tree' before.
   // I wanted to add an onClick function here, but that gave me trouble, possibly because of duplicate React keys.
   render() {
-    return <g className='node'>
+    return <g className='node' id={this.props.data.name}>
       <circle></circle>
       <text>{this.props.data.name}</text>
     </g>
