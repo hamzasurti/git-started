@@ -14,26 +14,26 @@ module.exports = {
     };
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
-      var elementObj = {"name":index}
-      if(index.substring(index.length -1 ) === '/') elementObj.level = '#33C3F0 ';
-      // checks if file has any alphanumeric characters
-      if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
-        // makes .git foldrs black
-        if (index.substring(0,4) === ".git") elementObj.level = "black";
-        if (modified){
-          for (var i = 0; i < modified.length; i++){
-            if (modified[i] === index){
-              elementObj.level = "red"
-            }
-          }
-        }
-        schema.children.push(elementObj)
-      }
-    })
-    // At this point, schema has name, children, value, and level properties;
-    schema = [schema]
-    return schema;
-  },
+     // checks if file has any alphanumeric characters
+     var elementObj = {"name":index}
+     if(index.substring(index.length -1 ) === '/') elementObj.level = '#33C3F0 ';
+     if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
+       // makes .git foldrs black
+       if (index.substring(0,4) === ".git") elementObj.level = "black";
+       if (modified){
+         for (var i = 0; i < modified.length; i++){
+           if (modified[i] === index){
+             elementObj.level = "red"
+           }
+         }
+       }
+       schema.children.push(elementObj)
+     }
+   })
+   console.log('schema', schema);
+   schema = [schema]
+   return schema;
+ },
 
   twoPlustwo: function(){
     return 2 + 2;
