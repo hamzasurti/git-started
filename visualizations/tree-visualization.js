@@ -1,4 +1,5 @@
 var d3 = require('d3'); // const?
+import linkVisualization from './link-visualization';
 
 var treeVisualization = {};
 
@@ -6,20 +7,12 @@ treeVisualization.handleClick = (d) => {
   if (d.children) {
     // If the children are showing, hide them.
     if (!d.childrenHidden) {
-      console.log('It looks like treeNode and treeNode.datum(child) return the same value. What about linkNode? It seems to be in the same format too.');
       d.children.forEach(child => {
         var treeNode = d3.select(document.getElementById(child.name));
         // For now, I'm hard-coding the duration as 450.
-        // console.log('treeNode', treeNode);
-        // console.log('treeNode.datum(child)', treeNode.datum(child));
         treeNode.datum(child).call(treeVisualization.hide, 450);
         var linkNode = d3.select(document.getElementById('linkTo' + child.name));
-        // console.log('linkNode', linkNode);
-        // console.log('linkNode.datum()', linkNode.datum());
-        // Darn, the part on the next line is going to be hard - doing the data binding. Can I do this step on linkVisualization?
-        var diagonal = d3.svg.diagonal()
-          .projection(function(d) { return [d.y, d.x]; });
-        linkNode.call(treeVisualization.exitLink, diagonal, 450);
+        linkNode.call(linkVisualization.exit, linkVisualization.diagonal, 450);
 
       });
       d.childrenHidden = true;
@@ -30,6 +23,7 @@ treeVisualization.handleClick = (d) => {
         // Is showing children the same as updating them?
         treeNode.datum(child).call(treeVisualization.update, 450);
         var linkNode = d3.select(document.getElementById('linkTo' + child.name));
+        linkNode.call(linkVisualization.enter, linkVisualization.diagonal, 450);
       });
       d.childrenHidden = false;
     }
@@ -81,16 +75,6 @@ treeVisualization.update = (selection, duration) => {
 
   transition.select("text")
     .style("fill-opacity", 1);
-}
-
-// Temporary
-treeVisualization.exitLink = (selection, diagonal, duration) => {
-  selection.transition()
-    .duration(duration)
-    .attr("d", function(d) {
-    var o = {x: d.source.x, y: d.source.y};
-    return diagonal({source: o, target: o});
-    })
 }
 
 export default treeVisualization;

@@ -63,11 +63,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // In other words, nodes that are on the same level will have the same y-coordinate but different x-coordinates.
       .size([viewBoxHeight * 0.9, viewBoxWidth  * 0.9]);
 
-    // Create a diagonal generator, a type of path data generator.
-    var diagonal = d3.svg.diagonal()
-    // Isaac: I don't completely understand the projection yet.
-      .projection(function(d) { return [d.y, d.x]; });
-
     // We know that the first node in the array is the root of the tree. Let's designate its initial coordinates - where it should enter.
     var root = this.state.treeData[0];
     root.x0 = viewBoxHeight / 2;
@@ -103,7 +98,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     var links = linkSelection && linkSelection.map((link) => {
       var nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
       var key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) : link.target.name;
-      return (<Link key={link.target.name} data={link} diagonal={diagonal} duration={duration} />)
+      return (<Link key={link.target.name} data={link} duration={duration} />)
     });
 
     var trees = nodes && nodes.map((node) => {
