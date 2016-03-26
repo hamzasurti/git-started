@@ -96,12 +96,14 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // I think it makes sense to the use target.name as an id, because no two links should ever point to the same target.
     // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
     var links = linkSelection && linkSelection.map((link) => {
+      link.target.name = link.target.name.trim();
       var nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
       var key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) : link.target.name;
       return (<Link key={link.target.name} data={link} duration={duration} />)
     });
 
     var trees = nodes && nodes.map((node) => {
+      node.name = node.name.trim();
       var nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       var key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
       return (<Tree key={key} data={node} duration={duration} />);
@@ -110,6 +112,8 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     var viewBoxString = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
+
+    console.log('rendering structure animation - trimming links and trees');
 
     // If you want to see the size of the SVG, add this code before the links and trees:
     // <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left} height={viewBoxHeight - this.state.margin.top} rx='15' ry='15' />

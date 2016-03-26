@@ -6,6 +6,18 @@ var ReactDOM = require('react-dom');
 export default class Tree extends Component {
 
   componentDidMount() {
+    // console.log(this.props.data, 'did mount');
+    // if (this.props.data.name === 'isaacdurand') {
+    //   // Why am I not seeing this console log, whether I use == or ===?
+    //   console.log('inside the if statement');
+    //   return;
+    // }
+    // // This if statement prevents isaacdurand from throwing an invariant violation.
+    // if (this.props.data.children) {
+    //   console.log('inside the if children statement');
+    //   return;
+    // }
+    // The next couple lines of code are causing an invariant error for isaacdurand - I'm not sure why.
     // this is the Tree component
     // this.d3Node is an array of elements D3 can operate on
     this.d3Node = d3.select(ReactDOM.findDOMNode(this));
@@ -16,6 +28,9 @@ export default class Tree extends Component {
   // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
   //
   componentDidUpdate() {
+    console.log(this.props.data.name, 'did update');
+    // I added the next line because for some reason this.d3Node isn't defined for isaacdurand folders.
+    if (!this.d3Node) this.d3Node = d3.select(ReactDOM.findDOMNode(this));
     this.d3Node.datum(this.props.data)
       .call(treeVisualization.update, this.props.duration);
   }
@@ -28,6 +43,28 @@ export default class Tree extends Component {
   // I wanted to add an onClick function here, but that gave me trouble, possibly because of duplicate React keys.
   // More specifically, I got an "Uncaught TypeError: Cannot read property 'remove' of undefined".
   render() {
+    // var regExp = new RegExp('isaacdurand')
+    // if (regExp.test(this.props.data.name)) {
+    //   var evil = this.props.data.name;
+    //   console.log('rendering evil file', evil);
+    //   for (var i = 0; i < evil.length; i ++) {
+    //     console.log('char at', i, evil.charAt(i));
+    //     console.log('Its code is', evil.charCodeAt(i));
+    //   }
+    // }
+    // There is something weird at index 0.
+
+
+    // if (this.props.data.name === '\risaacdurand') {
+    //   // Why am I not seeing this either?
+    //   console.log('rendering EVIL FOLDER', this.props.data.name);
+    // // } else if (this.props.data.name === 'index.html') {
+    // //   // I'm seeing this.
+    // //   console.log('rendering NOT EVIL file', this.props.data.name);
+    // } else {
+    //   console.log('rendering', this.props.data.name, 'which is length', this.props.data.name.length); // want 11 for isaacdurand. The console told me that isaacdurand is 12 characters long. WTF?
+    // }
+
     return <g className='node' id={this.props.data.name} >
       <circle></circle>
       <text>{this.props.data.name}</text>
