@@ -10,12 +10,23 @@ treeVisualization.handleClick = (d) => {
     console.log("This node doesn't have any children, so nothing's gonna happen");
   } else {
     console.log('This node has children.')
-    d.children.forEach(child => treeVisualization.sayName(child));
+    // d.children.forEach(child => treeVisualization.sayName(child));
+    d.children.forEach(child => {
+      var d3Node = d3.select(document.getElementById(child.name));
+      // For now, I'm hard-coding the duration as 450.
+      d3Node.datum(child).call(treeVisualization.hide, 450);
+    });
   }
 }
 
+treeVisualization.hide = (selection, duration) => {
+  selection.attr('fill', 'green');
+  // .transition()
+    // .duration(duration)
+}
+
 treeVisualization.sayName = (d) => {
-  console.log(document.getElementById(d.name));
+  // console.log(document.getElementById(d.name));
   // document.body.querySelector('g .node');
 }
 
