@@ -4,10 +4,25 @@ var ReactDOM = require('react-dom');
 
 var treeVisualization = {};
 
+treeVisualization.handleClick = (d) => {
+  console.log('You clicked a node!');
+  if (!d.children) {
+    console.log("This node doesn't have any children, so nothing's gonna happen");
+  } else {
+    console.log('This node has children.')
+    d.children.forEach(child => treeVisualization.sayName(child));
+  }
+}
+
+treeVisualization.sayName = (d) => {
+  console.log(d.name);
+}
+
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
   selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; })
+  .on("click", treeVisualization.handleClick);
 
   selection.select("circle")
     .attr("r", 1e-6)
@@ -34,9 +49,9 @@ treeVisualization.enter = (selection, duration) =>{
   // }
 
   treeVisualization.update(selection, duration);
-  window.setTimeout(function() {
-    treeVisualization.hideChildren(selection, duration);
-  }, duration);
+  // window.setTimeout(function() {
+  //   treeVisualization.hideChildren(selection, duration);
+  // }, duration);
 }
 
 // Transition new and updated nodes to their new position
@@ -53,23 +68,25 @@ treeVisualization.update = (selection, duration) => {
     .style("fill-opacity", 1);
 }
 
-treeVisualization.hideChildren = (selection, duration) => {
-  console.log('hiding');
-  var transition = selection.transition()
-    .duration(duration)
-    .attr("transform", function(d) {
-      if (d.children) return "translate( -" + d.y + ", -" + d.x + ")"; });      
+// treeVisualization.hideChildren = (selection, duration) => {
+//   console.log('hiding');
+//   var transition = selection.transition()
+//     .duration(duration)
+//     .attr("transform", function(d) {
+//       if (d.children) return "translate( -" + d.y + ", -" + d.x + ")"; });
 
   // transition.select("circle")
   //   .attr("r", 1e-6);
   //
   // transition.select("text")
   //   .style("fill-opacity", 1e-6);
-}
+// }
 
 export default class Tree extends Component {
 
   componentDidMount() {
+    // this is the Tree component
+    // this.d3Node is an array of elements D3 can operate on
     this.d3Node = d3.select(ReactDOM.findDOMNode(this));
     this.d3Node.datum(this.props.data)
       .call(treeVisualization.enter, this.props.duration);
@@ -78,15 +95,16 @@ export default class Tree extends Component {
   // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
   //
   componentDidUpdate() {
-   this.d3Node.datum(this.props.data)
-    .call(treeVisualization.update, this.props.duration);
+    this.d3Node.datum(this.props.data)
+      .call(treeVisualization.update, this.props.duration);
   }
 
-  componentWillUnmount() {
+  // componentWillUnmount() {
     // Based on the Medium post, I'm not sure there's a good way to fade the exiting nodes out. But perhaps I could re-style them with componentDidUpate and then remove them or something?
-  }
+  // }
 
   // I had the className 'Tree' before.
+  // I wanted to add an onClick function here, but that gave me trouble, possibly because of duplicate React keys.
   render() {
     return <g className='node'>
       <circle></circle>

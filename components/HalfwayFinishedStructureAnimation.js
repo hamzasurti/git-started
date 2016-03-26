@@ -133,7 +133,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 }
 
 HalfwayFinishedStructureAnimation.defaultProps = {
-  initialTreeData: treeData, // To start with an empty tree: [{}]
+  initialTreeData: treeData,
   // We're not currently using the right or bottom margins.
   initialMargin: {top: 8, right: 20, bottom: 0, left: 90},
   // The initial window dimensions are specified in app.on('ready') in main.js.
