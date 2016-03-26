@@ -30,7 +30,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   componentWillMount() {
     // previously, I set up this event listener in componentDidMount
     ipcRenderer.on('direc-schema', (e,arg)=>{
-      console.log('updating treeData');
       this.updateTree(arg);
     });
   }
@@ -44,7 +43,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   render() {
-    console.log('rendering');
     var duration = 450; // We may want to make this a prop.
 
     // Create variables to determine the size of the tree and the size of the SVG containing it (or just the height-width ratio?).

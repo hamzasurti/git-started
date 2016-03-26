@@ -7,8 +7,7 @@ var treeVisualization = {};
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
-  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; });
-  // .on("click", click);
+  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; })
 
   selection.select("circle")
     .attr("r", 1e-6)
@@ -22,7 +21,22 @@ treeVisualization.enter = (selection, duration) =>{
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6);
 
+  // Toggle children on click.
+  // function click(d) {
+  //   if (d.children) {
+  //   d._children = d.children;
+  //   d.children = null;
+  //   } else {
+  //   d.children = d._children;
+  //   d._children = null;
+  //   }
+  // update(d); // update is no longer defined
+  // }
+
   treeVisualization.update(selection, duration);
+  window.setTimeout(function() {
+    treeVisualization.hideChildren(selection, duration);
+  }, duration);
 }
 
 // Transition new and updated nodes to their new position
@@ -37,6 +51,20 @@ treeVisualization.update = (selection, duration) => {
 
   transition.select("text")
     .style("fill-opacity", 1);
+}
+
+treeVisualization.hideChildren = (selection, duration) => {
+  console.log('hiding');
+  var transition = selection.transition()
+    .duration(duration)
+    .attr("transform", function(d) {
+      if (d.children) return "translate( -" + d.y + ", -" + d.x + ")"; });      
+
+  // transition.select("circle")
+  //   .attr("r", 1e-6);
+  //
+  // transition.select("text")
+  //   .style("fill-opacity", 1e-6);
 }
 
 export default class Tree extends Component {
