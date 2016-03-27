@@ -29,7 +29,7 @@ app.on('ready', () => {
 	slideTests();
 
 	// For testing only, opens dev tools
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
 	mainWindow.on('closed', function() {
@@ -41,12 +41,18 @@ app.on('ready', () => {
 
 
 function initialLoadEvents(){
+	// I'm not seeing any of the console logs in this function.
+
 	// when window finished loading, send current directory and animation structure
 	mainWindow.webContents.on('did-finish-load', () => {
+		console.log('running initialLoadEvents');
 		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
 		async.waterfall([
 			async.apply(animationDataSchema.DataSchema, process.env.HOME),
-			(data) => {mainWindow.webContents.send('direc-schema', data)}
+			(data) => {
+				console.log('sending direc-schema from main.js');
+				mainWindow.webContents.send('direc-schema', data);
+			}
 		]);
 	});
 }

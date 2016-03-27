@@ -30,6 +30,7 @@ module.exports = {
        schema.children.push(elementObj)
      }
    })
+   console.log('Hello from SS.js! schema is', schema);
    schema = [schema]
    return schema;
  },

@@ -6,18 +6,6 @@ var ReactDOM = require('react-dom');
 export default class Tree extends Component {
 
   componentDidMount() {
-    // console.log(this.props.data, 'did mount');
-    // if (this.props.data.name === 'isaacdurand') {
-    //   // Why am I not seeing this console log, whether I use == or ===?
-    //   console.log('inside the if statement');
-    //   return;
-    // }
-    // // This if statement prevents isaacdurand from throwing an invariant violation.
-    // if (this.props.data.children) {
-    //   console.log('inside the if children statement');
-    //   return;
-    // }
-    // The next couple lines of code are causing an invariant error for isaacdurand - I'm not sure why.
     // this is the Tree component
     // this.d3Node is an array of elements D3 can operate on
     this.d3Node = d3.select(ReactDOM.findDOMNode(this));
@@ -28,7 +16,6 @@ export default class Tree extends Component {
   // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
   //
   componentDidUpdate() {
-    console.log(this.props.data.name, 'did update');
     // I added the next line because for some reason this.d3Node isn't defined for isaacdurand folders.
     if (!this.d3Node) this.d3Node = d3.select(ReactDOM.findDOMNode(this));
     this.d3Node.datum(this.props.data)
