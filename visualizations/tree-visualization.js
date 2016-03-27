@@ -3,16 +3,17 @@ import linkVisualization from './link-visualization';
 
 var treeVisualization = {};
 
+treeVisualization.duration = linkVisualization.duration;
+
 treeVisualization.handleClick = (d) => {
   if (d.children) {
     // If the children are showing, hide them.
     if (!d.childrenHidden) {
       d.children.forEach(child => {
         var treeNode = d3.select(document.getElementById(child.name));
-        // For now, I'm hard-coding the duration as 450.
-        treeNode.datum(child).call(treeVisualization.hide, 450);
+        treeNode.datum(child).call(treeVisualization.hide, treeVisualization.duration);
         var linkNode = d3.select(document.getElementById('linkTo' + child.name));
-        linkNode.call(linkVisualization.exit, linkVisualization.diagonal, 450);
+        linkNode.call(linkVisualization.exit, linkVisualization.diagonal, treeVisualization.duration);
 
       });
       d.childrenHidden = true;
@@ -21,9 +22,9 @@ treeVisualization.handleClick = (d) => {
       d.children.forEach(child => {
         var treeNode = d3.select(document.getElementById(child.name));
         // Is showing children the same as updating them?
-        treeNode.datum(child).call(treeVisualization.update, 450);
+        treeNode.datum(child).call(treeVisualization.update, treeVisualization.duration);
         var linkNode = d3.select(document.getElementById('linkTo' + child.name));
-        linkNode.call(linkVisualization.enter, linkVisualization.diagonal, 450);
+        linkNode.call(linkVisualization.enter, linkVisualization.diagonal, treeVisualization.duration);
       });
       d.childrenHidden = false;
     }

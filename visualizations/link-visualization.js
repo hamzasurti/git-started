@@ -7,6 +7,9 @@ linkVisualization.diagonal = d3.svg.diagonal()
 // Isaac: I don't completely understand the projection yet.
   .projection(function(d) { return [d.y, d.x]; });
 
+// Note from Isaac: I'm not sure if this is the best place to store our duration, but every file that needs that variable has access to this file.
+linkVisualization.duration = 450;
+
 // Set the attributes for links that are new to the DOM
 linkVisualization.enter = (selection, diagonal, duration) => {
   selection.attr("d", function(d) {

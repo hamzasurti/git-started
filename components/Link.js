@@ -8,7 +8,7 @@ export default class Path extends Component {
   componentDidMount() {
     this.d3Node = d3.select(ReactDOM.findDOMNode(this));
     this.d3Node.datum(this.props.data)
-      .call(linkVisualization.enter, linkVisualization.diagonal, this.props.duration);
+      .call(linkVisualization.enter, linkVisualization.diagonal, linkVisualization.duration);
   }
 
   // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only links with new data are updated.
@@ -16,7 +16,7 @@ export default class Path extends Component {
   // I don't think we'll actually be able to test this until we're showing 3+ levels. (With only two levels, links never persist.)
   componentDidUpdate() {
     this.d3Node.datum(this.props.data)
-      .call(linkVisualization.update, linkVisualization.diagonal, this.props.duration);
+      .call(linkVisualization.update, linkVisualization.diagonal, linkVisualization.duration);
   }
 
   // I had the className capitalized before

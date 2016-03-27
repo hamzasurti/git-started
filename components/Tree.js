@@ -10,7 +10,7 @@ export default class Tree extends Component {
     // this.d3Node is an array of elements D3 can operate on
     this.d3Node = d3.select(ReactDOM.findDOMNode(this));
     this.d3Node.datum(this.props.data)
-      .call(treeVisualization.enter, this.props.duration);
+      .call(treeVisualization.enter, treeVisualization.duration);
   }
   //
   // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
@@ -19,7 +19,7 @@ export default class Tree extends Component {
     // I added the next line because for some reason this.d3Node isn't defined for isaacdurand folders.
     if (!this.d3Node) this.d3Node = d3.select(ReactDOM.findDOMNode(this));
     this.d3Node.datum(this.props.data)
-      .call(treeVisualization.update, this.props.duration);
+      .call(treeVisualization.update, treeVisualization.duration);
   }
 
   // componentWillUnmount() {

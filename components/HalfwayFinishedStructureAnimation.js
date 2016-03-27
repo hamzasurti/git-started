@@ -44,8 +44,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 
   render() {
-    var duration = 450; // We may want to make this a prop.
-
     // Create variables to determine the size of the tree and the size of the SVG containing it (or just the height-width ratio?).
     var viewBoxHeight; // previously hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
     // REFACTOR WITH TERNARY
@@ -101,14 +99,14 @@ export default class HalfwayFinishedStructureAnimation extends Component {
       link.target.name = link.target.name.trim();
       var nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
       var key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) : link.target.name;
-      return (<Link key={link.target.name} data={link} duration={duration} />)
+      return (<Link key={link.target.name} data={link} />)
     });
 
     var trees = nodes && nodes.map((node) => {
       node.name = node.name.trim();
       var nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       var key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
-      return (<Tree key={key} data={node} duration={duration} />);
+      return (<Tree key={key} data={node} />);
     });
 
     var viewBoxString = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
