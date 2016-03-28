@@ -7,25 +7,33 @@ treeVisualization.duration = linkVisualization.duration;
 
 treeVisualization.handleClick = (d) => {
   if (d.children) {
-    // If the children are showing, hide them.
+    // If the children are showing...
     if (!d.childrenHidden) {
+      // Update the parent.
+      d.childrenHidden = true;
+      var parentNode = d3.select(document.getElementById(d.name));
+      parentNode.call(treeVisualization.update, treeVisualization.duration);
+      // Hide the children.
       d.children.forEach(child => {
         var treeNode = d3.select(document.getElementById(child.name));
         treeNode.datum(child).call(treeVisualization.hide, treeVisualization.duration);
         var linkNode = d3.select(document.getElementById('linkTo' + child.name));
         linkNode.call(linkVisualization.exit, linkVisualization.diagonal, treeVisualization.duration);
-
       });
-      d.childrenHidden = true;
-    // If the children are hidden, show them.
+
+    // If the children are hidden...
     } else {
+      // Update the parent.
+      d.childrenHidden = false;
+      var parentNode = d3.select(document.getElementById(d.name));
+      parentNode.call(treeVisualization.update, treeVisualization.duration);
+      // Show the children.
       d.children.forEach(child => {
         var treeNode = d3.select(document.getElementById(child.name));
         treeNode.datum(child).call(treeVisualization.update, treeVisualization.duration);
         var linkNode = d3.select(document.getElementById('linkTo' + child.name));
         linkNode.call(linkVisualization.enter, linkVisualization.diagonal, treeVisualization.duration);
       });
-      d.childrenHidden = false;
     }
   }
 }
@@ -68,8 +76,6 @@ treeVisualization.update = (selection, duration) => {
   transition.select("circle")
     .attr("r", function(d) { return d.value ? d.value : 5; })
     .style("fill", function(d) {
-      // Is this function not being called on the parent when the click occurs?
-      // console.log(`For ${d.name}, d.childrenHidden is ${d.childrenHidden}, so the fill color will be ${d.childrenHidden ? "lightsteelblue" : 'd.level'}.`);
       return d.childrenHidden ? "lightsteelblue" : d.level; });
 
   transition.select("text")
