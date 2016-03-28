@@ -39,7 +39,7 @@ app.on('ready', () => {
 
 
 
-
+// This isn't running.
 function initialLoadEvents(){
 	// when window finished loading, send current directory and animation structure
 	mainWindow.webContents.on('did-finish-load', () => {
@@ -57,9 +57,9 @@ function ptyChildProcess(forkProcess){
 
 	// Note from Isaac: I added this listener to prevent the app from loading our dummy data on initial load.
 		ipcMain.on('ready-for-schema', (event, arg) => {
-			console.log(arg);
+			// console.log('Main.js received ready-for-schema');
 			forkProcess.send({message: arg});
-			forkProcess.removeAllListeners('message');
+			// Previously, we removed all listeners here. However, this prevented main.js from sending a schema when the user toggles from the Git animation to the structure animation.
 		});
 
 	// when user inputs data in terminal, start fork and run pty inside
@@ -72,7 +72,6 @@ function ptyChildProcess(forkProcess){
 			if (message.data) event.sender.send('terminal-reply', message.data);
 			// sends animation schema
 			if (message.schema) {
-				console.log('Sending schema');
 				event.sender.send('direc-schema', message.schema);
 			}
 		})
