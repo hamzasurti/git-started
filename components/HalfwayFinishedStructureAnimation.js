@@ -1,21 +1,15 @@
 import React, {Component} from 'react';
 import treeData from './../AnimationData/treeStructure';
-
-// Tree and Link are two new components used by HalfwayFinishedStructureAnimation.
 import Tree from './Tree';
 import Link from './Link';
 
 var d3 = require('d3');
 var ReactDOM = require('react-dom');
 
-// My goal in creating HalfwayFinishedStructureAnimation was to make React responsible for DOM structure (adding and removing elements) and to make D3 responsible for styling, as described in this blog post:
+// Note from Isaac: My goal her was to make React responsible for DOM structure (adding and removing elements) and to make D3 responsible for styling, as described in this blog post:
 // https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3#.ztcxqykek
 
-// We still need to handle window resizes. Here are some useful resources:
-// http://eyeseast.github.io/visible-data/2013/08/28/responsive-charts-with-d3/
-// http://bl.ocks.org/mbostock/3019563
-
-export default class HalfwayFinishedStructureAnimation extends Component {
+export default class StructureAnimation extends Component {
 
   constructor(props) {
     super(props);
@@ -30,7 +24,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   componentWillMount() {
     // previously, I set up this event listener in componentDidMount
     ipcRenderer.on('direc-schema', (e,arg)=>{
-      console.log('direc-schema has been received on animation');
       this.updateTree(arg);
     });
   }
@@ -45,14 +38,8 @@ export default class HalfwayFinishedStructureAnimation extends Component {
 
   render() {
     // Create variables to determine the size of the tree and the size of the SVG containing it (or just the height-width ratio?).
-    var viewBoxHeight; // previously hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
-    // REFACTOR WITH TERNARY
-    var viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660,
-    if (this.props.sidebarVisible) {
-      viewBoxHeight = this.state.windowHeight * 7 / 24;
-    } else {
-      viewBoxHeight = this.state.windowHeight * 5 / 24; // started with 7 / 24
-    }
+    var viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
+    var viewBoxHeight = this.props.sidebarVisible ? this.state.windowHeight * 7 / 24 : this.state.windowHeight * 5 / 24; // previously hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
 
     // Create a tree layout.
     var tree = d3.layout.tree()
@@ -72,7 +59,6 @@ export default class HalfwayFinishedStructureAnimation extends Component {
     // Before the next line runs, each node has children, level, name, and value properties.
     // After the next line runs, each node also has parent, depth, x, and y properties.
     // We will pass one node from this array to each Tree as props.data.
-    // ***Do we want to end the next line with reverse to put the root node at the end?
     var nodes = tree.nodes(root),
       // This line creates and returns an array of objects representing all parent-child links in the nodes array we just created.
       linkSelection = tree.links(nodes);
@@ -129,7 +115,7 @@ export default class HalfwayFinishedStructureAnimation extends Component {
   }
 }
 
-HalfwayFinishedStructureAnimation.defaultProps = {
+StructureAnimation.defaultProps = {
   initialTreeData: treeData,
   // We're not currently using the right or bottom margins.
   initialMargin: {top: 8, right: 20, bottom: 0, left: 90},

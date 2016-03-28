@@ -15,7 +15,6 @@ linkVisualization.enter = (selection, diagonal, duration) => {
   selection.attr("d", function(d) {
     // What is the o doing?
   var o = {x: d.target.x0, y: d.target.y0};
-  // console.log('this', this); // this is a <path>
   return diagonal({source: o, target: o});
   });
 
@@ -29,6 +28,7 @@ linkVisualization.update = (selection, diagonal, duration) => {
     .attr("d", diagonal);
 }
 
+// Hide links when we're hiding the children they point to.
 linkVisualization.exit = (selection, diagonal, duration) => {
   selection.transition()
     .duration(duration)

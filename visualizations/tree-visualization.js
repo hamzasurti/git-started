@@ -21,7 +21,6 @@ treeVisualization.handleClick = (d) => {
     } else {
       d.children.forEach(child => {
         var treeNode = d3.select(document.getElementById(child.name));
-        // Is showing children the same as updating them?
         treeNode.datum(child).call(treeVisualization.update, treeVisualization.duration);
         var linkNode = d3.select(document.getElementById('linkTo' + child.name));
         linkNode.call(linkVisualization.enter, linkVisualization.diagonal, treeVisualization.duration);
@@ -51,14 +50,10 @@ treeVisualization.enter = (selection, duration) =>{
 
   selection.select("circle")
     .attr("r", 1e-6)
-    // Right now,the d._children property is undefined (because we haven't added it). Do we need the next line?
-    .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
+    // Note from Isaac: I replaced d._children with d.childrenHidden.
+    .style("fill", function(d) { return d.childrenHidden ? "lightsteelblue" : d.level; });
 
   selection.select("text")
-    .attr("x", function(d) { return d.children || d._children ? -20 : 20; }) // had 13 rather than 20
-    .attr("dy", ".35em")
-    .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-    .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6);
 
   treeVisualization.update(selection, duration);
@@ -72,9 +67,16 @@ treeVisualization.update = (selection, duration) => {
 
   transition.select("circle")
     .attr("r", function(d) { return d.value ? d.value : 5; })
-    .style("fill", function(d) { return d._children ? "lightsteelblue" : d.level; });
+    .style("fill", function(d) {
+      // Is this function not being called on the parent when the click occurs?
+      // console.log(`For ${d.name}, d.childrenHidden is ${d.childrenHidden}, so the fill color will be ${d.childrenHidden ? "lightsteelblue" : 'd.level'}.`);
+      return d.childrenHidden ? "lightsteelblue" : d.level; });
 
   transition.select("text")
+    .attr("x", function(d) { return d.children || d.childrenHidden ? -20 : 20; }) // had 13 rather than 20
+    .attr("dy", ".35em")
+    .attr("text-anchor", function(d) { return d.children || d.childrenHidden ? "end" : "start"; })
+    .text(function(d) { return d.name; })
     .style("fill-opacity", 1);
 }
 

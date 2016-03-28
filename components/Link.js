@@ -19,8 +19,6 @@ export default class Path extends Component {
       .call(linkVisualization.update, linkVisualization.diagonal, linkVisualization.duration);
   }
 
-  // I had the className capitalized before
-  // If I add an onClick function here, it will receive a synthetic mouse event as its first argument.
   render() {
     var id = 'linkTo' + this.props.data.target.name;
     return <path className='link' id={id}></path>
