@@ -56,16 +56,11 @@ function initialLoadEvents(){
 function ptyChildProcess(forkProcess){
 
 	// Note from Isaac: I added this listener to prevent the app from loading our dummy data on initial load.
-	// I don't fully grasp the forkProcess, so I'd love for Hamza to take a look at this and make sure I haven't messed anything up!
-	ipcMain.on('ready-for-schema', (event, arg) => {
-		if (arg) {
-			forkProcess.send({readyMessage: arg});
-			forkProcess.removeAllListeners('readyMessage')
-			forkProcess.on('readyMessage', (readyMessage) =>{
-				if (readyMessage.schema) event.sender.send('direc-schema', readyMessage.schema);
-			});
-		}
-	})
+		ipcMain.on('ready-for-schema', (event, arg) => {
+			console.log(arg);
+			forkProcess.send({message: arg});
+			forkProcess.removeAllListeners('message');
+		});
 
 	// when user inputs data in terminal, start fork and run pty inside
 	// Each keystroke is an arg.
@@ -76,7 +71,10 @@ function ptyChildProcess(forkProcess){
 			// sends what is diplayed in terminal
 			if (message.data) event.sender.send('terminal-reply', message.data);
 			// sends animation schema
-			if (message.schema) event.sender.send('direc-schema', message.schema);
+			if (message.schema) {
+				console.log('Sending schema');
+				event.sender.send('direc-schema', message.schema);
+			}
 		})
 	});
 }

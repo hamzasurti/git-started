@@ -22,8 +22,12 @@ export default class StructureAnimation extends Component {
   }
 
   componentWillMount() {
+    // This fires on initial load and when I toggle between the structure and Git animations.
     // previously, I set up this event listener in componentDidMount
+    ipcRenderer.send('ready-for-schema', '\n');
     ipcRenderer.on('direc-schema', (e,arg)=>{
+      // We're only receiving the directly on the initial load.
+      console.log('direc-schema received:', arg);
       this.updateTree(arg);
     });
   }
