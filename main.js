@@ -41,17 +41,13 @@ app.on('ready', () => {
 
 
 function initialLoadEvents(){
-	// I'm not seeing any of the console logs in this function.
-
 	// when window finished loading, send current directory and animation structure
 	mainWindow.webContents.on('did-finish-load', () => {
 		console.log('running initialLoadEvents');
 		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
 		async.waterfall([
 			async.apply(animationDataSchema.DataSchema, process.env.HOME),
-			(data) => {
-				console.log('sending direc-schema from main.js');
-				mainWindow.webContents.send('direc-schema', data);
+			(data) => { mainWindow.webContents.send('direc-schema', data);
 			}
 		]);
 	});
@@ -59,14 +55,26 @@ function initialLoadEvents(){
 
 function ptyChildProcess(forkProcess){
 
+	// Note from Isaac: I added this listener to prevent the app from loading our dummy data on initial load.
+	// I don't fully grasp the forkProcess, so I'd love for Hamza to take a look at this and make sure I haven't messed anything up!
+	ipcMain.on('ready-for-schema', (event, arg) => {
+		if (arg) {
+			forkProcess.send({readyMessage: arg});
+			forkProcess.removeAllListeners('readyMessage')
+			forkProcess.on('readyMessage', (readyMessage) =>{
+				if (readyMessage.schema) event.sender.send('direc-schema', readyMessage.schema);
+			});
+		}
+	})
+
 	// when user inputs data in terminal, start fork and run pty inside
+	// Each keystroke is an arg.
 	ipcMain.on('command-message', (event, arg) => {
 		forkProcess.send({message: arg});
 		forkProcess.removeAllListeners('message')
 		forkProcess.on('message', (message) =>{
 			// sends what is diplayed in terminal
 			if (message.data) event.sender.send('terminal-reply', message.data);
-
 			// sends animation schema
 			if (message.schema) event.sender.send('direc-schema', message.schema);
 		})
