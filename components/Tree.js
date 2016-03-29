@@ -1,82 +1,30 @@
 import React, {Component} from 'react';
-var d3 = require('d3');
-var ReactDOM = require('react-dom');
-
-var treeVisualization = {};
-
-// It would be great to fix the tabs on this page!
-
-// Set the attributes for nodes that are new to the DOM
-treeVisualization.enter = (selection, duration) =>{
-  // I would like to understand this translation better.
-  selection.attr("transform", function(d) {
-      return "translate(" + d.rootY0 + "," + d.rootX0 + ")"; })
-
-  selection.select("circle")
-    .attr("r", 1e-6)
-    // Right now, I don't think our nodes have the d._children property (because I didn't add it).
-    .style("fill", function(d) {
-      return d._children ? "lightsteelblue" : "#fff"; });
-
-  selection.select("text")
-    .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
-    .attr("dy", ".35em")
-    .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-    .text(function(d) { return d.name; })
-    .style("fill-opacity", 1e-6);
-
-  treeVisualization.update(selection, duration);
-}
-
-// Transition new and updated nodes to their new position
-treeVisualization.update = (selection, duration) => {
-  var transition = selection.transition()
-    .duration(duration)
-    // I'd like to understand this translation better too.
-    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-
-  transition.select("circle")
-    .attr("r", 10)
-    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-  transition.select("text")
-    .style("fill-opacity", 1);
-}
+import treeVisualization from './../visualizations/tree-visualization';
+const d3 = require('d3');
+const ReactDOM = require('react-dom');
 
 export default class Tree extends Component {
 
   componentDidMount() {
-  this.d3Node = d3.select(ReactDOM.findDOMNode(this));
-  this.d3Node.datum(this.props.data)
-    .call(treeVisualization.enter, this.props.duration);
+    // This function runs when a new file/folder is added to the DOM.
+    // this.d3Node is an array of elements D3 can operate on (a selection).
+    this.d3Node = d3.select(ReactDOM.findDOMNode(this));
+    this.d3Node.datum(this.props.data)
+      .call(treeVisualization.enter, treeVisualization.duration);
   }
   //
-  // I need to add a shouldComponentUpdate function. I could use the Medium blog post for inspiration, but I'd need to create a data.update property (not just copy-paste the Medium code).
-  //
-  // shouldComponentUpdate(nextProps) {
-  //   console.log('sCU running for', nextProps);
-  //  if (nextProps.data.update) { // what is nextProps.data.update?
-  //   // use d3 to update component
-  //   this.d3Node.datum(nextProps.data)
-  //    .call(treeVisualization.update);
-  //   return false;
-  //  }
-  //  return true;
-  // }
+  // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
+  // However, this many not be necessary.
   //
   componentDidUpdate() {
-   this.d3Node.datum(this.props.data)
-    .call(treeVisualization.update, this.props.duration);
+    // This function runs when a file/folder already on the DOM is updated.
+    this.d3Node.datum(this.props.data)
+      .call(treeVisualization.update, treeVisualization.duration);
   }
-
-  componentWillUnmount() {
-    // Based on the Medium post, I'm not sure there's a good way to fade the exiting nodes out. But perhaps I could re-style them with componentDidUpate and then remove them or something?
-  }
-
-  // I had the className 'Tree' before.
+  //
   render() {
-    return <g className='node'>
-      <circle></circle>
+    return <g className='node' id={this.props.data.name}>
+      <circle onClick={treeVisualization.handleClick}></circle>
       <text>{this.props.data.name}</text>
     </g>
   }
