@@ -44,7 +44,7 @@ module.exports = {
     // child process that gets all items in a directory
   	var command = 'cd ' + pwd + ';ls -ap';
     var that = this;
-
+    const current =
   	exec(command, (err, stdout, stderr) => {
   			if (err) {
   				console.log(err.toString());
@@ -56,7 +56,8 @@ module.exports = {
   				simpleGit(pwd).status((err, i) => {
   					modifiedFiles = i.modified;
 
-  					var schema = schemaMaker(stdoutArr, modifiedFiles);
+  					var schema = schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
+            console.log('schema',schema);
             process.send ? process.send({schema: schema}) : asyncWaterfallCallback(null, schema);
             return schema;
   				})
