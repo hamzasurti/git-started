@@ -1,4 +1,4 @@
-var d3 = require('d3'); // const?
+const d3 = require('d3'); // const?
 
 var linkVisualization = {};
 

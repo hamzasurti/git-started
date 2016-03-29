@@ -1,4 +1,4 @@
-var d3 = require('d3'); // const?
+const d3 = require('d3');
 import linkVisualization from './link-visualization';
 
 var treeVisualization = {};
@@ -11,12 +11,12 @@ treeVisualization.handleClick = (d) => {
 
   // If the clicked node has children...
   if (parentData.children) {
-    // Update the children and their links.
+    // Decide how to update the children and their links.
     // If the children and their links are hidden, show them. If they're showing, hide them.
     var treeFunction = parentData.childrenHidden ? treeVisualization.update : treeVisualization.hide;
     var linkFunction = parentData.childrenHidden ? linkVisualization.enter : linkVisualization.exit;
 
-    // Loop through the children.
+    // Loop through the children/links and update them.
     parentData.children.forEach(child => {
       // Is there a better way to select the DOM elements I need, without using document.getElementById?
       // I understand how to go from DOM element to data in D3, but not vice versa.
@@ -32,6 +32,7 @@ treeVisualization.handleClick = (d) => {
   }
 }
 
+// Hide child nodes by collapsing them into their parent.
 treeVisualization.hide = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
@@ -47,14 +48,10 @@ treeVisualization.hide = (selection, duration) => {
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
-  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; })
-  // I'm moving this listener to tree.JS
-  // .on("click", treeVisualization.handleClick);
+  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; });
 
   selection.select("circle")
-    .attr("r", 1e-6)
-    // Note from Isaac: I replaced d._children with d.childrenHidden.
-    .style("fill", function(d) { return d.childrenHidden ? "lightsteelblue" : d.level; });
+    .attr("r", 1e-6);
 
   selection.select("text")
     .style("fill-opacity", 1e-6);
@@ -66,12 +63,7 @@ treeVisualization.enter = (selection, duration) =>{
 treeVisualization.update = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
-    .attr("transform", function(d) {
-      if (!d) {
-        console.log('TROUBLESOME SELECTION', selection)
-      } else {
-        return "translate(" + d.y + "," + d.x + ")";
-      }});
+    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
   transition.select("circle")
     .attr("r", function(d) { return d.value ? d.value : 5; })
