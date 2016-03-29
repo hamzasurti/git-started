@@ -4,7 +4,7 @@ const DAG = require('./DAG')
 module.exports = {
   gitHistory: function(pwd){
     var that = this;
-    var commandForGitHistory = 'cd ' + pwd + ';git log --pretty="%h|%p|%s|%d" --max-count=100';
+    var commandForGitHistory = 'cd ' + pwd + ';git log --pretty="%h|%p|%s|%d" --max-count=10';
     exec(commandForGitHistory, (err,stdout,stderr) => {
       if (err) {
         console.log(err.toString());

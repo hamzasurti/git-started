@@ -56,10 +56,8 @@ module.exports = {
   				simpleGit(pwd).status((err, i) => {
   					modifiedFiles = i.modified;
 
-  					var schema = schemaMaker(stdoutArr,current, modifiedFiles);
-
+  					var schema = schemaMaker(stdoutArr, modifiedFiles);
             process.send ? process.send({schema: schema}) : asyncWaterfallCallback(null, schema);
-
             return schema;
   				})
   			}

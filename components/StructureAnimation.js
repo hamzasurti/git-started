@@ -94,6 +94,7 @@ export default class StructureAnimation extends Component {
     });
 
     var trees = nodes && nodes.map((node) => {
+      console.log(node);
       node.name = node.name.trim();
       var nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       var key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
