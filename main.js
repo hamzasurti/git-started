@@ -67,6 +67,7 @@ function ptyChildProcess(forkProcess){
 
 			if(message.gitGraph) {
 				event.sender.send('git-graph', message.gitGraph)
+				console.log('main===>',message.gitGraph);
 			}
 		})
 	});

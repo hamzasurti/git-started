@@ -96,6 +96,7 @@ DAG.prototype.addEdges = function(name, value, before, after) {
       this.addEdge(after, name);
     } else {
       for (i = 0; i < after.length; i++) {
+        console.log('hi in after',i);
         this.addEdge(after[i], name);
       }
     }
