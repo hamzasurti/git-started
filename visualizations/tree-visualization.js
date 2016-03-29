@@ -6,35 +6,29 @@ var treeVisualization = {};
 treeVisualization.duration = linkVisualization.duration;
 
 treeVisualization.handleClick = (d) => {
-  if (d.children) {
-    // If the children are showing...
-    if (!d.childrenHidden) {
-      // Update the parent.
-      d.childrenHidden = true;
-      var parentNode = d3.select(document.getElementById(d.name));
-      parentNode.call(treeVisualization.update, treeVisualization.duration);
-      // Hide the children.
-      d.children.forEach(child => {
-        var treeNode = d3.select(document.getElementById(child.name));
-        treeNode.datum(child).call(treeVisualization.hide, treeVisualization.duration);
-        var linkNode = d3.select(document.getElementById('linkTo' + child.name));
-        linkNode.call(linkVisualization.exit, linkVisualization.diagonal, treeVisualization.duration);
-      });
+  var parentNode = d3.select(d.target.parentNode);
+  var parentData = parentNode.datum();
 
-    // If the children are hidden...
-    } else {
-      // Update the parent.
-      d.childrenHidden = false;
-      var parentNode = d3.select(document.getElementById(d.name));
-      parentNode.call(treeVisualization.update, treeVisualization.duration);
-      // Show the children.
-      d.children.forEach(child => {
-        var treeNode = d3.select(document.getElementById(child.name));
-        treeNode.datum(child).call(treeVisualization.update, treeVisualization.duration);
-        var linkNode = d3.select(document.getElementById('linkTo' + child.name));
-        linkNode.call(linkVisualization.enter, linkVisualization.diagonal, treeVisualization.duration);
-      });
-    }
+  // If the clicked node has children...
+  if (parentData.children) {
+    // Update the children and their links.
+    // If the children and their links are hidden, show them. If they're showing, hide them.
+    var treeFunction = parentData.childrenHidden ? treeVisualization.update : treeVisualization.hide;
+    var linkFunction = parentData.childrenHidden ? linkVisualization.enter : linkVisualization.exit;
+
+    // Loop through the children.
+    parentData.children.forEach(child => {
+      // Is there a better way to select the DOM elements I need, without using document.getElementById?
+      // I understand how to go from DOM element to data in D3, but not vice versa.
+      var treeNode = d3.select(document.getElementById(child.name));
+      treeNode.call(treeFunction, treeVisualization.duration);
+      var linkNode = d3.select(document.getElementById('linkTo' + child.name));
+      linkNode.call(linkFunction, linkVisualization.diagonal, treeVisualization.duration);
+    });
+
+    // Update the parent.
+    parentData.childrenHidden = !parentData.childrenHidden;
+    parentNode.call(treeVisualization.update, treeVisualization.duration);
   }
 }
 
@@ -54,7 +48,8 @@ treeVisualization.hide = (selection, duration) => {
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
   selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; })
-  .on("click", treeVisualization.handleClick);
+  // I'm moving this listener to tree.JS
+  // .on("click", treeVisualization.handleClick);
 
   selection.select("circle")
     .attr("r", 1e-6)
@@ -71,7 +66,12 @@ treeVisualization.enter = (selection, duration) =>{
 treeVisualization.update = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+    .attr("transform", function(d) {
+      if (!d) {
+        console.log('TROUBLESOME SELECTION', selection)
+      } else {
+        return "translate(" + d.y + "," + d.x + ")";
+      }});
 
   transition.select("circle")
     .attr("r", function(d) { return d.value ? d.value : 5; })

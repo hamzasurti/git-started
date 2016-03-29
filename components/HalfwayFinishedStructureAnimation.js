@@ -22,7 +22,6 @@ export default class StructureAnimation extends Component {
   }
 
   componentDidMount() {
-    console.log('SA did mount');
     // This fires on initial load and when I toggle between the structure and Git animations.
     // For some reason, after I toggle, every time I run a command or toggle again, I see an error message in the console about setting state for an unmounted component:
     // "Warning: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component. This is a no-op. Please check the code for the undefined component."
@@ -31,10 +30,6 @@ export default class StructureAnimation extends Component {
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTree(arg);
     });
-  }
-
-  componentDidUpdate() {
-    console.log('SA did update');
   }
 
   updateTree(newSchema) {
@@ -46,7 +41,6 @@ export default class StructureAnimation extends Component {
   }
 
   render() {
-    console.log('Rendering SA');
     // Create variables to determine the size of the tree and the size of the SVG containing it (or just the height-width ratio?).
     var viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
     var viewBoxHeight = this.props.sidebarVisible ? this.state.windowHeight * 7 / 24 : this.state.windowHeight * 5 / 24; // previously hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible

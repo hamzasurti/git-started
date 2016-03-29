@@ -21,16 +21,16 @@ export default class Tree extends Component {
     this.d3Node.datum(this.props.data)
       .call(treeVisualization.update, treeVisualization.duration);
   }
-
+  //
   // componentWillUnmount() {
     // Based on the Medium post, I'm not sure there's a good way to fade the exiting nodes out. But perhaps I could re-style them with componentDidUpate and then remove them or something?
   // }
-
+  //
   // *** Can I do an onClick here now that I'm not getting an invariant error?
   // If I add an onClick function here, it will receive a synthetic mouse event as its first argument. Is that useful?
   render() {
-    return <g className='node' id={this.props.data.name} >
-      <circle></circle>
+    return <g className='node' id={this.props.data.name}>
+      <circle onClick={treeVisualization.handleClick}></circle>
       <text>{this.props.data.name}</text>
     </g>
   }
