@@ -39,6 +39,8 @@ describe("4 Main React Components Render onto DOM", function(){
   })
 
   it('Animation element must render', function(done){
+    driver.get("http://google.com")
+          .then()
     var AnimationElem = driver.findElements(webdriver.By.tag("div"))
       .then(function(value){
         value[0].getInnerHtml().then(function(item){

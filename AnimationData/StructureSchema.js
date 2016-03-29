@@ -43,7 +43,7 @@ module.exports = {
 
   DataSchema: function(pwd,asyncWaterfallCallback) {
     // child process that gets all items in a directory
-  	var command = 'cd ' + pwd + ';ls -ap';
+  	var command = 'cd ' + pwd + '; ls -ap';
     var that = this;
 
   	exec(command, (err, stdout, stderr) => {

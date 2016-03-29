@@ -8,6 +8,11 @@ import Terminal from './Terminal';
 // Import lesson content
 import {lesson1} from './../lessons/git-on-your-computer';
 
+// testing for react tour
+var ReactTour = require('react-tour');
+// import url(node_modules/react-tour/dist/style.css);
+// delete if does not work
+
 // As we create new lessons, we can add new objects to the lessons array.
 var lessons = [
 	{
@@ -32,9 +37,10 @@ export default class Dashboard extends Component {
 			errorMessage: undefined,
 			sidebarVisible: props.initialSidebarVisible,
 			lessonVisible: props.initialLessonVisible,
-			structureAnimationVisible: props.initialStructureAnimationVisible
+			structureAnimationVisible: props.initialStructureAnimationVisible,
 		};
 	}
+
 
 	// Helper function that advances to the next slide
 	advance() {
@@ -117,9 +123,13 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-		var sidebarStyle = {
-			padding: '8px'
-		};
+
+    var ReactTourConfig = [{
+      node: React.findDOMNode(this.refs.step1),
+      text: 'This is the step 1'
+    }];
+
+		var sidebarStyle = {padding: '8px'};
 
 		var sidebarContainerStyle = {height: '100%', backgroundColor: 'lightGray'};
 		var mainStyle = {height: '100%'};
@@ -154,8 +164,6 @@ export default class Dashboard extends Component {
 			terminalStyle.width = '100%';
 		}
 
-
-
 		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
 		var lessonInfo = lessons.map(lesson => {
 			return {
@@ -167,6 +175,10 @@ export default class Dashboard extends Component {
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' style={{height: '100%', width: '100%'}}>
+
+
+
+
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)} height='12px' width='12px' style={{padding: '8px'}}/>
 					<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonInfo={lessonInfo} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
