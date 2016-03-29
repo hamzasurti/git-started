@@ -13,21 +13,24 @@ var currDir;
 
   // sets the terminal prompt to pwd
 ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
-    process.on('message', function(data) {
-			data.message.cols ? ptyTerm.resize(data.message.cols,data.message.rows) :ptyTerm.write(data.message)
-    });
+	process.once('message', function(data) {
+		animationDataSchema.DataSchema(process.env.HOME)
+	});
+  process.on('message', function(data) {
+		data.message.cols ? ptyTerm.resize(data.message.cols,data.message.rows) :ptyTerm.write(data.message)
+  });
 
-    ptyTerm.on('data', function(data) {
-      // crude way to find path, need to improve
-      process.send({
-        data:data
-      })
-      var re = /\s[$]\s/g;
-      if (data.match(re)) {
-        var temp = data;
-        temp = temp.replace(re,'');
-        currDir = temp;
-        animationDataSchema.DataSchema(currDir);
-				getGitData.gitHistory(currDir);
-      }
-    });
+  ptyTerm.on('data', function(data) {
+    // crude way to find path, need to improve
+    process.send({
+      data:data
+    })
+    var re = /\s[$]\s/g;
+    if (data.match(re)) {
+      var temp = data;
+      temp = temp.replace(re,'');
+      currDir = temp;
+      animationDataSchema.DataSchema(currDir);
+			getGitData.gitHistory(currDir);
+    }
+  });
