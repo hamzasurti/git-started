@@ -102,7 +102,7 @@ export default class StructureAnimation extends Component {
     });
 
     var viewBoxString = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
-
+ 
     var translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
     // If you want to see the size of the SVG, add this code before the links and trees:
