@@ -12,6 +12,7 @@ var currDir;
 	});
 
   // sets the terminal prompt to pwd
+	// We can read the bash profile here with the source command.
 ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
 	process.once('message', function(data) {
 		animationDataSchema.DataSchema(process.env.HOME)

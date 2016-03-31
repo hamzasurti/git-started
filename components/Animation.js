@@ -15,17 +15,18 @@ export default class Animation extends Component {
 
   // Images from https://www.iconfinder.com/icons/172515/folder_opened_icon#size=32 and https://www.iconfinder.com/icons/83306/git_icon#size=32
   render() {
+    // Again, abstract out styling into a separate function.
+    // Use const here. (The reference must remain constant, but the value doesn't have to stay constant.)
     var selectedAnimation;
     var gitStyle = {
       borderBottom: '1px solid black',
       padding: '2px 2px 0px 2px'
-     };
+    };
     var structureStyle = {padding: '2px 2px 0px 2px'};
 
     if (this.props.structureAnimationVisible) {
       // What to show for structure Animation
-      selectedAnimation = <StructureAnimation sidebarVisible=
-      {this.props.sidebarVisible} />;
+      selectedAnimation = <StructureAnimation sidebarVisible={this.props.sidebarVisible} />;
       gitStyle.backgroundColor = 'transparent';
       structureStyle.backgroundColor = 'lightBlue';
     } else {

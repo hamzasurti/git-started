@@ -36,10 +36,8 @@ function schemaMaker(termOutput, directoryName, modified){
 }
 module.exports = {
 
-  twoPlustwo: function(){
-    return 2 + 2;
-  },
-
+  // Can we decide here whether to send the response back to the client?
+  // Basically, we want the ability to run commands independent of the client.
   DataSchema: function(pwd,asyncWaterfallCallback) {
     // child process that gets all items in a directory
   	var command = 'cd ' + pwd + ';ls -ap';

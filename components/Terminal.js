@@ -12,14 +12,15 @@ export default class Terminal extends Component {
     this.renderTerm(mountTerm);
   }
 
-  handleResize(e) {
-    var columns = (document.getElementById('Terminal').offsetWidth/ 6.71)-1;
-  }
+  // handleResize(e) {
+  //   var columns = (document.getElementById('Terminal').offsetWidth/ 6.71)-1;
+  // }
+  //
+  // componentWillUnmount() {
+  //   document.getElementById('Terminal').removeEventListener('resize', this.handleResize);
+  // }
 
-  componentWillUnmount() {
-    document.getElementById('Terminal').removeEventListener('resize', this.handleResize);
-  }
-
+  // Pull document.getElementById('Terminal') into a variable.
   renderTerm(elem){
     var columns = (document.getElementById('Terminal').offsetWidth / 6.71)-1;
     var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3);
@@ -32,7 +33,7 @@ export default class Terminal extends Component {
     });
 
     term.open(elem);
-    var ptyProcess = pty.fork('bash', [], {
+    var ptyProcess = pty.fork('bash', [], { // Do we still need this?
       cwd: process.env.HOME,
       env: process.env,
       name: 'xterm-256color'
@@ -51,7 +52,7 @@ export default class Terminal extends Component {
     window.addEventListener('resize',(e) => {
       var cols = Math.ceil((document.getElementById('Terminal').offsetWidth/ 6.71)-1);
       var rows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3);
-      var sizeObj = {
+      var sizeObj = { // see ES6 object enhanced literal syntax
         cols: cols,
         rows: rows
       }
@@ -67,30 +68,4 @@ export default class Terminal extends Component {
       </div>
     )
   }
-}
-
-var renderTerm = (elem) =>{
-  const term = new Term({ // creates a new term.js terminal
-    cursorBlink: true,
-    useStyle: true,
-    cols: 100,
-    rows: 20
-  });
-  term.open(elem);
-  var ptyProcess = pty.fork('bash', [], {
-    cwd: process.env.HOME,
-    env: process.env,
-    name: 'xterm-256color'
-  });
-
-  ipcRenderer.once('term-start-data', (e, arg) => {
-    term.write(arg)
-  });
-  term.on("data", function(data) {
-    ipcRenderer.send('command-message', data);
-  });
-
-  ipcRenderer.on('terminal-reply', (event, arg) => {
-   term.write(arg);
-  });
 }

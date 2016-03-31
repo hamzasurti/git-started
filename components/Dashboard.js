@@ -117,6 +117,7 @@ export default class Dashboard extends Component {
 
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
+		// Put styling in a separate function that render can call.
 		var sidebarStyle = {padding: '8px'};
 		var sidebarContainerStyle = {height: '100%', backgroundColor: 'lightGray'};
 		var mainStyle = {height: '100%'};

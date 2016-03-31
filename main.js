@@ -32,7 +32,7 @@ app.on('ready', () => {
 					(data) => {
 						mainWindow.webContents.send('direc-schema', data);
 						}
-			]),1);
+			]),1); // 0?
 
 
 		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
@@ -69,7 +69,6 @@ function ptyChildProcess(){
 
 	// Note from Isaac: I added this listener to prevent the app from loading our dummy data on initial load.
 		ipcMain.on('ready-for-schema', (event, arg) => {
-			// console.log('Main.js received ready-for-schema');
 			forkProcess.send({message: arg});
 			// Previously, we removed all listeners here. However, this prevented main.js from sending a schema when the user toggles from the Git animation to the structure animation.
 		});
@@ -77,15 +76,16 @@ function ptyChildProcess(){
 	// when user inputs data in terminal, start fork and run pty inside
 	// Each keystroke is an arg.
 	ipcMain.on('command-message', (event, arg) => {
-		forkProcess.send({message: arg});
-		forkProcess.removeAllListeners('message')
+		forkProcess.send({message: arg}); // Add another key to this object? Listener won't know to expect it.
+		forkProcess.removeAllListeners('message') // Find a way to avoid this hack.
+		// Write a function outside that takes event and message as arguments.
 		forkProcess.on('message', (message) =>{
 			// sends what is diplayed in terminal
 			if (message.data) event.sender.send('terminal-reply', message.data);
 			// sends animation schema
 			if (message.schema) event.sender.send('direc-schema', message.schema);
 
-			if(message.gitGraph) event.sender.send('git-graph', message.gitGraph)
+			if(message.gitGraph) event.sender.send('git-graph', message.gitGraph);
 
 		})
 	});
