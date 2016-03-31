@@ -124,11 +124,6 @@ export default class Dashboard extends Component {
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
 
-    var ReactTourConfig = [{
-      node: React.findDOMNode(this.refs.step1),
-      text: 'This is the step 1'
-    }];
-
 		var sidebarStyle = {padding: '8px'};
 
 		var sidebarContainerStyle = {height: '100%', backgroundColor: 'lightGray'};
@@ -175,17 +170,14 @@ export default class Dashboard extends Component {
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' style={{height: '100%', width: '100%'}}>
-
-
-
-
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)} height='12px' width='12px' style={{padding: '8px'}}/>
 					<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonInfo={lessonInfo} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
 				</div>
 				<div id='main' style={mainStyle}>
 					<div id='upper-half' style={upperHalfStyle}>
-						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)} />
+						<Animation structureAnimationVisible={this.state.structureAnimationVisible} setStructureAnimationVisibility={this.setStructureAnimationVisibility.bind(this)} sidebarVisible=
+						{this.state.sidebarVisible} />
 					</div>
 					<div id='lower-half' style={lowerHalfStyle}>
 		        <div id='left' style={leftStyle}>

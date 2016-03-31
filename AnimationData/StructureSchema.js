@@ -8,20 +8,22 @@ module.exports = {
     var schema = {
       "name": directoryName,
       "children": [],
-      "value": 15,
-      "level": '#33C3F0'
+      "position_x": '-10px',
+      "position_y": '-20px',
+      "value": 40,
+      'icon' : "assets/folder.png"
     };
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
       // checks if file has any alphanumeric characters
+      var temp = index.replace(/^\w+./,'');
       var elementObj = {
         "name": index,
-        "type": "file",
+        "icon": "assets/64pxBlue/" + temp + ".png"
       }
 
       if(index.substring(index.length -1 ) === '/'){
-        elementObj.level = '#33C3F0';
-        elementObj.type = 'directory';
+        elementObj.icon = "assets/folder.png";
       }
 
       if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
@@ -29,8 +31,9 @@ module.exports = {
         if (index.substring(0,4) === ".git") elementObj.level = "black";
         if (modified){
           for (var i = 0, len = modified.length; i < len; i++){
-            if (modified[i] === index){
+            if (modified[i] === index) {
               elementObj.level = "red"
+              elementObj.icon = "assets/64pxRed/" + temp + ".png"
             }
           }
         }
@@ -43,8 +46,8 @@ module.exports = {
 
   DataSchema: function(pwd,asyncWaterfallCallback) {
     // child process that gets all items in a directory
-  	var command = 'cd ' + pwd + '; ls -ap';
-    var that = this;
+
+  	var command = 'cd ' + pwd + ';ls -ap';
 
   	exec(command, (err, stdout, stderr) => {
   			if (err) {
@@ -57,7 +60,7 @@ module.exports = {
           // git command to check git status
   				simpleGit(pwd).status((err, i) => {
   					modifiedFiles = i.modified;
-  					var schema = that.schemaMaker(stdoutArr,current, modifiedFiles);
+  					var schema = this.schemaMaker(stdoutArr,current, modifiedFiles);
             process.send ? process.send({schema: schema}) : asyncWaterfallCallbackcallback(null, schema);
             return schema;
   				})
