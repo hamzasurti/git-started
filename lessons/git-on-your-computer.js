@@ -93,7 +93,7 @@ var slides = [
 			ipcRenderer.send('command-to-run', commandToRun);
 			ipcRenderer.once('terminal-output', function(event, arg) {
 			// If we can't cd into new-project, the terminal will create an error, and arg will be a string starting with 'Error.' In this case, the user should fail the test, so we'll return a falsy value: zero. Otherwise, the user should pass.
-				ipcRenderer.send('test-result-1', arg.indexOf('Error'));
+				ipcRenderer.send('test-result-1', arg.indexOf('Error')); // This test is returning false negatives.
 			})
 		},
 		errorMessage: "Oops! It looks like you haven't created a new directory called 'new-project'. Try again and then click the button above."

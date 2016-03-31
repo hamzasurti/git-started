@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-const gitgraph = require('gitgraph.js')
 import { createStore } from 'redux';
 
 

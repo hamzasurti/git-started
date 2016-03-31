@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
@@ -78,14 +79,15 @@ export default class Dashboard extends Component {
       // (since I can't get the buttonFunction to return a Boolean, which would be simpler).
       // I changed .on to .once
       // Refactoring opportunity: pull out and name this function.
-      ipcRenderer.once('test-result-2', function (event, arg) {
+      ipcRenderer.once('test-result-2', (event, arg) => {
+        console.log('result', arg);
         // If the user passed the test (if arg is true), advance.
         if (arg) {
           this.advance();
         } else {
           this.showError();
         }
-      }.bind(this));
+      });
     } else {
       this.advance();
     }
