@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import GitAnimation from './GitAnimation';
 
 import StructureAnimation from './StructureAnimation';
