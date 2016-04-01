@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 // We could add navigation, contact/help, search, progress indicators, and login here
 // if we have these features.
 export default class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
 
   handleClick(index) {
     this.props.showLesson(index);
@@ -20,17 +24,16 @@ export default class Sidebar extends Component {
     return styles;
   }
 
-  render() {
-    const styles = this.buildStyles(this.props.sidebarVisible);
-
-    const lessons = this.props.lessonInfo.map((lesson, index) => {
+  buildLessonList(lessonInfo, lessonNumber, lessonVisible, styles, handleClick) {
+    const lessonList = lessonInfo.map((lesson, index) => {
       const image = (
         <div style={styles.image}>
           <img src={lesson.iconPath} alt="" height="12px" width="12px" />
         </div>
       );
+
       // How to render the current lesson
-      if (this.props.lessonNumber === index && this.props.lessonVisible) {
+      if (lessonNumber === index && lessonVisible) {
         return (
           <button key={index} style={styles.button}>
             {image}
@@ -39,12 +42,11 @@ export default class Sidebar extends Component {
             </div>
           </button>
         );
+
       // How to render all other lessons
       }
       return (
-        // The reason I'm binding here is that I need to pass the index as a parameter.
-        // I'm not sure how to fix this without using event.target.
-        <button key={index} style={styles.button} onClick={this.handleClick.bind(this, index)}>
+        <button key={index} style={styles.button} onClick={ () => { handleClick(index); } }>
           {image}
           <div style={styles.text}>
             <span>{lesson.name}</span>
@@ -52,12 +54,20 @@ export default class Sidebar extends Component {
         </button>
       );
     });
+    return lessonList;
+  }
+
+  render() {
+    const styles = this.buildStyles(this.props.sidebarVisible);
+
+    const lessonList = this.buildLessonList(this.props.lessonInfo, this.props.lessonNumber,
+      this.props.lessonVisible, styles, this.handleClick);
 
     return (
       <div style={styles.main} id="Sidebar">
         <img src="" alt="Awesome logo here!" />
         <p>Choose a tutorial:</p>
-        {lessons}
+        {lessonList}
       </div>
     );
   }
