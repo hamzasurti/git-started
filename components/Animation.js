@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import GitAnimation from './GitAnimation';
-
 import StructureAnimation from './StructureAnimation';
 
 export default class Animation extends Component {
+  constructor(props) {
+    super(props);
+    this.showGit = this.showGit.bind(this);
+    this.showStructure = this.showStructure.bind(this);
+  }
 
   showGit() {
     this.props.setStructureAnimationVisibility(false);
@@ -13,43 +17,55 @@ export default class Animation extends Component {
     this.props.setStructureAnimationVisibility(true);
   }
 
-  // Images from https://www.iconfinder.com/icons/172515/folder_opened_icon#size=32 and https://www.iconfinder.com/icons/83306/git_icon#size=32
-  render() {
-    // Again, abstract out styling into a separate function.
-    // Use const here. (The reference must remain constant, but the value doesn't have to stay constant.)
-    var selectedAnimation;
-    var gitStyle = {
-      borderBottom: '1px solid black',
-      padding: '2px 2px 0px 2px'
-    };
-    var structureStyle = {padding: '2px 2px 0px 2px'};
+  buildStyles(structureAnimationVisible) {
+    const styles = {};
 
-    if (this.props.structureAnimationVisible) {
-      // What to show for structure Animation
-      selectedAnimation = <StructureAnimation sidebarVisible={this.props.sidebarVisible} />;
-      gitStyle.backgroundColor = 'transparent';
-      structureStyle.backgroundColor = 'lightBlue';
+    styles.padder = this.props.padderStyle;
+    styles.toggle = { float: 'right', border: '1px solid black', textAlign: 'center' };
+    styles.git = { borderBottom: '1px solid black', padding: '2px 2px 0px 2px' };
+    styles.structure = { padding: '2px 2px 0px 2px' };
+
+    if (structureAnimationVisible) {
+      styles.git.backgroundColor = 'transparent';
+      styles.structure.backgroundColor = 'lightBlue';
     } else {
-      // What to show for Git Animation
-      selectedAnimation = <GitAnimation />;
-      gitStyle.backgroundColor = 'lightBlue';
-      structureStyle.backgroundColor = 'transparent';
+      styles.git.backgroundColor = 'lightBlue';
+      styles.structure.backgroundColor = 'transparent';
     }
 
+    return styles;
+  }
+
+  // Images from https://www.iconfinder.com/icons/172515/folder_opened_icon#size=32
+  // and https://www.iconfinder.com/icons/83306/git_icon#size=32
+  render() {
+    const selectedAnimation = this.props.structureAnimationVisible ?
+      <StructureAnimation sidebarVisible={this.props.sidebarVisible} /> :
+      <GitAnimation />;
+
+    const styles = this.buildStyles(this.props.structureAnimationVisible);
+
     return (
-      <div id='Animation'>
-        <div className='add-padding'>
-          <div style={{float: 'right', border: '1px solid black', textAlign: 'center'}}>
-            <div style={gitStyle} onClick={this.showGit.bind(this)}>
-              <img src='assets/git-icon.png' alt='Git view' height='12' width='12'/>
+      <div id="Animation">
+        <div style={ styles.padder }>
+          <div style={ styles.toggle }>
+            <div style={ styles.git } onClick={this.showGit}>
+              <img src="assets/git-icon.png" alt="Git view" height="12" width="12" />
             </div>
-            <div style={structureStyle} onClick={this.showStructure.bind(this)}>
-              <img src='assets/folder-icon.png' alt='Directory view' height='12' width='12' />
+            <div style={ styles.structure } onClick={this.showStructure}>
+              <img src="assets/folder-icon.png" alt="Directory view" height="12" width="12" />
             </div>
           </div>
           {selectedAnimation}
         </div>
       </div>
-    )
+    );
   }
 }
+
+Animation.propTypes = {
+  padderStyle: React.PropTypes.object,
+  setStructureAnimationVisibility: React.PropTypes.func,
+  sidebarVisible: React.PropTypes.bool,
+  structureAnimationVisible: React.PropTypes.bool,
+};

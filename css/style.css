@@ -6,7 +6,7 @@ body {
 }
 
 /* Add media query to ensure that #sidebar-container is always at least 64px wide */
-
+/* I'm no longer using .add-padding on Dashboard on Animation */
 .add-padding {
   padding: 16px; /* was 1rem */
 }

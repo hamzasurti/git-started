@@ -124,41 +124,43 @@ export default class Dashboard extends Component {
     });
   }
 
+  buildStyles(sidebarVisible, lessonVisible) {
+    const styles = {};
+
+    styles.dashboard = { height: '100%', width: '100%' };
+    styles.sidebar = { height: '100%', backgroundColor: 'lightGray' };
+    styles.settingIcon = { padding: '8px' };
+    styles.main = { height: '100%' };
+    styles.upperHalf = { height: '50%', width: '100%' };
+    styles.lowerHalf = { height: '50%', width: '100%' };
+    // Isaac: I'm not sure whether overflow should be auto or scroll.
+    styles.lesson = { float: 'left', height: '100%', overflow: 'scroll' };
+    styles.padder = { padding: '16px' };
+
+    if (sidebarVisible) {
+      styles.sidebar.float = 'left';
+      styles.sidebar.width = '20%';
+      styles.main.float = 'left';
+      styles.main.width = '80%';
+    } else {
+      styles.sidebar.position = 'absolute';
+      styles.sidebar.width = '28px';
+      styles.main.position = 'absolute';
+      styles.main.left = '28px';
+      styles.main.right = 0;
+    }
+
+    if (lessonVisible) {
+      styles.lesson.width = '35%';
+    } else {
+      styles.lesson.display = 'none';
+    }
+
+    return styles;
+  }
+
   // Not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-    // Put styling in a separate function that render can call.
-    const sidebarStyle = { padding: '8px' };
-    const sidebarContainerStyle = { height: '100%', backgroundColor: 'lightGray' };
-    const mainStyle = { height: '100%' };
-    const upperHalfStyle = { height: '50%', width: '100%' };
-    const lowerHalfStyle = { height: '50%', width: '100%' };
-    // Isaac: I'm not sure whether overflow should be auto or scroll.
-    const leftStyle = { float: 'left', height: '100%', overflow: 'scroll' };
-    const terminalStyle = { float: 'left', height: '100%', backgroundColor: 'black' };
-
-    if (this.state.sidebarVisible) {
-      sidebarContainerStyle.float = 'left';
-      sidebarContainerStyle.width = '20%';
-      mainStyle.float = 'left';
-      mainStyle.width = '80%';
-      sidebarStyle.display = 'block';
-    } else {
-      sidebarContainerStyle.position = 'absolute';
-      sidebarContainerStyle.width = '28px'; // was 10%
-      mainStyle.position = 'absolute';
-      mainStyle.left = '28px';
-      mainStyle.right = 0;
-      sidebarStyle.display = 'none';
-    }
-
-    if (this.state.lessonVisible) {
-      leftStyle.width = '35%';
-      terminalStyle.width = '65%';
-    } else {
-      leftStyle.display = 'none';
-      terminalStyle.width = '100%';
-    }
-
     // Create an array of lesson names to pass down as props.
     // (We don't want to pass all the lesson contents - that's a lot of data.)
     const lessonInfo = lessons.map(lesson =>
@@ -168,28 +170,29 @@ export default class Dashboard extends Component {
       })
     );
 
+    const styles = this.buildStyles(this.state.sidebarVisible, this.state.lessonVisible);
     // The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
-      <div id="Dashboard" style={ { height: '100%', width: '100%' } }>
-        <div id="sidebar-container" style={ sidebarContainerStyle }>
+      <div id="Dashboard" style={ styles.dashboard }>
+        <div style={ styles.sidebar }>
           <img src="assets/setting-icon.png" onClick={ this.toggleSidebar }
-            height="12px" width="12px" style={ { padding: '8px' } }
+            height="12px" width="12px" style={ styles.settingIcon }
           />
-          <Sidebar style={ sidebarStyle } showLesson={ this.showLesson }
+          <Sidebar showLesson={ this.showLesson }
             lessonInfo={ lessonInfo } lessonNumber={ this.state.lessonNumber }
-            lessonVisible={ this.state.lessonVisible }
+            lessonVisible={ this.state.lessonVisible } sidebarVisible={ this.state.sidebarVisible }
           />
         </div>
-        <div id="main" style={ mainStyle }>
-          <div id="upper-half" style={ upperHalfStyle }>
+        <div style={ styles.main }>
+          <div style={ styles.upperHalf }>
             <Animation structureAnimationVisible={ this.state.structureAnimationVisible }
               setStructureAnimationVisibility={ this.setStructureAnimationVisibility }
-              sidebarVisible={ this.state.sidebarVisible }
+              sidebarVisible={ this.state.sidebarVisible } padderStyle = { styles.padder }
             />
           </div>
-          <div id="lower-half" style={ lowerHalfStyle }>
-            <div id="left" style={ leftStyle }>
-              <div className="add-padding">
+          <div style={ styles.lowerHalf }>
+            <div style={ styles.lesson }>
+              <div style={ styles.padder }>
                 <Lesson totalNumberOfSlides={ this.state.totalNumberOfSlides }
                   slideNumber={ this.state.slideNumber } lessonText={ this.state.lessonText }
                   hideLesson={ this.hideLesson }
@@ -198,7 +201,7 @@ export default class Dashboard extends Component {
                 <p><strong>{ this.state.errorMessage }</strong></p>
               </div>
             </div>
-            <Terminal style={ terminalStyle } />
+            <Terminal lessonVisible={ this.state.lessonVisible } />
           </div>
         </div>
       </div>

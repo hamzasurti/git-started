@@ -20,6 +20,12 @@ export default class Terminal extends Component {
   //   document.getElementById('Terminal').removeEventListener('resize', this.handleResize);
   // }
 
+  buildStyles(lessonVisible) {
+    const style = { float: 'left', height: '100%', backgroundColor: 'black' };
+    style.width = lessonVisible ? '65%' : '100%';
+    return style;
+  }
+
   // Pull document.getElementById('Terminal') into a variable.
   renderTerm(elem){
     var columns = (document.getElementById('Terminal').offsetWidth / 6.71)-1;
@@ -63,8 +69,9 @@ export default class Terminal extends Component {
 
   // Do we need a div.padding here?
   render() {
+    const style = this.buildStyles(this.props.lessonVisible);
     return (
-      <div id='Terminal' style={this.props.style}>
+      <div id="Terminal" style={style}>
       </div>
     )
   }

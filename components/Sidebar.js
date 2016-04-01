@@ -7,7 +7,14 @@ export default class Sidebar extends Component {
     this.props.showLesson(index);
   }
 
+  buildStyles(sidebarVisible) {
+    const style = { padding: '8px' };
+    style.display = sidebarVisible ? 'block' : 'none';
+    return style;
+  }
+
   render() {
+    const sidebarStyle = this.buildStyles(this.props.sidebarVisible);
     var buttonStyle = {textAlign: 'left'};
     var textStyle = {paddingLeft: '16px'};
 
@@ -37,7 +44,7 @@ export default class Sidebar extends Component {
     });
 
     return (
-      <div style={this.props.style} id='Sidebar'>
+      <div style={sidebarStyle} id='Sidebar'>
         <img src='' alt='Awesome logo here!' />
         <p>Choose a tutorial:</p>
         {lessons}
