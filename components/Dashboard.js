@@ -187,7 +187,7 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	initialSidebarVisible: true,
+	initialSidebarVisible: false,
 	initialLessonVisible: false,
 	initialStructureAnimationVisible: true
 };
