@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 const Term = require('term.js');
 const ReactDOM = require('react-dom');
 // pty is a low-level terminal spawner: https://github.com/chjj/pty.js. Do we need it?
-const pty = require('pty.js');
+// const pty = require('pty.js');
 
 export default class Terminal extends Component {
 
@@ -25,23 +25,23 @@ export default class Terminal extends Component {
   //   document.getElementById('Terminal').removeEventListener('resize', this.handleResize);
   // }
 
-  // Pull document.getElementById('Terminal') into a variable.
   renderTerm(elem) {
-    const columns = (document.getElementById('Terminal').offsetWidth / 6.71) - 1;
-    const numRows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3);
+    const $Terminal = document.getElementById('Terminal');
+    const columns = ($Terminal.offsetWidth / 6.71) - 1;
+    const numRows = Math.floor($Terminal.offsetHeight / 12.3);
     const term = new Term({ // creates a new term.js terminal
       cursorBlink: true,
       useStyle: true,
       cols: columns,
-      rows: numRows, // was rows: rows
+      rows: numRows,
     });
 
     term.open(elem);
-    const ptyProcess = pty.fork('bash', [], { // Do we still need this?
-      cwd: process.env.HOME,
-      env: process.env,
-      name: 'xterm-256color',
-    });
+    // const ptyProcess = pty.fork('bash', [], { // Do we still need this?
+    //   cwd: process.env.HOME,
+    //   env: process.env,
+    //   name: 'xterm-256color',
+    // });
 
     ipcRenderer.once('term-start-data', (e, arg) => {
       term.write(arg);
@@ -54,8 +54,8 @@ export default class Terminal extends Component {
       term.write(arg);
     });
     window.addEventListener('resize', () => {
-      const cols = Math.ceil((document.getElementById('Terminal').offsetWidth / 6.71) - 1);
-      const rows = Math.floor(document.getElementById('Terminal').offsetHeight / 12.3);
+      const cols = Math.ceil(($Terminal.offsetWidth / 6.71) - 1);
+      const rows = Math.floor($Terminal.offsetHeight / 12.3);
       const sizeObj = { cols, rows };
       term.resize(cols, rows);
       ipcRenderer.send('command-message', sizeObj);
