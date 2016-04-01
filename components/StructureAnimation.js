@@ -43,13 +43,23 @@ export default class StructureAnimation extends Component {
     });
   }
 
-  render() {
+  buildStyles(windowWidth, windowHeight, sidebarVisible, margin) {
+    const styles = {};
+
     // Create variables to determine the size of the tree
     // and the size of the SVG containing it (or just the height-width ratio?).
-    const viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
-    const viewBoxHeight = this.props.sidebarVisible ? this.state.windowHeight * 7 / 24 :
-     this.state.windowHeight * 5 / 24;
-     // was hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
+    styles.viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
+    styles.viewBoxHeight = this.props.sidebarVisible ? this.state.windowHeight * 7 / 24 :
+      this.state.windowHeight * 5 / 24;
+      // was hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
+    styles.viewBoxString = `0 0 ${styles.viewBoxWidth} ${styles.viewBoxHeight}`;
+    styles.translationValue = `translate(${margin.left}, ${margin.top})`;
+
+    return styles;
+  }
+
+  buildTree(viewBoxHeight, viewBoxWidth) {
+    const layout = {};
 
     // Create a tree layout.
     const tree = d3.layout.tree()
@@ -73,12 +83,12 @@ export default class StructureAnimation extends Component {
     // After the next line runs, each node also has parent, depth, x, and y properties.
     // (D3 tree nodes always have parent, child, depth, x, and y properties.)
     // We will pass one node from this array to each Tree as props.data.
-    const nodes = tree.nodes(root);
+    layout.nodes = tree.nodes(root);
     // This line creates and returns an array of objects representing all parent-child links
     // in the nodes array we just created.
-    const linkSelection = tree.links(nodes);
+    layout.linkSelection = tree.links(layout.nodes);
 
-    nodes.forEach(d => {
+    layout.nodes.forEach(d => {
       // The default y-coordinates provided by d3.tree will make the tree stretch
       // all the way across the screen.
       // We want to compress the tree a bit so that there's room for file/directory names
@@ -94,6 +104,15 @@ export default class StructureAnimation extends Component {
       }
     });
 
+    return layout;
+  }
+
+  render() {
+    const styles = this.buildStyles(this.state.windowWidth, this.state.windowHeight,
+      this.state.sidebarVisible, this.state.margin);
+
+    const layout = this.buildTree(styles.viewBoxHeight, styles.viewBoxWidth);
+
     // I think it makes sense to the use target.name as an id,
     // because no two links should ever point to the same target.
     // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
@@ -101,7 +120,7 @@ export default class StructureAnimation extends Component {
     // so I'm removing any slash before using the name as a key.
     // I added the trim to account for the fact that the name values sometime begin with a carriage
     // return for some reason, and that throws things off.
-    const links = linkSelection && linkSelection.map((link) => {
+    const links = layout.linkSelection && layout.linkSelection.map((link) => {
       link.target.name = link.target.name.trim();
       const nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
       const key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) :
@@ -109,15 +128,12 @@ export default class StructureAnimation extends Component {
       return (<Link key={key} data={link} />);
     });
 
-    const trees = nodes && nodes.map((node) => {
+    const trees = layout.nodes && layout.nodes.map((node) => {
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
       return (<Tree key={key} data={node} />);
     });
-
-    const viewBoxString = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
-    const translationValue = `translate(${this.state.margin.left}, ${this.state.margin.top})`;
 
     // If you want to see the size of the SVG, add this code before the links and trees:
     // <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left}
@@ -125,8 +141,8 @@ export default class StructureAnimation extends Component {
     // How does the svg know to fill the full width of its containing div? I'm not sure about this.
     return (
       <div id="Structure-Animation">
-        <svg viewBox={viewBoxString}>
-          <g transform={translationValue}>
+        <svg viewBox={styles.viewBoxString}>
+          <g transform={styles.translationValue}>
             {links}
             {trees}
           </g>
