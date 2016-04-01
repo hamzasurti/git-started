@@ -36,10 +36,13 @@ treeVisualization.handleClick = (d) => {
 treeVisualization.hide = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.parent.y + "," + d.parent.x + ")"; });
+    .attr("transform", function(d) {
+        return "translate(" + d.parent.y + "," + d.parent.x + ")";
+    });
 
     transition.select("image")
-      .attr("r", 1e-6)
+      .attr("height", 1e-6)
+      .attr("width", 1e-6)
 
     transition.select("text")
       .style("fill-opacity", 1e-6);
@@ -48,10 +51,13 @@ treeVisualization.hide = (selection, duration) => {
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
-  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; });
+  selection.attr("transform", function(d) {
+              return "translate(" + d.y0 + "," + d.x0 + ")";
+            });
 
   selection.select("image")
-    .attr("r", 1e-6);
+           .attr("height", 1e-6)
+           .attr("width", 1e-6)
 
   selection.select("text")
     .style("fill-opacity", 1e-6);
@@ -63,13 +69,17 @@ treeVisualization.enter = (selection, duration) =>{
 treeVisualization.update = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+    .attr("transform", function(d) {
+      return "translate(" + d.y + "," + d.x + ")";
+    })
 
     //fix the x,y,width, height to scale properly
     // y must always be half of height
 
   transition.select("image")
-    .attr("xlink:href", function(d) {return(d.icon)})
+    .attr("xlink:href", function(d) {
+      return d.icon
+    })
     .attr("x", function(d) {return d.position_x ? d.position_x : '0px'})
     .attr("y", function(d) {return d.position_y ? d.position_y : '-10px'})
     .attr("width", function(d) {return d.value ? d.value : '20px'})

@@ -5,6 +5,9 @@ const ipcMain = require('electron').ipcMain;
 const	BrowserWindow = electron.BrowserWindow;
 const animationDataSchema = require('./AnimationData/StructureSchema')
 const async = require('async');
+const path = require('path');
+
+
 
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
@@ -23,10 +26,20 @@ app.on('ready', () => {
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
 	// initialize fork
-	var forkProcess = fork('ptyInternal');
+	mainWindow.webContents.on('did-finish-load', () => {
+		setTimeout(async.waterfall([
+					async.apply(animationDataSchema.DataSchema, process.env.HOME),
+					(data) => {
+						mainWindow.webContents.send('direc-schema', data);
+						}
+			]),1); // 0?
 
-	ptyChildProcess(forkProcess);
-	slideTests();
+
+		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
+
+		ptyChildProcess();
+		slideTests();
+	});
 
 	// For testing only, opens dev tools
 	mainWindow.webContents.openDevTools();
@@ -37,27 +50,25 @@ app.on('ready', () => {
 	});
 });
 
-
-
 // This isn't running.
-function initialLoadEvents(){
-	// when window finished loading, send current directory and animation structure
-	mainWindow.webContents.on('did-finish-load', () => {
-		console.log('running initialLoadEvents');
-		mainWindow.webContents.send('term-start-data', process.env.HOME + ' $ ');
-		async.waterfall([
-			async.apply(animationDataSchema.DataSchema, process.env.HOME),
-			(data) => { mainWindow.webContents.send('direc-schema', data);
-			}
-		]);
-	});
-}
+// function initialLoadEvents(){
+// 	// when window finished loading, send current directory and animation structure
+// 	mainWindow.webContents.on('did-finish-load', () => {
+// 		async.waterfall([
+// 			async.apply(animationDataSchema.DataSchema, process.env.HOME),
+// 			(data) => { mainWindow.webContents.send('direc-schema', data);
+// 		}
+// 	]);
+// 	});
+// }
 
-function ptyChildProcess(forkProcess){
+
+function ptyChildProcess(){
+	var ptyInternal = require.resolve('./ptyInternal');
+	var forkProcess = fork(ptyInternal);
 
 	// Note from Isaac: I added this listener to prevent the app from loading our dummy data on initial load.
 		ipcMain.on('ready-for-schema', (event, arg) => {
-			// console.log('Main.js received ready-for-schema');
 			forkProcess.send({message: arg});
 			// Previously, we removed all listeners here. However, this prevented main.js from sending a schema when the user toggles from the Git animation to the structure animation.
 		});
@@ -65,15 +76,17 @@ function ptyChildProcess(forkProcess){
 	// when user inputs data in terminal, start fork and run pty inside
 	// Each keystroke is an arg.
 	ipcMain.on('command-message', (event, arg) => {
-		forkProcess.send({message: arg});
-		forkProcess.removeAllListeners('message')
+		forkProcess.send({message: arg}); // Add another key to this object? Listener won't know to expect it.
+		forkProcess.removeAllListeners('message') // Find a way to avoid this hack.
+		// Write a function outside that takes event and message as arguments.
 		forkProcess.on('message', (message) =>{
 			// sends what is diplayed in terminal
 			if (message.data) event.sender.send('terminal-reply', message.data);
 			// sends animation schema
-			if (message.schema) {
-				event.sender.send('direc-schema', message.schema);
-			}
+			if (message.schema) event.sender.send('direc-schema', message.schema);
+
+			if(message.gitGraph) event.sender.send('git-graph', message.gitGraph);
+
 		})
 	});
 }

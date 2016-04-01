@@ -33,7 +33,6 @@ describe("4 Main React Components Render onto DOM", function(){
     .forBrowser('electron')
     .buildAsync().then(function(message){
       driver = message;
-      console.log(driver);
       done();
     })
   })

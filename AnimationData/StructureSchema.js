@@ -1,7 +1,6 @@
 const exec = require('child_process').exec;
 const simpleGit = require('simple-git');
-
-
+const path = require('path')
 
 module.exports = {
   schemaMaker: function(termOutput, directoryName, modified){
@@ -11,7 +10,8 @@ module.exports = {
       "position_x": '-10px',
       "position_y": '-20px',
       "value": 40,
-      'icon' : "assets/folder.png"
+      'icon' : "assets/folder.png",
+      "level": "#ccc"
     };
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
@@ -19,7 +19,8 @@ module.exports = {
       var temp = index.replace(/^\w+./,'');
       var elementObj = {
         "name": index,
-        "icon": "assets/64pxBlue/" + temp + ".png"
+        "icon": "assets/64pxBlue/" + temp + ".png",
+        "level": "#ccc"
       }
 
       if(index.substring(index.length -1 ) === '/'){
@@ -44,24 +45,29 @@ module.exports = {
     return schema;
   },
 
+  // Can we decide here whether to send the response back to the client?
+  // Basically, we want the ability to run commands independent of the client.
   DataSchema: function(pwd,asyncWaterfallCallback) {
     // child process that gets all items in a directory
+    const that = this
 
   	var command = 'cd ' + pwd + ';ls -ap';
-
   	exec(command, (err, stdout, stderr) => {
   			if (err) {
   				console.log(err.toString());
   			} else {
   				var stdoutArr = stdout.split('\n');
-  				var current = pwd.replace(/(.*[\\\/])/,'')
+          var currentDirectoryName = path.parse(pwd).name;
   				var modifiedFiles;
 
           // git command to check git status
   				simpleGit(pwd).status((err, i) => {
   					modifiedFiles = i.modified;
-  					var schema = this.schemaMaker(stdoutArr,current, modifiedFiles);
-            process.send ? process.send({schema: schema}) : asyncWaterfallCallbackcallback(null, schema);
+  					// var schema = this.schemaMaker(stdoutArr,current, modifiedFiles);
+            // process.send ? process.send({schema: schema}) : asyncWaterfallCallbackcallback(null, schema);
+
+  					var schema = that.schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
+            process.send ? process.send({schema: schema}) : asyncWaterfallCallback(null, schema);
             return schema;
   				})
   			}
