@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import treeVisualization from './../visualizations/tree-visualization';
 const d3 = require('d3');
 const ReactDOM = require('react-dom');
@@ -13,7 +13,8 @@ export default class Tree extends Component {
       .call(treeVisualization.enter, treeVisualization.duration);
   }
   //
-  // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
+  // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration)
+  // to make it so that only trees with new data are updated.
   // However, this many not be necessary.
   //
   componentDidUpdate() {
@@ -23,9 +24,15 @@ export default class Tree extends Component {
   }
   //
   render() {
-    return <g className='node' id={this.props.data.name}>
-      <circle onClick={treeVisualization.handleClick}></circle>
-      <text>{this.props.data.name}</text>
-    </g>
+    return (
+      <g className="node" id={this.props.data.name}>
+       <circle onClick={treeVisualization.handleClick}></circle>
+       <text>{this.props.data.name}</text>
+     </g>
+   );
   }
 }
+
+Tree.propTypes = {
+  data: React.PropTypes.object,
+};
