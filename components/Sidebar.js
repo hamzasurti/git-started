@@ -38,7 +38,7 @@ export default class Sidebar extends Component {
 
     return (
       <div style={this.props.style} id='Sidebar'>
-        <img src='' alt='Awesome logo here!' />
+        <img src='assets/app-icon.png' alt='Awesome logo here!' width='75%' />
         <p>Choose a tutorial:</p>
         {lessons}
       </div>

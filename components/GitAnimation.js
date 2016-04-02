@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
-const gitgraph = require('gitgraph.js')
+// const gitgraph = require('gitgraph.js')
 import { createStore } from 'redux';
 
 
 export default class GitAnimation extends Component {
 
-  gitGraphMaker(dag){
-    var gitgraph = new GitGraph({
-    template: "metro", // or blackarrow
-    orientation: "horizontal",
-    author: "John Doe",
-    mode: "extended" // or compact if you don't want the messages
-    });
-    console.log(dag);
+  // gitGraphMaker(dag){
+  //   var gitgraph = new GitGraph({
+  //   template: "metro", // or blackarrow
+  //   orientation: "horizontal",
+  //   author: "John Doe",
+  //   mode: "extended" // or compact if you don't want the messages
+  //   });
+  //   console.log(dag);
     // TODO fix this ish
     // var master = gitgraph.branch("master");
     // var counter = 0;
@@ -22,7 +22,7 @@ export default class GitAnimation extends Component {
     //   gitgraph.commit(namehash + dag.vertices[dag.names[counter].value])
     //   counter++;
     // }
-  }
+  // }
 
   componentDidMount(){
     ipcRenderer.on('git-graph', (event, arg) => {
