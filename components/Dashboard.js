@@ -9,16 +9,17 @@ import Sidebar from './Sidebar';
 import Terminal from './Terminal';
 
 // Import lesson content
-import { lesson1 } from './../lessons/git-on-your-computer';
+// import { lesson1 } from './../lessons/git-on-your-computer';
 
-// As we create new lessons, we can add new objects to the lessons array.
-const lessons = [
-  {
-    name: 'Git on your computer',
-    content: lesson1,
-    iconPath: 'assets/git-icon.png',
-  },
-];
+// const lessons = [
+//   {
+//     name: 'Git on your computer',
+//     content: lesson1,
+//     iconPath: 'assets/git-icon.png',
+//   },
+// ];
+
+import lessons from './../lessons/lesson-list';
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -26,19 +27,21 @@ export default class Dashboard extends Component {
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.showLesson = this.showLesson.bind(this);
     this.setStructureAnimationVisibility = this.setStructureAnimationVisibility.bind(this);
+    this.setErrorVisibility = this.setErrorVisibility.bind(this);
+    this.changeSlide = this.changeSlide.bind(this);
     this.hideLesson = this.hideLesson.bind(this);
-    this.handleClick = this.handleClick.bind(this);
     this.state = {
       lessonNumber: undefined,
-      lessonContent: undefined,
+      // lessonContent: undefined,
       slideNumber: undefined,
-      totalNumberOfSlides: undefined,
-      lessonText: undefined,
-      buttonText: undefined,
-      errorMessage: undefined,
+      // totalNumberOfSlides: undefined,
+      // lessonText: undefined,
+      // buttonText: undefined,
+      // errorMessage: undefined,
       sidebarVisible: props.initialSidebarVisible,
       lessonVisible: props.initialLessonVisible,
       structureAnimationVisible: props.initialStructureAnimationVisible,
+      errorVisible: props.initialErrorVisible,
     };
   }
 
@@ -48,54 +51,9 @@ export default class Dashboard extends Component {
     });
   }
 
-  // Helper function that advances to the next slide
-  advance() {
-    // What to do if we're already on the last slide.
-    if (this.state.slideNumber === this.state.totalNumberOfSlides - 1) {
-      this.setState({
-        slideNumber: 0,
-        lessonText: this.state.lessonContent[0].lessonText,
-        buttonText: this.state.lessonContent[0].buttonText,
-        errorMessage: '',
-      });
-    // What to do on every other slide
-    } else {
-      this.setState({
-        slideNumber: this.state.slideNumber + 1,
-        // Would it be better to make the value of lessonText the result of a function?
-        // Again, I'd like to set the lesson dynamically down the line.
-        lessonText: this.state.lessonContent[this.state.slideNumber + 1].lessonText,
-        buttonText: this.state.lessonContent[this.state.slideNumber + 1].buttonText,
-        errorMessage: '',
-      });
-    }
-  }
-
-  handleClick() {
-    // If this slide has a buttonFunction, run it.
-    if (this.state.lessonContent[this.state.slideNumber].buttonFunction) {
-      this.state.lessonContent[this.state.slideNumber].buttonFunction();
-      // Listen for the result of the test triggered by buttonFunction
-      // (since I can't get the buttonFunction to return a Boolean, which would be simpler).
-      // I changed .on to .once
-      // Refactoring opportunity: pull out and name this function.
-      ipcRenderer.once('test-result-2', (event, arg) => {
-        console.log('result', arg);
-        // If the user passed the test (if arg is true), advance.
-        if (arg) {
-          this.advance();
-        } else {
-          this.showError();
-        }
-      });
-    } else {
-      this.advance();
-    }
-  }
-
-  showError() {
+  setErrorVisibility(boolean) {
     this.setState({
-      errorMessage: this.state.lessonContent[this.state.slideNumber].errorMessage,
+      errorVisible: boolean,
     });
   }
 
@@ -114,13 +72,19 @@ export default class Dashboard extends Component {
   showLesson(index) {
     this.setState({
       lessonNumber: index,
-      lessonContent: lessons[index].content,
+      // lessonContent: lessons[index].content,
       slideNumber: 0,
-      totalNumberOfSlides: lessons[index].content.length,
-      lessonText: lessons[index].content[0].lessonText,
-      buttonText: lessons[index].content[0].buttonText,
-      errorMessage: '',
+      // totalNumberOfSlides: lessons[index].content.length,
+      // lessonText: lessons[index].content[0].lessonText,
+      // buttonText: lessons[index].content[0].buttonText,
+      // errorMessage: '',
       lessonVisible: true,
+    });
+  }
+
+  changeSlide(number) {
+    this.setState({
+      slideNumber: number,
     });
   }
 
@@ -134,7 +98,7 @@ export default class Dashboard extends Component {
     styles.upperHalf = { height: '50%', width: '100%' };
     styles.lowerHalf = { height: '50%', width: '100%' };
     // Isaac: I'm not sure whether overflow should be auto or scroll.
-    styles.lesson = { float: 'left', height: '100%', overflow: 'scroll' };
+    styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll' };
     styles.padder = { padding: '16px' };
 
     if (sidebarVisible) {
@@ -150,18 +114,16 @@ export default class Dashboard extends Component {
       styles.main.right = 0;
     }
 
-    if (lessonVisible) {
-      styles.lesson.width = '35%';
-    } else {
-      styles.lesson.display = 'none';
-    }
+    // Do we still need this?
+    if (!lessonVisible) styles.lesson.display = 'none';
 
     return styles;
   }
 
-  // Not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
-    // Create an array of lesson names to pass down as props.
+    const styles = this.buildStyles(this.state.sidebarVisible, this.state.lessonVisible);
+
+    // Create an array of lesson names to pass down to Sidebar as props.
     // (We don't want to pass all the lesson contents - that's a lot of data.)
     const lessonInfo = lessons.map(lesson =>
       ({
@@ -170,7 +132,13 @@ export default class Dashboard extends Component {
       })
     );
 
-    const styles = this.buildStyles(this.state.sidebarVisible, this.state.lessonVisible);
+    const lesson = this.state.lessonVisible ?
+      <Lesson lessonNumber={ this.state.lessonNumber } slideNumber={ this.state.slideNumber }
+        errorVisible={ this.state.errorVisible } changeSlide={ this.changeSlide }
+        hideLesson={ this.hideLesson } setErrorVisibility={ this.setErrorVisibility }
+      /> : undefined;
+
+    // Can I pull out the whole styles.lesson div into the lesson component?
     // The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id="Dashboard" style={ styles.dashboard }>
@@ -193,12 +161,7 @@ export default class Dashboard extends Component {
           <div style={ styles.lowerHalf }>
             <div style={ styles.lesson }>
               <div style={ styles.padder }>
-                <Lesson totalNumberOfSlides={ this.state.totalNumberOfSlides }
-                  slideNumber={ this.state.slideNumber } lessonText={ this.state.lessonText }
-                  hideLesson={ this.hideLesson }
-                />
-                <button onClick={ this.handleClick }>{ this.state.buttonText }</button>
-                <p><strong>{ this.state.errorMessage }</strong></p>
+                {lesson}
               </div>
             </div>
             <Terminal lessonVisible={ this.state.lessonVisible } />
@@ -213,12 +176,14 @@ Dashboard.propTypes = {
   initialSidebarVisible: React.PropTypes.bool,
   initialLessonVisible: React.PropTypes.bool,
   initialStructureAnimationVisible: React.PropTypes.bool,
+  initialErrorVisible: React.PropTypes.bool,
 };
 
 Dashboard.defaultProps = {
   initialSidebarVisible: true,
   initialLessonVisible: false,
   initialStructureAnimationVisible: true,
+  initialErrorVisible: false,
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
