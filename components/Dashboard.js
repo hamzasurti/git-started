@@ -8,52 +8,36 @@ import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
 
-// Import lesson content
-// import { lesson1 } from './../lessons/git-on-your-computer';
-
-// const lessons = [
-//   {
-//     name: 'Git on your computer',
-//     content: lesson1,
-//     iconPath: 'assets/git-icon.png',
-//   },
-// ];
-
 import lessons from './../lessons/lesson-list';
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.setErrorVisibility = this.setErrorVisibility.bind(this);
+    this.setStructureAnimationVisibility = this.setStructureAnimationVisibility.bind(this);
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.showLesson = this.showLesson.bind(this);
-    this.setStructureAnimationVisibility = this.setStructureAnimationVisibility.bind(this);
-    this.setErrorVisibility = this.setErrorVisibility.bind(this);
-    this.changeSlide = this.changeSlide.bind(this);
     this.hideLesson = this.hideLesson.bind(this);
+    this.changeSlide = this.changeSlide.bind(this);
     this.state = {
       lessonNumber: undefined,
-      // lessonContent: undefined,
       slideNumber: undefined,
-      // totalNumberOfSlides: undefined,
-      // lessonText: undefined,
-      // buttonText: undefined,
-      // errorMessage: undefined,
       sidebarVisible: props.initialSidebarVisible,
-      lessonVisible: props.initialLessonVisible,
       structureAnimationVisible: props.initialStructureAnimationVisible,
+      lessonVisible: props.initialLessonVisible,
       errorVisible: props.initialErrorVisible,
     };
-  }
-
-  setStructureAnimationVisibility(boolean) {
-    this.setState({
-      structureAnimationVisible: boolean,
-    });
   }
 
   setErrorVisibility(boolean) {
     this.setState({
       errorVisible: boolean,
+    });
+  }
+
+  setStructureAnimationVisibility(boolean) {
+    this.setState({
+      structureAnimationVisible: boolean,
     });
   }
 
@@ -63,22 +47,17 @@ export default class Dashboard extends Component {
     });
   }
 
-  hideLesson() {
-    this.setState({
-      lessonVisible: false,
-    });
-  }
-
   showLesson(index) {
     this.setState({
       lessonNumber: index,
-      // lessonContent: lessons[index].content,
       slideNumber: 0,
-      // totalNumberOfSlides: lessons[index].content.length,
-      // lessonText: lessons[index].content[0].lessonText,
-      // buttonText: lessons[index].content[0].buttonText,
-      // errorMessage: '',
       lessonVisible: true,
+    });
+  }
+
+  hideLesson() {
+    this.setState({
+      lessonVisible: false,
     });
   }
 
@@ -88,18 +67,15 @@ export default class Dashboard extends Component {
     });
   }
 
-  buildStyles(sidebarVisible, lessonVisible) {
+  buildStyles(sidebarVisible) {
     const styles = {};
 
     styles.dashboard = { height: '100%', width: '100%' };
     styles.sidebar = { height: '100%', backgroundColor: 'lightGray' };
-    styles.settingIcon = { padding: '8px' };
+    styles.settingsIcon = { padding: '8px' };
     styles.main = { height: '100%' };
     styles.upperHalf = { height: '50%', width: '100%' };
     styles.lowerHalf = { height: '50%', width: '100%' };
-    // Isaac: I'm not sure whether overflow should be auto or scroll.
-    styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll' };
-    styles.padder = { padding: '16px' };
 
     if (sidebarVisible) {
       styles.sidebar.float = 'left';
@@ -114,14 +90,11 @@ export default class Dashboard extends Component {
       styles.main.right = 0;
     }
 
-    // Do we still need this?
-    if (!lessonVisible) styles.lesson.display = 'none';
-
     return styles;
   }
 
   render() {
-    const styles = this.buildStyles(this.state.sidebarVisible, this.state.lessonVisible);
+    const styles = this.buildStyles(this.state.sidebarVisible);
 
     // Create an array of lesson names to pass down to Sidebar as props.
     // (We don't want to pass all the lesson contents - that's a lot of data.)
@@ -134,17 +107,16 @@ export default class Dashboard extends Component {
 
     const lesson = this.state.lessonVisible ?
       <Lesson lessonNumber={ this.state.lessonNumber } slideNumber={ this.state.slideNumber }
-        errorVisible={ this.state.errorVisible } changeSlide={ this.changeSlide }
+        styles={ styles } errorVisible={ this.state.errorVisible } changeSlide={ this.changeSlide }
         hideLesson={ this.hideLesson } setErrorVisibility={ this.setErrorVisibility }
       /> : undefined;
 
-    // Can I pull out the whole styles.lesson div into the lesson component?
     // The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id="Dashboard" style={ styles.dashboard }>
         <div style={ styles.sidebar }>
           <img src="assets/setting-icon.png" onClick={ this.toggleSidebar }
-            height="12px" width="12px" style={ styles.settingIcon }
+            height="12px" width="12px" style={ styles.settingsIcon }
           />
           <Sidebar showLesson={ this.showLesson }
             lessonInfo={ lessonInfo } lessonNumber={ this.state.lessonNumber }
@@ -155,15 +127,11 @@ export default class Dashboard extends Component {
           <div style={ styles.upperHalf }>
             <Animation structureAnimationVisible={ this.state.structureAnimationVisible }
               setStructureAnimationVisibility={ this.setStructureAnimationVisibility }
-              sidebarVisible={ this.state.sidebarVisible } padderStyle = { styles.padder }
+              sidebarVisible={ this.state.sidebarVisible }
             />
           </div>
           <div style={ styles.lowerHalf }>
-            <div style={ styles.lesson }>
-              <div style={ styles.padder }>
-                {lesson}
-              </div>
-            </div>
+            {lesson}
             <Terminal lessonVisible={ this.state.lessonVisible } />
           </div>
         </div>
@@ -174,15 +142,15 @@ export default class Dashboard extends Component {
 
 Dashboard.propTypes = {
   initialSidebarVisible: React.PropTypes.bool,
-  initialLessonVisible: React.PropTypes.bool,
   initialStructureAnimationVisible: React.PropTypes.bool,
+  initialLessonVisible: React.PropTypes.bool,
   initialErrorVisible: React.PropTypes.bool,
 };
 
 Dashboard.defaultProps = {
   initialSidebarVisible: true,
-  initialLessonVisible: false,
   initialStructureAnimationVisible: true,
+  initialLessonVisible: false,
   initialErrorVisible: false,
 };
 

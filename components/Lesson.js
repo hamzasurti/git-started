@@ -5,15 +5,10 @@ import lessons from './../lessons/lesson-list';
 export default class Lesson extends Component {
   constructor(props) {
     super(props);
-    this.exit = this.exit.bind(this);
-    this.runTest = this.runTest.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
-  exit() {
-    this.props.hideLesson();
-  }
-
-  runTest(lesson, slideNumber) {
+  handleButtonClick(lesson, slideNumber, errorVisible) {
     // If this slide has a buttonFunction, run it.
     if (lesson[slideNumber].buttonFunction) {
       lesson[slideNumber].buttonFunction();
@@ -24,7 +19,7 @@ export default class Lesson extends Component {
         // If the user passed the test (if arg is true), advance.
         if (arg) {
           this.advance(lesson, slideNumber);
-          this.props.setErrorVisibility(false);
+          if (errorVisible) this.props.setErrorVisibility(false);
         } else {
           this.props.setErrorVisibility(true);
         }
@@ -41,6 +36,17 @@ export default class Lesson extends Component {
     this.props.changeSlide(destination);
   }
 
+  buildStyles() {
+    const styles = {};
+
+    // Isaac: I'm not sure whether overflow should be auto or scroll.
+    styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll' };
+    styles.padder = { padding: '16px' };
+    styles.img = { float: 'right' };
+
+    return styles;
+  }
+
   // The image is from https://www.iconfinder.com/icons/118584/x_icon#size=32
   render() {
     const currentLesson = lessons[this.props.lessonNumber].content; // the slide deck
@@ -48,17 +54,27 @@ export default class Lesson extends Component {
       <p><strong>{ currentLesson[this.props.slideNumber].errorMessage }</strong></p> :
       undefined;
 
+    const styles = this.buildStyles();
+
     return (
-      <div id="Lesson">
-        <img src="assets/x-icon.png" alt="Click here to close this tutorial" height="12px"
-          width="12px" style={ { float: 'right' } } onClick={this.exit}
-        />
-        <em>Slide {this.props.slideNumber + 1} of {currentLesson.length}</em>
-        {currentLesson[this.props.slideNumber].lessonText}
-        <button onClick={ () => { this.runTest(currentLesson, this.props.slideNumber); } }>
-          { currentLesson[this.props.slideNumber].buttonText }
-        </button>
-        {error}
+      <div style={ styles.lesson } id="Lesson">
+        <div style={ styles.padder }>
+          <div>
+            <img src="assets/x-icon.png" alt="Click here to close this tutorial" height="12px"
+              width="12px" style={ styles.img } onClick={ this.props.hideLesson }
+            />
+            <em>Slide {this.props.slideNumber + 1} of {currentLesson.length}</em>
+            {currentLesson[this.props.slideNumber].lessonText}
+            <button onClick={ () => {
+              this.handleButtonClick(currentLesson, this.props.slideNumber,
+                this.props.errorVisible); }
+              }
+            >
+              { currentLesson[this.props.slideNumber].buttonText }
+            </button>
+            {error}
+          </div>
+        </div>
       </div>
     );
   }
@@ -67,8 +83,8 @@ export default class Lesson extends Component {
 Lesson.propTypes = {
   lessonNumber: React.PropTypes.number,
   slideNumber: React.PropTypes.number,
-  changeSlide: React.PropTypes.func,
-  hideLesson: React.PropTypes.func,
   errorVisible: React.PropTypes.bool,
+  hideLesson: React.PropTypes.func,
+  changeSlide: React.PropTypes.func,
   setErrorVisibility: React.PropTypes.func,
 };
