@@ -23,9 +23,15 @@ export default class Path extends Component {
       .call(linkVisualization.update, linkVisualization.diagonal, linkVisualization.duration);
   }
 
+  buildStyle() {
+    return { fill: 'none', stroke: '#ccc', strokeWidth: '1.5px' };
+  }
+
   render() {
     const id = `linkTo${this.props.data.target.name}`;
-    return <path className="link" id={id}></path>;
+    const style = this.buildStyle();
+
+    return <path className="link" id={id} style={style}></path>;
   }
 }
 

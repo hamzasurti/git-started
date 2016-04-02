@@ -22,12 +22,25 @@ export default class Tree extends Component {
     this.d3Node.datum(this.props.data)
       .call(treeVisualization.update, treeVisualization.duration);
   }
-  //
+
+  buildStyles() {
+    const styles = {};
+
+    styles.main = { cursor: 'pointer' };
+    // Should this be in treeVisualization?
+    styles.circle = { fill: '#fff', stroke: 'steelblue', strokeWidth: '1.5px' };
+    styles.text = { font: '10px sans-serif' };
+
+    return styles;
+  }
+
   render() {
+    const styles = this.buildStyles();
+
     return (
-      <g className="node" id={this.props.data.name}>
-       <circle onClick={treeVisualization.handleClick}></circle>
-       <text>{this.props.data.name}</text>
+      <g style={styles.main} id={this.props.data.name}>
+       <circle style={styles.circle} onClick={treeVisualization.handleClick}></circle>
+       <text style={styles.text}>{this.props.data.name}</text>
      </g>
    );
   }
