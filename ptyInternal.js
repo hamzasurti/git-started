@@ -13,7 +13,7 @@ const ptyTerm = pty.fork('bash', [], {
   cwd: process.env.HOME,
   env: process.env,
 });
-
+let ptySwitch = false;
   // sets the terminal prompt to pwd
 // ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`);
 ptyTerm.write(`. ~/.profile \n`);
@@ -24,23 +24,36 @@ process.on('message', (data) => {
   if (data.message.cols) {
     ptyTerm.resize(data.message.cols, data.message.rows);
   } else {
-    console.log('in else');
-    ptyTerm.write(data.message);
-    ptyTerm.removeAllListeners('data');
-    ptyTerm.on('data', (ptyData) => {
-			// crude way to find path, need to improve
-      console.log('getting data from pty term', ptyData === '\n');
-      process.send({
-        data: ptyData,
-      });
-      const re = /\s[$]\s/g;
-      if (ptyData.match(re)) {
-        let temp = ptyData;
-        temp = temp.replace(re, '');
-        currDir = temp;
-        animationDataSchema.dataSchema(currDir);
-        getGitData.gitHistory(currDir);
-      }
-    });
+    if (data.message === '\r') {
+      ptyTerm.write(data.message);
+      ptyTerm.write(`pwd; echo "123456789";\r`);
+    } else {
+      ptyTerm.write(data.message);
+    }
+  }
+});
+
+ptyTerm.on('data', (ptyData) => {
+  if (ptyData.match(/pwd/)) {
+    console.log('pwd stuff i think ===>', ptyData);
+    ptySwitch = true;
+  }
+  if (ptySwitch) {
+    if (ptyData.match(/\r/)) {
+      ptySwitch = false;
+      return;
+    }
+		return;
+  }
+  const re = /\r\s123456789\s/;
+  if (ptyData.match(re)) {
+    const path = ptyData.replace(re, '');
+    currDir = path.slice(0, -1);
+    console.log('the current directory is ==>', currDir);
+    animationDataSchema.dataSchema(currDir);
+    getGitData.gitHistory(currDir);
+  } else {
+    console.log('ptyswitch', ptySwitch);
+    if (!ptySwitch) process.send({ data: ptyData });
   }
 });

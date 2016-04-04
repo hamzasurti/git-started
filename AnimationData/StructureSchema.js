@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 'use strict';
 const exec = require('child_process').exec;
 const simpleGit = require('simple-git');
@@ -40,10 +42,10 @@ module.exports = {
 
   dataSchema(pwd, asyncWaterfallCallback) {
     // child process that gets all items in a directory
-    const command = `cd ${pwd};ls -ap`;
+    const command = `cd ${pwd}; ls -ap`;
     exec(command, (err, stdout) => {
       if (err) {
-        console.log(err.toString());
+        console.log('the error you are getting with ls is: ==>', err.toString());
       } else {
         const stdoutArr = stdout.split('\n');
         const currentDirectoryName = path.parse(pwd).name;
@@ -53,8 +55,6 @@ module.exports = {
           modifiedFiles = i.modified;
 
           const schema = schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
-          console.log('data=====>');
-
           process.send ? process.send({ schema: schema }) : asyncWaterfallCallback(null, schema);
           return schema;
         });

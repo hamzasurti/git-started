@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 const gitgraph = require('gitgraph.js')
 const DAG = require('../AnimationData/DAG');
+import { createStore } from 'redux'
+var store = createStore(()=>{});
 
 
 export default class GitAnimation extends Component {
