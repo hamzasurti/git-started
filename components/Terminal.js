@@ -38,7 +38,7 @@ export default class Terminal extends Component {
     });
 
     ipcRenderer.on('terminal-reply', (event, arg) => {
-      term.write(arg);
+			term.write(arg);
     });
     window.addEventListener('resize',_.throttle((e) => {
       var cols = Math.ceil((document.getElementById('Terminal').offsetWidth/ 6.71)-1);
