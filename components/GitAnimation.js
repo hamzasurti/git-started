@@ -14,13 +14,13 @@ export default class GitAnimation extends Component {
   }
 
   gitGraphMaker(dag) {
-    const gitgraph = new GitGraph({
-      template: 'metro', // or blackarrow
-      orientation: 'horizontal',
-      author: 'John Doe',
-      mode: 'extended', // or compact if you don't want the messages
-    });
-    console.log(dag);
+    // const gitgraph = new GitGraph({
+    //   template: 'metro', // or blackarrow
+    //   orientation: 'horizontal',
+    //   author: 'John Doe',
+    //   mode: 'extended', // or compact if you don't want the messages
+    // });
+    // console.log(dag);
     // TODO fix this ish
     // var master = gitgraph.branch("master");
     // var counter = 0;
