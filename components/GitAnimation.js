@@ -1,18 +1,20 @@
-import React, {Component} from 'react';
-// const gitgraph = require('gitgraph.js')
-import { createStore } from 'redux';
-
+/* eslint-disable no-console */
+import React, { Component } from 'react';
+// import { createStore } from 'redux'; // We may use this later.
 
 export default class GitAnimation extends Component {
+  componentDidMount() {
+    ipcRenderer.on('git-graph', (event, arg) => this.gitGraphMaker(arg));
+  }
 
-  // gitGraphMaker(dag){
-  //   var gitgraph = new GitGraph({
-  //   template: "metro", // or blackarrow
-  //   orientation: "horizontal",
-  //   author: "John Doe",
-  //   mode: "extended" // or compact if you don't want the messages
-  //   });
-  //   console.log(dag);
+  gitGraphMaker(dag) {
+    // const gitgraph = new GitGraph({
+    //   template: 'metro', // or blackarrow
+    //   orientation: 'horizontal',
+    //   author: 'John Doe',
+    //   mode: 'extended', // or compact if you don't want the messages
+    // });
+    // console.log(dag);
     // TODO fix this ish
     // var master = gitgraph.branch("master");
     // var counter = 0;
@@ -22,22 +24,14 @@ export default class GitAnimation extends Component {
     //   gitgraph.commit(namehash + dag.vertices[dag.names[counter].value])
     //   counter++;
     // }
-  // }
-
-  componentDidMount(){
-    ipcRenderer.on('git-graph', (event, arg) => {
-      this.gitGraphMaker(arg);
-    });
   }
 
   render() {
-
     return (
-      //JSX
+      // JSX
       <div>We will show a Git animation here
         <canvas id="gitGraph"></canvas>
       </div>
-
-    )
+    );
   }
 }

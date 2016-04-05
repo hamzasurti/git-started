@@ -22,7 +22,7 @@ treeVisualization.handleClick = (d) => {
       // I understand how to go from DOM element to data in D3, but not vice versa.
       var treeNode = d3.select(document.getElementById(child.name));
       treeNode.call(treeFunction, treeVisualization.duration);
-      var linkNode = d3.select(document.getElementById('linkTo' + child.name));
+      var linkNode = d3.select(document.getElementById(`linkTo${child.name}`));
       linkNode.call(linkFunction, linkVisualization.diagonal, treeVisualization.duration);
     });
 
@@ -68,7 +68,7 @@ treeVisualization.update = (selection, duration) => {
   transition.select("circle")
     .attr("r", function(d) { return d.value ? d.value : 5; })
     .style("fill", function(d) {
-      return d.childrenHidden ? "lightsteelblue" : d.level; });
+      return d.childrenHidden ? "lightsteelblue" : d.level || "#fff"; });
 
   transition.select("text")
     .attr("x", function(d) { return d.children || d.childrenHidden ? -20 : 20; }) // had 13 rather than 20
