@@ -14,19 +14,19 @@ linkVisualization.duration = 450;
 // Set the attributes for links that are new to the DOM
 linkVisualization.enter = (selection, diagonal, duration) => {
 
-  selection.style("stroke", function(d){
-                    return d.target.level;
-                 })
-           .attr("d", function(d) {
+  selection.attr("d", function(d) {
                   var o = {x: d.target.x0, y: d.target.y0};
                   return diagonal({source: o, target: o})
                 })
+            .style("stroke", function(d){
+                return d.target.level;
+            })
+
   linkVisualization.update(selection, diagonal, duration)
 }
 
 // Transition new and updated links to their new position
 linkVisualization.update = (selection, diagonal, duration) => {
-
   selection.transition()
            .duration(duration)
            .attr("d", diagonal)

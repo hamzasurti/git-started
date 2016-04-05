@@ -52,6 +52,7 @@ treeVisualization.hide = (selection, duration) => {
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
   selection.attr("transform", function(d) {
+            console.log(d.y0, d.x0);
               return "translate(" + d.y0 + "," + d.x0 + ")";
             });
 
