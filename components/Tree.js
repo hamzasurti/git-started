@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import treeVisualization from './../visualizations/tree-visualization';
 const d3 = require('d3');
 const ReactDOM = require('react-dom');
@@ -13,7 +13,8 @@ export default class Tree extends Component {
       .call(treeVisualization.enter, treeVisualization.duration);
   }
   //
-  // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration) to make it so that only trees with new data are updated.
+  // We could add a shouldComponentUpdate function (using the Medium blog post for inspiration)
+  // to make it so that only trees with new data are updated.
   // However, this many not be necessary.
   //
   componentDidUpdate() {
@@ -21,11 +22,31 @@ export default class Tree extends Component {
     this.d3Node.datum(this.props.data)
       .call(treeVisualization.update, treeVisualization.duration);
   }
-  //
+
+  buildStyles() {
+    const styles = {};
+
+    styles.main = { cursor: 'pointer' };
+    // Should this be in treeVisualization?
+    styles.circle = { fill: '#fff', stroke: 'steelblue', strokeWidth: '1.5px' };
+    styles.text = { font: '10px sans-serif' };
+
+    return styles;
+  }
+
   render() {
-    return <g className='node' id={this.props.data.name}>
-      <image onClick={treeVisualization.handleClick}></image>
-      <text>{this.props.data.name}</text>
-    </g>
+
+    const styles = this.buildStyles();
+
+    return (
+      <g style={styles.main} id={this.props.data.name}>
+       <circle style={styles.circle} onClick={treeVisualization.handleClick}></circle>
+       <text style={styles.text}>{this.props.data.name}</text>
+     </g>
+   );
   }
 }
+
+Tree.propTypes = {
+  data: React.PropTypes.object,
+};
