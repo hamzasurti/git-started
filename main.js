@@ -22,7 +22,13 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-	mainWindow = new BrowserWindow({width: 1200, height: 700});
+	mainWindow = new BrowserWindow({
+		width: 1200,
+		height: 700,
+		minWidth: 1200,
+		minHeight: 700,
+		titleBarStyle: 'hidden-inset',
+	});
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
 	// initialize fork
