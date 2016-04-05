@@ -4,16 +4,57 @@ import React, { Component } from 'react';
 
 export default class GitAnimation extends Component {
   componentDidMount() {
-    console.log('GitAnimation did mount');
-    ipcRenderer.send('ready-for-git', '\n');
+    // ipcRenderer.send('ready-for-git', '\n');
     ipcRenderer.on('git-graph', (event, arg) => {
       // The arg is an object with an array of names (strings) and vertices (objects).
-      // console.log('git-graph', arg);
+      console.log('git-graph', arg);
+      this.buildGraph(arg);
       // this.gitGraphMaker(arg);
     });
   }
 
-  gitGraphMaker(dag) {
+  buildGraph(data) {
+    const result = {};
+    const nodes = [];
+    const links = [];
+    const names = data.names;
+    const vertices = data.vertices;
+    let linkNum = 1;
+
+    // Set a name.
+    result.name = 'Git Graph';
+
+    // For each commit in the names array...
+    for (let i = 0; i < names.length; i++) {
+      // Create a node and push it to the nodes array.
+      const node = {};
+      const hash = names[i];
+      node.id = hash;
+      node.value = {};
+      node.value.label = hash;
+      nodes.push(node);
+
+      // Create a link for each of the commit's parents and push it to the links array.
+      const parents = vertices[hash].incomingNames;
+      for (let j = 0; j < parents.length; j ++) {
+        const link = {};
+        link.u = hash; // child/source
+        link.v = parents[j]; // parent/target
+        link.value = {};
+        link.value.label = `link ${linkNum}`;
+        console.log(link.value.label);
+        links.push(link);
+        linkNum ++;
+      }
+    }
+
+    result.nodes = nodes;
+    result.links = links;
+    console.log('result:', result);
+    return result;
+  }
+
+  // gitGraphMaker(dag) {
     // const gitgraph = new GitGraph({
     //   template: 'metro', // or blackarrow
     //   orientation: 'horizontal',
@@ -30,7 +71,7 @@ export default class GitAnimation extends Component {
     //   gitgraph.commit(namehash + dag.vertices[dag.names[counter].value])
     //   counter++;
     // }
-  }
+  // }
 
   render() {
     return (
