@@ -2,6 +2,17 @@ const exec = require('child_process').exec;
 const simpleGit = require('simple-git');
 const path = require('path')
 
+var container = {
+  'css':  null,
+  "html": null,
+  'js':   null,
+  'rb':   null,
+  'py':   null,
+  'json': null,
+  'pdf':  null,
+  'png':  null
+}
+
 module.exports = {
   schemaMaker: function(termOutput, directoryName, modified){
     var schema = {
@@ -10,13 +21,16 @@ module.exports = {
       "position_x": '-10px',
       "position_y": '-20px',
       "value": 40,
-      'icon' : "assets/folder.png",
+      'icon' : "assets/64pxBlue/folder.png",
       "level": "#ccc"
     };
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
       // checks if file has any alphanumeric characters
       var temp = index.replace(/^\w+./,'');
+
+      if(!(temp in container)) temp = 'file';
+
       var elementObj = {
         "name": index,
         "icon": "assets/64pxBlue/" + temp + ".png",
@@ -24,9 +38,10 @@ module.exports = {
       }
 
       if(index.substring(index.length -1 ) === '/'){
-        elementObj.icon = "assets/folder.png";
+        elementObj.icon = "assets/64pxBlue/folder.png";
       }
 
+      //add modified red folder path logic here
       if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
         // makes .git foldrs black
         if (index.substring(0,4) === ".git") elementObj.level = "black";

@@ -65,30 +65,37 @@ treeVisualization.enter = (selection, duration) =>{
   treeVisualization.update(selection, duration);
 }
 
+var staggerImages = false;
 // Transition new and updated nodes to their new position
 treeVisualization.update = (selection, duration) => {
+
   var transition = selection.transition()
     .duration(duration)
     .attr("transform", function(d) {
+
+      if(staggerImages){
+        staggerImages = false;
+      }
+      else{
+        d.y = d.y*.9;
+        staggerImages = true;
+      }
       return "translate(" + d.y + "," + d.x + ")";
     })
 
-    //fix the x,y,width, height to scale properly
+    // fix the x,y,width, height to scale properly
     // y must always be half of height
 
   transition.select("image")
     .attr("xlink:href", function(d) {
+      //fix icon error if icon does not exist in folder
+      // return 'assets/64pxBlue/file.png';
       return d.icon
     })
     .attr("x", function(d) {return d.position_x ? d.position_x : '0px'})
     .attr("y", function(d) {return d.position_y ? d.position_y : '-10px'})
     .attr("width", function(d) {return d.value ? d.value : '20px'})
     .attr("height", function(d) {return d.value ? d.value : '20px'})
-
-  // transition.select("circle")
-  //   .attr("r", function(d) { return d.value ? d.value : 5; })
-  //   .style("fill", function(d) {
-  //     return d.childrenHidden ? "lightsteelblue" : d.level; });
 
   transition.select("text")
     .attr("x", function(d) { return d.children || d.childrenHidden ? -20 : 20; }) // had 13 rather than 20

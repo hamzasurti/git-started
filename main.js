@@ -8,7 +8,6 @@ const async = require('async');
 const path = require('path');
 
 
-
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
 const fork = require('child_process').fork;
@@ -42,7 +41,7 @@ app.on('ready', () => {
 	});
 
 	// For testing only, opens dev tools
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
 	mainWindow.on('closed', function() {
