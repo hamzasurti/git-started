@@ -73,6 +73,8 @@ function ptyChildProcess(){
 			// Previously, we removed all listeners here. However, this prevented main.js from sending a schema when the user toggles from the Git animation to the structure animation.
 		});
 
+    ipcMain.on('ready-for-git', (event, arg) => forkProcess.send({message: arg}));
+
 	// when user inputs data in terminal, start fork and run pty inside
 	// Each keystroke is an arg.
 	ipcMain.on('command-message', (event, arg) => {
@@ -85,8 +87,10 @@ function ptyChildProcess(){
 			// sends animation schema
 			if (message.schema) event.sender.send('direc-schema', message.schema);
 
-			if(message.gitGraph) event.sender.send('git-graph', message.gitGraph);
-
+			if(message.gitGraph) {
+        console.log('*** sending git-graph');
+        event.sender.send('git-graph', message.gitGraph);
+      }
 		})
 	});
 }

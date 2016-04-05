@@ -4,7 +4,13 @@ import React, { Component } from 'react';
 
 export default class GitAnimation extends Component {
   componentDidMount() {
-    ipcRenderer.on('git-graph', (event, arg) => this.gitGraphMaker(arg));
+    console.log('GitAnimation did mount');
+    ipcRenderer.send('ready-for-git', '\n');
+    ipcRenderer.on('git-graph', (event, arg) => {
+      // The arg is an object with an array of names (strings) and vertices (objects).
+      // console.log('git-graph', arg);
+      // this.gitGraphMaker(arg);
+    });
   }
 
   gitGraphMaker(dag) {

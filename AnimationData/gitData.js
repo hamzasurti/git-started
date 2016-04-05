@@ -1,5 +1,5 @@
 const exec = require('child_process').exec;
-const DAG = require('./DAG')
+const DAG = require('./DAG');
 
 module.exports = {
   gitHistory: function(pwd){
