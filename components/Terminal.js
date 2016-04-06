@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 const Term = require('term.js');
 const ReactDOM = require('react-dom');
-// pty is a low-level terminal spawner: https://github.com/chjj/pty.js. Do we need it?
-// const pty = require('pty.js');
 
 export default class Terminal extends Component {
 
@@ -17,14 +15,6 @@ export default class Terminal extends Component {
     return style;
   }
 
-  // handleResize(e) {
-  //   var columns = (document.getElementById('Terminal').offsetWidth/ 6.71)-1;
-  // }
-  //
-  // componentWillUnmount() {
-  //   document.getElementById('Terminal').removeEventListener('resize', this.handleResize);
-  // }
-
   renderTerm(elem) {
     const $Terminal = document.getElementById('Terminal');
     const columns = ($Terminal.offsetWidth / 6.71) - 1;
@@ -37,11 +27,6 @@ export default class Terminal extends Component {
     });
 
     term.open(elem);
-    // const ptyProcess = pty.fork('bash', [], { // Do we still need this?
-    //   cwd: process.env.HOME,
-    //   env: process.env,
-    //   name: 'xterm-256color',
-    // });
 
     ipcRenderer.once('term-start-data', (e, arg) => {
       term.write(arg);
@@ -51,8 +36,9 @@ export default class Terminal extends Component {
     });
 
     ipcRenderer.on('terminal-reply', (event, arg) => {
-      term.write(arg);
+			term.write(arg);
     });
+
     window.addEventListener('resize', () => {
       const cols = Math.ceil(($Terminal.offsetWidth / 6.71) - 1);
       const rows = Math.floor($Terminal.offsetHeight / 12.3);
@@ -70,6 +56,7 @@ export default class Terminal extends Component {
     );
   }
 }
+
 
 Terminal.propTypes = {
   lessonVisible: React.PropTypes.bool,
