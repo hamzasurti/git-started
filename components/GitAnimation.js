@@ -8,7 +8,7 @@ export default class GitAnimation extends Component {
     ipcRenderer.on('git-graph', (event, arg) => {
       // The arg is an object with an array of names (strings) and vertices (objects).
       console.log('git-graph', arg);
-      this.buildGraph(arg);
+      ipcRenderer.send('dag-data', this.buildGraph(arg));
       // this.gitGraphMaker(arg);
     });
   }
@@ -31,7 +31,9 @@ export default class GitAnimation extends Component {
       const hash = names[i];
       node.id = hash;
       node.value = {};
+      // The line below seems not to like null values.
       node.value.label = hash;
+      node.value.message = vertices[hash].value || 'No commit message available';
       nodes.push(node);
 
       // Create a link for each of the commit's parents and push it to the links array.
@@ -42,7 +44,6 @@ export default class GitAnimation extends Component {
         link.v = parents[j]; // parent/target
         link.value = {};
         link.value.label = `link ${linkNum}`;
-        console.log(link.value.label);
         links.push(link);
         linkNum ++;
       }

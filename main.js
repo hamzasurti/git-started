@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 const electron = require('electron');
 const app = electron.app;
@@ -6,7 +7,7 @@ const	BrowserWindow = electron.BrowserWindow;
 const animationDataSchema = require('./AnimationData/StructureSchema')
 const async = require('async');
 const path = require('path');
-
+const fs = require('fs'); // added by Isaac for testing
 
 
 // Require the child_process module so we can communicate with the user's terminal
@@ -93,6 +94,12 @@ function ptyChildProcess(){
       }
 		})
 	});
+
+  // Added by Isaac for testing
+  ipcMain.on('dag-data', (event, arg) => {
+    console.log('Main.js received dag-data');
+    fs.writeFile('test.js', JSON.stringify(arg), () => console.log('Finished writing file'));
+  });
 }
 
 function slideTests(){// For running tests to see whether the user is ready to advance
