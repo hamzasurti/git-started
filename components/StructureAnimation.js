@@ -123,10 +123,15 @@ export default class StructureAnimation extends Component {
 
     let counter = 1;
     const trees = layout.nodes && layout.nodes.map((node) => {
+      // We'll use node.index to stagger every other node horizontally.
       node.index = counter;
       counter ++;
-      if (!node.yUnchanged) node.yUnchanged = node.y;
+      // Save the starting value of node.y as node.yUnchanged so we can use it in the future.
+      if (node.yUnchanged === undefined) node.yUnchanged = node.y;
+      // If node.index is odd, adjust node.y, which determines the position of this tree and the
+      // link to it.
       if (node.index % 2 === 1) node.y = node.yUnchanged * 0.9;
+      // Parse node.name to extract a unique key for this tree. 
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
@@ -134,12 +139,6 @@ export default class StructureAnimation extends Component {
     });
 
     const links = layout.linkSelection && layout.linkSelection.map((link) => {
-      // link.index = link.target.index; // Can we use this to adjust the diagonal?
-      // The two lines below work.
-      // By editing each link.target when declaring links rather than editing each node when
-      // declaring const, am I avoiding editing the parent's d.y?
-      // if (!link.target.yUnchanged) link.target.yUnchanged = link.target.y;
-      // if (link.target.index % 2 === 1) link.target.y = link.target.yUnchanged * 0.9;
       link.target.name = link.target.name.trim();
       const nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
       const key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) :
