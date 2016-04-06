@@ -4,6 +4,7 @@ const DAG = require('./DAG');
 module.exports = {
   gitHistory: function(pwd){
     var that = this;
+    // We can adjust or remove the max count below.
     var commandForGitHistory = 'cd ' + pwd + ';git log --pretty="%h|%p|%s|%d" --max-count=10';
     exec(commandForGitHistory, (err,stdout,stderr) => {
       if (err) {
