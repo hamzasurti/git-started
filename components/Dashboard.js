@@ -8,6 +8,7 @@ import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
 
+
 import lessons from './../lessons/lesson-list';
 
 export default class Dashboard extends Component {

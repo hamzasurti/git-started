@@ -123,15 +123,14 @@ export default class StructureAnimation extends Component {
 
     let counter = 1;
     const trees = layout.nodes && layout.nodes.map((node) => {
-      // We'll use node.index to stagger every other node horizontally.
       node.index = counter;
-      counter ++;
-      // Save the starting value of node.y as node.yUnchanged so we can use it in the future.
-      if (node.yUnchanged === undefined) node.yUnchanged = node.y;
+      counter++;
+      // Save the starting value of node.y as node.yOriginal so we can use it in the future.
+      if (node.yOriginal === undefined) node.yOriginal = node.y;
       // If node.index is odd, adjust node.y, which determines the position of this tree and the
       // link to it.
-      if (node.index % 2 === 1) node.y = node.yUnchanged * 0.9;
-      // Parse node.name to extract a unique key for this tree. 
+      if (node.index % 2 === 1) node.y = node.yOriginal * .9;
+      // Parse node.name to extract a unique key for this tree.
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
@@ -150,6 +149,7 @@ export default class StructureAnimation extends Component {
     // <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left}
     // height={viewBoxHeight - this.state.margin.top} rx='15' ry='15' />
     // How does the svg know to fill the full width of its containing div? I'm not sure about this.
+
     return (
       <div id="Structure-Animation">
         <svg viewBox={styles.viewBoxString}>

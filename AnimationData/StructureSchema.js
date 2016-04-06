@@ -1,44 +1,68 @@
-/* eslint-disable no-console */
-
 'use strict';
 const exec = require('child_process').exec;
 const simpleGit = require('simple-git');
 const path = require('path');
 
+var container = {
+  'css':  null,
+  "html": null,
+  'js':   null,
+  'rb':   null,
+  'py':   null,
+  'json': null,
+  'pdf':  null,
+  'png':  null
+}
 
-function schemaMaker(termOutput, directoryName, modified) {
-  let schema = {
-    name: directoryName,
-    children: [],
-    value: 15,
-    level: '#33C3F0',
-  };
-  // loops through reply and puts it in D3 readable structure
-  termOutput.forEach((index) => {
-    // checks if file has any alphanumeric characters
-    const elementObj = { name: index };
-    if (index.substring(index.length - 1) === '/') elementObj.level = '#33C3F0';
-    if (index.substring(0, 4) === '.git' || !!index.match(/^\w/)) {
-      // makes .git foldrs black
-      if (index.substring(0, 4) === '.git') elementObj.level = 'black';
-      if (modified) {
-        for (let i = 0; i < modified.length; i++) {
-          if (modified[i] === index) {
-            elementObj.level = 'red';
+var schemaMaker = function(termOutput, directoryName, modified){
+    var schema = {
+      "name": directoryName,
+      "children": [],
+      "position_x": '-10px',
+      "position_y": '-20px',
+      "value": 40,
+      'icon' : "assets/64pxBlue/folder.png",
+      "level": "#ccc"
+    };
+    // loops through reply and puts it in D3 readable structure
+    termOutput.forEach((index) => {
+      // checks if file has any alphanumeric characters
+      var temp = index.replace(/^\w+./,'');
+
+      if(!(temp in container)) temp = 'file';
+      var elementObj = {
+        "name": index,
+        "icon": "assets/64pxBlue/" + temp + ".png",
+        "level": "#ccc"
+      }
+      if(index.substring(index.length -1 ) === '/'){
+        elementObj.icon = "assets/64pxBlue/folder.png";
+      }
+
+      //add modified red folder path logic here
+      if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
+        // makes .git foldrs black
+        if (index.substring(0,4) === ".git") {
+          elementObj.level = "black";
+        }
+        if (modified){
+          for (var i = 0, len = modified.length; i < len; i++){
+            if (modified[i] === index) {
+              elementObj.level = "red";
+              elementObj.icon = "assets/64pxRed/" + temp + ".png";
+            }
           }
         }
+        schema.children.push(elementObj);
       }
-      schema.children.push(elementObj);
-    }
-  });
+    });
   schema = [schema];
   return schema;
-}
-module.exports = {
+};
 
+module.exports = {
   dataSchema(pwd, asyncWaterfallCallback) {
     // child process that gets all items in a directory
-
     // const command = `cd ${pwd}; ls -ap;`;
     const command = 'cd ' + pwd + '; ls -ap';
 

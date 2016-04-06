@@ -13,7 +13,7 @@ export default class GitAnimation extends Component {
       const graph = this.createGraph(nestedCommitArr);
       const graph2 = this.buildGraph(graph);
       // console.log('graph', graph);
-      visualizeGit();
+      visualizeGit(graph2);
       ipcRenderer.send('dag-data', graph2); // for testing only
       // this.gitGraphMaker(arg);
     });
@@ -22,7 +22,6 @@ export default class GitAnimation extends Component {
   createGraph(nestedCommitArr) {
     const gitGraph = new DAG();
     for (let i = 0; i < nestedCommitArr.length - 1; i++) {
-      console.log('nestedCommitArr[i][1]', nestedCommitArr[i][1]);
       if (nestedCommitArr[i][1].match(/\s/)) {
         nestedCommitArr[i][1] = nestedCommitArr[i][1].split(/\s/);
       }
@@ -72,6 +71,18 @@ export default class GitAnimation extends Component {
     // console.log('result:', result);
     return result;
   }
+
+	// createGraph(nestedCommitArr) {
+  //  var gitGraph = new DAG();
+	// 	for (var i = 0; i < nestedCommitArr.length - 1; i++) {
+	// 		if (nestedCommitArr[i][1].match(/\s/)){
+	// 			nestedCommitArr[i][1] = nestedCommitArr[i][1].split(/\s/)
+	// 		}
+	// 		gitGraph.addEdges(nestedCommitArr[i][0],nestedCommitArr[i][2],null, nestedCommitArr[i][1]);
+	// 	}
+	// 	// console.log(gitGraph);
+	// 	return gitGraph;
+	// }
 
   render() {
     return (

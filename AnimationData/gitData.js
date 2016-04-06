@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const exec = require('child_process').exec;
 
 module.exports = {
