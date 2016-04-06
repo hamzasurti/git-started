@@ -3,8 +3,8 @@ const exec = require('child_process').exec;
 module.exports = {
   gitHistory(pwd) {
     // const that = this;
-    // We can append a max count below if desired: --max-count=10
-    const commandForGitHistory = `cd ${pwd};git log --pretty="%h|%p|%s|%d" `;
+    // We can remove the max count below if desired:
+    const commandForGitHistory = `cd ${pwd};git log --pretty="%h|%p|%s|%d" --max-count=10`;
     exec(commandForGitHistory, (err, stdout) => {
       if (err) {
         console.log(err.toString());
@@ -21,15 +21,4 @@ module.exports = {
       }
     });
   },
-
-//   createGraph: function(nestedCommitArr){
-//     var gitGraph = new DAG();
-//     for (var i = 0; i < nestedCommitArr.length - 1; i++) {
-//       if (nestedCommitArr[i][1].match(/\s/)){
-//         nestedCommitArr[i][1] = nestedCommitArr[i][1].split(/\s/)
-//       }
-//         gitGraph.addEdges(nestedCommitArr[i][0],nestedCommitArr[i][2],null, nestedCommitArr[i][1]);
-//     }
-//     return gitGraph;
-//   }
 };

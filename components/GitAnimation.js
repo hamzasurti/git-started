@@ -1,21 +1,34 @@
-
-import React, {Component} from 'react';
-const DAG = require('../AnimationData/DAG');
-
-
 /* eslint-disable no-console */
 
+import React, { Component } from 'react';
+import visualizeGit from './../visualizations/git-visualization.js';
+const DAG = require('../AnimationData/DAG'); // Can we import instead?
 
 export default class GitAnimation extends Component {
 
   componentDidMount() {
-    // ipcRenderer.send('ready-for-git', '\n');
-    ipcRenderer.on('git-graph', (event, arg) => {
+    ipcRenderer.send('ready-for-git', '\n');
+    ipcRenderer.on('git-graph', (event, nestedCommitArr) => {
       // The arg is an object with an array of names (strings) and vertices (objects).
-      console.log('git-graph', arg);
-      ipcRenderer.send('dag-data', this.buildGraph(arg));
+      const graph = this.createGraph(nestedCommitArr);
+      const graph2 = this.buildGraph(graph);
+      // console.log('graph', graph);
+      visualizeGit();
+      ipcRenderer.send('dag-data', graph2); // for testing only
       // this.gitGraphMaker(arg);
     });
+  }
+
+  createGraph(nestedCommitArr) {
+    const gitGraph = new DAG();
+    for (let i = 0; i < nestedCommitArr.length - 1; i++) {
+      console.log('nestedCommitArr[i][1]', nestedCommitArr[i][1]);
+      if (nestedCommitArr[i][1].match(/\s/)) {
+        nestedCommitArr[i][1] = nestedCommitArr[i][1].split(/\s/);
+      }
+      gitGraph.addEdges(nestedCommitArr[i][0], nestedCommitArr[i][2], null, nestedCommitArr[i][1]);
+    }
+    return gitGraph;
   }
 
   buildGraph(data) {
@@ -56,28 +69,9 @@ export default class GitAnimation extends Component {
 
     result.nodes = nodes;
     result.links = links;
-    console.log('result:', result);
+    // console.log('result:', result);
     return result;
   }
-
-  // gitGraphMaker(dag) {
-    // const gitgraph = new GitGraph({
-    //   template: 'metro', // or blackarrow
-    //   orientation: 'horizontal',
-    //   author: 'John Doe',
-    //   mode: 'extended', // or compact if you don't want the messages
-    // });
-    // console.log(dag);
-    // TODO fix this ish
-    // var master = gitgraph.branch("master");
-    // var counter = 0;
-    // for (var namehash in dag.vertices) {
-    //   console.log(namehash.incomingNames);
-    //   // if (namehash.incomingNames.length > 1) gitgraph.branch(namehash)
-    //   gitgraph.commit(namehash + dag.vertices[dag.names[counter].value])
-    //   counter++;
-    // }
-  // }
 
   render() {
     return (
