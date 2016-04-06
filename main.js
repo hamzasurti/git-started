@@ -7,7 +7,6 @@ const animationDataSchema = require('./AnimationData/StructureSchema');
 const async = require('async');
 
 
-
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
 const fork = require('child_process').fork;

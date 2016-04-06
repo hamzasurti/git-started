@@ -128,7 +128,13 @@ export default class StructureAnimation extends Component {
       return (<Link key={key} data={link} />);
     });
 
+    let counter = 1;
+
     const trees = layout.nodes && layout.nodes.map((node) => {
+      node.index = counter;
+      counter++;
+      if(node.yOriginal === undefined) node.yOriginal = node.y;
+      if(node.index % 2 === 1) node.y = node.yOriginal * .9;
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
@@ -139,6 +145,7 @@ export default class StructureAnimation extends Component {
     // <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left}
     // height={viewBoxHeight - this.state.margin.top} rx='15' ry='15' />
     // How does the svg know to fill the full width of its containing div? I'm not sure about this.
+
     return (
       <div id="Structure-Animation">
         <svg viewBox={styles.viewBoxString}>

@@ -1,5 +1,4 @@
 const exec = require('child_process').exec;
-// const DAG = require('./DAG');
 
 module.exports = {
   gitHistory(pwd) {
@@ -20,16 +19,5 @@ module.exports = {
         // console.log(graphObj);
       }
     });
-  },
-
-//   createGraph: function(nestedCommitArr){
-//     var gitGraph = new DAG();
-//     for (var i = 0; i < nestedCommitArr.length - 1; i++) {
-//       if (nestedCommitArr[i][1].match(/\s/)){
-//         nestedCommitArr[i][1] = nestedCommitArr[i][1].split(/\s/)
-//       }
-//         gitGraph.addEdges(nestedCommitArr[i][0],nestedCommitArr[i][2],null, nestedCommitArr[i][1]);
-//     }
-//     return gitGraph;
-//   }
+  }
 };
