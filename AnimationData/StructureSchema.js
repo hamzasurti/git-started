@@ -1,6 +1,7 @@
+'use strict';
 const exec = require('child_process').exec;
 const simpleGit = require('simple-git');
-const path = require('path')
+const path = require('path');
 
 var container = {
   'css':  null,
@@ -13,8 +14,7 @@ var container = {
   'png':  null
 }
 
-module.exports = {
-  schemaMaker: function(termOutput, directoryName, modified){
+var schemaMaker = function(termOutput, directoryName, modified){
     var schema = {
       "name": directoryName,
       "children": [],
@@ -30,13 +30,11 @@ module.exports = {
       var temp = index.replace(/^\w+./,'');
 
       if(!(temp in container)) temp = 'file';
-
       var elementObj = {
         "name": index,
         "icon": "assets/64pxBlue/" + temp + ".png",
         "level": "#ccc"
       }
-
       if(index.substring(index.length -1 ) === '/'){
         elementObj.icon = "assets/64pxBlue/folder.png";
       }
@@ -47,7 +45,6 @@ module.exports = {
         if (index.substring(0,4) === ".git") {
           elementObj.level = "black";
         }
-        console.log(modified)
         if (modified){
           for (var i = 0, len = modified.length; i < len; i++){
             if (modified[i] === index) {
@@ -56,36 +53,35 @@ module.exports = {
             }
           }
         }
-        schema.children.push(elementObj)
+        schema.children.push(elementObj);
       }
-    })
-    schema = [schema]
-    return schema;
-  },
+    });
+  schema = [schema];
+  return schema;
+};
 
-  // Can we decide here whether to send the response back to the client?
-  // Basically, we want the ability to run commands independent of the client.
-  DataSchema: function(pwd,asyncWaterfallCallback) {
+module.exports = {
+  dataSchema(pwd, asyncWaterfallCallback) {
     // child process that gets all items in a directory
-    const that = this
+    // const command = `cd ${pwd}; ls -ap;`;
+    const command = 'cd ' + pwd + '; ls -ap';
 
-  	var command = 'cd ' + pwd + ';ls -ap';
-  	exec(command, (err, stdout, stderr) => {
-  			if (err) {
-  				console.log(err.toString());
-  			} else {
-  				var stdoutArr = stdout.split('\n');
-          var currentDirectoryName = path.parse(pwd).name;
-  				var modifiedFiles;
+    exec(command, (err, stdout) => {
+      if (err) {
+        console.log('the error you are getting with ls is: ==>', err.toString());
+      } else {
+        const stdoutArr = stdout.split('\n');
+        const currentDirectoryName = path.parse(pwd).name;
+        let modifiedFiles;
+        // git command to check git status
+        simpleGit(pwd).status((error, i) => {
+          modifiedFiles = i.modified;
 
-          // git command to check git status
-  				simpleGit(pwd).status((err, i) => {
-  					modifiedFiles = i.modified;
-  					var schema = that.schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
-            process.send ? process.send({schema: schema}) : asyncWaterfallCallback(null, schema);
-            return schema;
-  				})
-  			}
-  	})
-  }
+          const schema = schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
+          process.send ? process.send({ schema: schema }) : asyncWaterfallCallback(null, schema);
+          return schema;
+        });
+      }
+    });
+  },
 };
