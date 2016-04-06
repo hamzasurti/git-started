@@ -1,8 +1,13 @@
+
+import React, {Component} from 'react';
+const DAG = require('../AnimationData/DAG');
+
+
 /* eslint-disable no-console */
-import React, { Component } from 'react';
-// import { createStore } from 'redux'; // We may use this later.
+
 
 export default class GitAnimation extends Component {
+
   componentDidMount() {
     // ipcRenderer.send('ready-for-git', '\n');
     ipcRenderer.on('git-graph', (event, arg) => {
