@@ -21,6 +21,7 @@ treeVisualization.handleClick = (d) => {
       // Is there a better way to select the DOM elements I need, without using document.getElementById?
       // I understand how to go from DOM element to data in D3, but not vice versa.
       var treeNode = d3.select(document.getElementById(child.name));
+
       treeNode.call(treeFunction, treeVisualization.duration);
       var linkNode = d3.select(document.getElementById(`linkTo${child.name}`));
       linkNode.call(linkFunction, linkVisualization.diagonal, treeVisualization.duration);
@@ -36,10 +37,13 @@ treeVisualization.handleClick = (d) => {
 treeVisualization.hide = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.parent.y + "," + d.parent.x + ")"; });
+    .attr("transform", function(d) {
+        return "translate(" + d.parent.y + "," + d.parent.x + ")";
+    });
 
-    transition.select("circle")
-      .attr("r", 1e-6);
+    transition.select("image")
+      .attr("height", 1e-6)
+      .attr("width", 1e-6)
 
     transition.select("text")
       .style("fill-opacity", 1e-6);
@@ -48,10 +52,13 @@ treeVisualization.hide = (selection, duration) => {
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
-  selection.attr("transform", function(d) { return "translate(" + d.y0 + "," + d.x0 + ")"; });
+  selection.attr("transform", function(d) {
+              return "translate(" + d.y0 + "," + d.x0 + ")";
+            });
 
-  selection.select("circle")
-    .attr("r", 1e-6);
+  selection.select("image")
+           .attr("height", 1e-6)
+           .attr("width", 1e-6)
 
   selection.select("text")
     .style("fill-opacity", 1e-6);
@@ -61,14 +68,26 @@ treeVisualization.enter = (selection, duration) =>{
 
 // Transition new and updated nodes to their new position
 treeVisualization.update = (selection, duration) => {
+
   var transition = selection.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+    .attr("transform", function(d) {
+      return "translate(" + d.y + "," + d.x + ")";
+    })
 
-  transition.select("circle")
-    .attr("r", function(d) { return d.value ? d.value : 5; })
-    .style("fill", function(d) {
-      return d.childrenHidden ? "lightsteelblue" : d.level || "#fff"; });
+    // fix the x,y,width, height to scale properly
+    // y must always be half of height
+
+  transition.select("image")
+    .attr("xlink:href", function(d) {
+      //fix icon error if icon does not exist in folder
+      // return 'assets/64pxBlue/file.png';
+      return d.icon
+    })
+    .attr("x", function(d) {return d.position_x ? d.position_x : '0px'})
+    .attr("y", function(d) {return d.position_y ? d.position_y : '-10px'})
+    .attr("width", function(d) {return d.value ? d.value : '20px'})
+    .attr("height", function(d) {return d.value ? d.value : '20px'})
 
   transition.select("text")
     .attr("x", function(d) { return d.children || d.childrenHidden ? -20 : 20; }) // had 13 rather than 20

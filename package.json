@@ -28,13 +28,13 @@
   },
   "dependencies": {
     "async": "^2.0.0-rc.1",
-    "chai": "^3.5.0",
     "d3": "^3.5.16",
     "lodash": "^4.6.1",
     "pty.js": "^0.3.0",
     "react": "^0.14",
     "react-dom": "^0.14.0",
     "simple-git": "^1.28.1",
+    "term.js": "0.0.7",
     "tty.js": "^0.2.15"
   }
 }

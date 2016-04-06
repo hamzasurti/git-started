@@ -1,10 +1,7 @@
-
 import React, {Component} from 'react';
 const DAG = require('../AnimationData/DAG');
 
-
 /* eslint-disable no-console */
-
 
 export default class GitAnimation extends Component {
 
@@ -22,7 +19,7 @@ export default class GitAnimation extends Component {
 			}
 			gitGraph.addEdges(nestedCommitArr[i][0],nestedCommitArr[i][2],null, nestedCommitArr[i][1]);
 		}
-		console.log(gitGraph);
+		// console.log(gitGraph);
 		return gitGraph;
 	}
 
