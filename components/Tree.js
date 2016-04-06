@@ -40,7 +40,7 @@ export default class Tree extends Component {
 
     return (
       <g style={styles.main} id={this.props.data.name}>
-       <circle style={styles.circle} onClick={treeVisualization.handleClick}></circle>
+       <image style={styles.circle} onClick={treeVisualization.handleClick}></image>
        <text style={styles.text}>{this.props.data.name}</text>
      </g>
    );

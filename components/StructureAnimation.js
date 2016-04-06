@@ -128,7 +128,13 @@ export default class StructureAnimation extends Component {
       return (<Link key={key} data={link} />);
     });
 
+    let counter = 1;
+
     const trees = layout.nodes && layout.nodes.map((node) => {
+      node.index = counter;
+      counter++;
+      if(node.yOriginal === undefined) node.yOriginal = node.y;
+      if(node.index % 2 === 1) node.y = node.yOriginal * .9;
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;

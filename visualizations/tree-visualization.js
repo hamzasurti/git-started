@@ -21,6 +21,7 @@ treeVisualization.handleClick = (d) => {
       // Is there a better way to select the DOM elements I need, without using document.getElementById?
       // I understand how to go from DOM element to data in D3, but not vice versa.
       var treeNode = d3.select(document.getElementById(child.name));
+
       treeNode.call(treeFunction, treeVisualization.duration);
       var linkNode = d3.select(document.getElementById(`linkTo${child.name}`));
       linkNode.call(linkFunction, linkVisualization.diagonal, treeVisualization.duration);
@@ -52,7 +53,6 @@ treeVisualization.hide = (selection, duration) => {
 treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
   selection.attr("transform", function(d) {
-            console.log(d.y0, d.x0);
               return "translate(" + d.y0 + "," + d.x0 + ")";
             });
 
@@ -66,21 +66,12 @@ treeVisualization.enter = (selection, duration) =>{
   treeVisualization.update(selection, duration);
 }
 
-var staggerImages = false;
 // Transition new and updated nodes to their new position
 treeVisualization.update = (selection, duration) => {
 
   var transition = selection.transition()
     .duration(duration)
     .attr("transform", function(d) {
-
-      if(staggerImages){
-        staggerImages = false;
-      }
-      else{
-        d.y = d.y*.9;
-        staggerImages = true;
-      }
       return "translate(" + d.y + "," + d.x + ")";
     })
 

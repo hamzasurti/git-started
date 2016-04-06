@@ -44,12 +44,15 @@ module.exports = {
       //add modified red folder path logic here
       if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
         // makes .git foldrs black
-        if (index.substring(0,4) === ".git") elementObj.level = "black";
+        if (index.substring(0,4) === ".git") {
+          elementObj.level = "black";
+        }
+        console.log(modified)
         if (modified){
           for (var i = 0, len = modified.length; i < len; i++){
             if (modified[i] === index) {
-              elementObj.level = "red"
-              elementObj.icon = "assets/64pxRed/" + temp + ".png"
+              elementObj.level = "red";
+              elementObj.icon = "assets/64pxRed/" + temp + ".png";
             }
           }
         }
@@ -78,9 +81,6 @@ module.exports = {
           // git command to check git status
   				simpleGit(pwd).status((err, i) => {
   					modifiedFiles = i.modified;
-  					// var schema = this.schemaMaker(stdoutArr,current, modifiedFiles);
-            // process.send ? process.send({schema: schema}) : asyncWaterfallCallbackcallback(null, schema);
-
   					var schema = that.schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
             process.send ? process.send({schema: schema}) : asyncWaterfallCallback(null, schema);
             return schema;

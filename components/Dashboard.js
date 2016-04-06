@@ -7,88 +7,11 @@ import Animation from './Animation';
 import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
-<<<<<<< HEAD
-// Import lesson content
-import {lesson1} from './../lessons/git-on-your-computer';
 
-// testing for react tour
-var ReactTour = require('react-tour');
-// import url(node_modules/react-tour/dist/style.css);
-// delete if does not work
-
-// As we create new lessons, we can add new objects to the lessons array.
-var lessons = [
-	{
-		name: 'Git on your computer',
-		content: lesson1,
-		iconPath: 'assets/git-icon.png'
-	}
-];
-=======
->>>>>>> e9bbcca9c35551eaf9b2da2877f3189074d9f542
 
 import lessons from './../lessons/lesson-list';
 
 export default class Dashboard extends Component {
-<<<<<<< HEAD
-	constructor(props) {
-		super(props);
-		this.state = {
-			lessonNumber: undefined,
-			lessonContent: undefined,
-			slideNumber: undefined,
-			totalNumberOfSlides: undefined,
-			lessonText: undefined,
-			buttonText: undefined,
-			errorMessage: undefined,
-			sidebarVisible: props.initialSidebarVisible,
-			lessonVisible: props.initialLessonVisible,
-			structureAnimationVisible: props.initialStructureAnimationVisible,
-		};
-	}
-
-
-	// Helper function that advances to the next slide
-	advance() {
-		// What to do if we're already on the last slide.
-		if (this.state.slideNumber === this.state.totalNumberOfSlides - 1) {
-			this.setState({
-				slideNumber: 0,
-				lessonText: this.state.lessonContent[0].lessonText,
-				buttonText: this.state.lessonContent[0].buttonText,
-				errorMessage: '',
-			});
-
-		// What to do on every other slide
-		} else {
-			this.setState({
-	  		slideNumber: this.state.slideNumber + 1,
-	  		// Would it be better to make the value of lessonText the result of a function?
-	  		lessonText: this.state.lessonContent[this.state.slideNumber + 1].lessonText, // Again, I'd like to set the lesson dynamically down the line.
-	  		buttonText: this.state.lessonContent[this.state.slideNumber + 1].buttonText,
-				errorMessage: ''
-	  	});
-		}
-	}
-
-	handleClick() {
-		// If this slide has a buttonFunction, run it.
-		if(this.state.lessonContent[this.state.slideNumber].buttonFunction) {
-			this.state.lessonContent[this.state.slideNumber].buttonFunction();
-			// Listen for the result of the test triggered by buttonFunction (since I can't get the buttonFunction to return a Boolean, which would be simpler). I changed .on to .once
-			ipcRenderer.once('test-result-2', function(event, arg) { // Refactoring opportunity: pull out and name this function.
-				console.log(`Test result for slide ${this.state.slideNumber}: ${arg}`);
-				// If the user passed the test (if arg is true), advance.
-				if (arg) {
-					this.advance();
-				} else {
-					this.showError();
-				}
-			}.bind(this));
-		} else {
-			this.advance();
-		}
-=======
   constructor(props) {
     super(props);
     this.setErrorVisibility = this.setErrorVisibility.bind(this);
@@ -169,57 +92,9 @@ export default class Dashboard extends Component {
     }
 
     return styles;
->>>>>>> e9bbcca9c35551eaf9b2da2877f3189074d9f542
   }
 
   render() {
-<<<<<<< HEAD
-		// Put styling in a separate function that render can call.
-		var sidebarStyle = {padding: '8px'};
-
-		var sidebarContainerStyle = {height: '100%', backgroundColor: 'lightGray'};
-		var mainStyle = {height: '100%'};
-		var upperHalfStyle = {height: '50%', width: '100%'};
-		var lowerHalfStyle = {height: '50%', width: '100%'};
-		// Isaac: I'm not sure whether overflow should be auto or scroll.
-		var leftStyle = {float: 'left', height: '100%', overflow: 'scroll'};
-		var terminalStyle = {float: 'left', height: '100%', backgroundColor: 'black'};
-
-		if (this.state.sidebarVisible) {
-			sidebarContainerStyle.float = 'left';
-			sidebarContainerStyle.width = '20%';
-			mainStyle.float = 'left';
-			mainStyle.width = '80%';
-			sidebarStyle.display = 'block';
-		} else {
-			sidebarContainerStyle.position = 'absolute';
-			sidebarContainerStyle.width = '28px'; // was 10%
-			mainStyle.position = 'absolute';
-			mainStyle.left = '28px';
-			mainStyle.right = 0;
-			sidebarStyle.display = 'none';
-		}
-
-		if (this.state.lessonVisible) {
-			leftStyle.width = '35%';
-			terminalStyle.width = '65%';
-			leftStyle.maxWidth = '100px';
-
-		} else {
-			leftStyle.display = 'none';
-			terminalStyle.width = '100%';
-		}
-
-		// Create an array of lesson names to pass down as props. (We don't want to pass all the lesson contents - that's a lot of data.)
-		var lessonInfo = lessons.map(lesson => {
-			return {
-				name: lesson.name,
-				iconPath: lesson.iconPath
-			}
-		});
-
-		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
-=======
     const styles = this.buildStyles(this.state.sidebarVisible);
 
     // Create an array of lesson names to pass down to Sidebar as props.
@@ -238,7 +113,6 @@ export default class Dashboard extends Component {
       /> : undefined;
 
     // The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
->>>>>>> e9bbcca9c35551eaf9b2da2877f3189074d9f542
     return (
       <div id="Dashboard" style={ styles.dashboard }>
         <div style={ styles.sidebar }>
