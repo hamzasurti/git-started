@@ -14,6 +14,7 @@ const ptyTerm = pty.fork('bash', [], {
 
   // sets the terminal prompt to pwd
 ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`);
+// ptyTerm.write(`. ~/.profile \n`);
 process.once('message', () => {
   animationDataSchema.dataSchema(process.env.HOME);
 });

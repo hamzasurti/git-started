@@ -6,6 +6,8 @@ const	BrowserWindow = electron.BrowserWindow;
 const animationDataSchema = require('./AnimationData/StructureSchema');
 const async = require('async');
 
+
+
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
 const fork = require('child_process').fork;
@@ -30,7 +32,8 @@ app.on('ready', () => {
       (data) => {
         mainWindow.webContents.send('direc-schema', data);
       },
-    ]), 1);
+    ]), 0);
+
 
     mainWindow.webContents.send('term-start-data', `${process.env.HOME} $ `);
 
@@ -39,7 +42,7 @@ app.on('ready', () => {
   });
 
 	// For testing only, opens dev tools
-	// mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
   mainWindow.on('closed', () => {
@@ -83,11 +86,11 @@ function ptyChildProcess() {
 			// sends what is diplayed in terminal
       if (message.data) event.sender.send('terminal-reply', message.data);
 			// sends animation schema
-      if (message.schema) {
-        event.sender.send('direc-schema', message.schema);
-      }
+
+      if (message.schema) event.sender.send('direc-schema', message.schema);
+
       if (message.gitGraph) event.sender.send('git-graph', message.gitGraph);
-    });
+    })
   });
 }
 
