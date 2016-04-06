@@ -120,22 +120,31 @@ export default class StructureAnimation extends Component {
     // so I'm removing any slash before using the name as a key.
     // I added the trim to account for the fact that the name values sometime begin with a carriage
     // return for some reason, and that throws things off.
-    const links = layout.linkSelection && layout.linkSelection.map((link) => {
-      link.target.name = link.target.name.trim();
-      const nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
-      const key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) :
-        link.target.name;
-      return (<Link key={key} data={link} />);
-    });
 
     let counter = 1;
     const trees = layout.nodes && layout.nodes.map((node) => {
       node.index = counter;
       counter ++;
+      if (!node.yUnchanged) node.yUnchanged = node.y;
+      if (node.index % 2 === 1) node.y = node.yUnchanged * 0.9;
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
       const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
       return (<Tree key={key} data={node} />);
+    });
+
+    const links = layout.linkSelection && layout.linkSelection.map((link) => {
+      // link.index = link.target.index; // Can we use this to adjust the diagonal?
+      // The two lines below work.
+      // By editing each link.target when declaring links rather than editing each node when
+      // declaring const, am I avoiding editing the parent's d.y?
+      // if (!link.target.yUnchanged) link.target.yUnchanged = link.target.y;
+      // if (link.target.index % 2 === 1) link.target.y = link.target.yUnchanged * 0.9;
+      link.target.name = link.target.name.trim();
+      const nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
+      const key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) :
+        link.target.name;
+      return (<Link key={key} data={link} />);
     });
 
     // If you want to see the size of the SVG, add this code before the links and trees:

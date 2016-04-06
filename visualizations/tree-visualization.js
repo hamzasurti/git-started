@@ -66,9 +66,13 @@ treeVisualization.update = (selection, duration) => {
   var transition = selection.transition()
     .duration(duration)
     .attr("transform", function(d) {
-      let yAdjusted = d.y;
-      if (d.index % 2 === 1) yAdjusted *= 0.9;
-      return "translate(" + yAdjusted + "," + d.x + ")";
+      // let yAdjusted = d.y; // go back to this if possible
+      // if (d.index % 2 === 1) yAdjusted *= 0.9;
+      // if (d.index % 2 === 1) d.y *= 0.9; // kinda worked
+      // The code below works for all renders except the first.
+      // if (!d.yUnchanged) d.yUnchanged = d.y;
+      // if (d.index % 2 === 1) d.y = d.yUnchanged * 0.9; // this works for all renders after 1st
+      return "translate(" + d.y + "," + d.x + ")";
     });
 
   transition.select("circle")

@@ -23,6 +23,7 @@ linkVisualization.enter = (selection, diagonal, duration) => {
 
 // Transition new and updated links to their new position
 linkVisualization.update = (selection, diagonal, duration) => {
+  // console.log('diagonal', diagonal);
   selection.transition()
     .duration(duration)
     .attr("d", diagonal);
