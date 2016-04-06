@@ -42,12 +42,16 @@ module.exports = {
 
   dataSchema(pwd, asyncWaterfallCallback) {
     // child process that gets all items in a directory
-    const command = `cd ${pwd}; ls -ap`;
+		console.log(pwd, 'PWD')
+    // const command = `cd ${pwd}; ls -ap;`;
+		const command = 'cd ' + pwd + '; ls -ap';
+		console.log(command, 'COMMAND')
     exec(command, (err, stdout) => {
       if (err) {
         console.log('the error you are getting with ls is: ==>', err.toString());
       } else {
         const stdoutArr = stdout.split('\n');
+				console.log('the stdoutArr is :',stdoutArr);
         const currentDirectoryName = path.parse(pwd).name;
         let modifiedFiles;
         // git command to check git status
