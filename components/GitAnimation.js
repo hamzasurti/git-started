@@ -77,9 +77,20 @@ export default class GitAnimation extends Component {
   render() {
     return (
       // JSX
-      <div>We will show a Git animation here
-        <canvas id="gitGraph"></canvas>
+      <div id="Git-Animation">
+        <p><span id="dag-name"></span></p>
+          <div id="dag">
+              <svg height="80" width="100%">
+                  <g transform="translate(20, 20)" />
+              </svg>
+          </div>
+          <p>Commit message: <span id="message"></span></p>
       </div>
     );
   }
 }
+
+// Old JSX
+// <div>We will show a Git animation here
+//   <canvas id="gitGraph"></canvas>
+// </div>
