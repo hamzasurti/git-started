@@ -13,6 +13,8 @@ const fork = require('child_process').fork;
 
 let mainWindow = null;
 
+
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -20,6 +22,11 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
+
+	var dummy = new BrowserWindow({show: false})
+	// forces replace icon to load
+	dummy.setProgressBar(-1);
+
   mainWindow = new BrowserWindow({
 		width: 1200,
 		height: 700,
