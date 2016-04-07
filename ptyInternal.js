@@ -12,6 +12,7 @@ const ptyTerm = pty.fork('bash', [], {
   env: process.env,
 });
 
+
   // sets the terminal prompt to pwd
 	// We can read the bash profile here with the source command.
 ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
