@@ -69,7 +69,7 @@ export default class StructureAnimation extends Component {
     // vertically, and we want a tree that branches horizontally.
     // In other words, nodes that are on the same level will have the same y-coordinate
     // but different x-coordinates.
-      .size([viewBoxHeight * 0.9, viewBoxWidth * 0.9]);
+      .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]); // had height * 0.9
 
     // We know that the first node in the array is the root of the tree.
     // Let's designate its initial coordinates - where it should enter.
