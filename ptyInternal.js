@@ -16,6 +16,7 @@ const ptyTerm = pty.fork('bash', [], {
   // sets the terminal prompt to pwd
 	// We can read the bash profile here with the source command.
 ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
+ptyTerm.write('clear\n\r');
 
 process.once('message', function(data) {
 	animationDataSchema.dataSchema(process.env.HOME)
@@ -35,6 +36,7 @@ ptyTerm.on('data', function(data) {
     var temp = data;
     temp = temp.replace(re,'');
     currDir = temp;
+    process.send({currDir: currDir}); // added
     // console.log('currDir', currDir);
     animationDataSchema.dataSchema(currDir);
 		getGitData.gitHistory(currDir);

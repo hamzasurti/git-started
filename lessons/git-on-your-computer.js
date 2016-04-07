@@ -40,6 +40,7 @@ const slides = [
       // Start listening for updates to currentDirectory
       ipcRenderer.on('curr-dir', (event, arg) => {
         currentDirectory = arg;
+        console.log('*** currentDirectory is now', currentDirectory); // Added
       });
       ipcRenderer.send('test-result-1', true);
     },
@@ -74,6 +75,7 @@ const slides = [
     buttonFunction() {
       // Check whether the user has installed Git
       ipcRenderer.send('command-to-run', 'git --version');
+      if (!currentDirectory) ipcRenderer.send('ready-for-dir', '\n'); // Added
       ipcRenderer.once('terminal-output', (event, arg) => {
         // If terminal-output contains the text 'git version', the user should pass.
         // If not, the user shouldn't.

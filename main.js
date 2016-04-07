@@ -76,6 +76,10 @@ function ptyChildProcess() {
 			//  animation to the structure animation.
   });
 
+  ipcMain.on('ready-for-dir', (event, arg) => {
+    forkProcess.send({ message: arg });
+  });
+
 	// when user inputs data in terminal, start fork and run pty inside
 	// Each keystroke is an arg.
   ipcMain.on('command-message', (event, arg) => {
@@ -89,6 +93,11 @@ function ptyChildProcess() {
       if (message.schema) event.sender.send('direc-schema', message.schema);
 
       if (message.gitGraph) event.sender.send('git-graph', message.gitGraph);
+
+      if (message.currDir) {
+        console.log('*** sending curr-dir');
+        event.sender.send('curr-dir', message.currDir); // Added
+      }
     })
   });
 }
