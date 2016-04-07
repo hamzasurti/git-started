@@ -26,7 +26,7 @@ export default class GitAnimation extends Component {
   render() {
     return (
       // JSX
-      <div>We will show a Git animation here
+      <div>Our Git visualization is in development and will be included in a future release.
         <canvas id="gitGraph"></canvas>
       </div>
     );

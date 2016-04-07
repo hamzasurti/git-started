@@ -87,6 +87,8 @@ function ptyChildProcess() {
 			//  animation to the structure animation.
   });
 
+	// Note from Isaac: I added this listener to ensure that the lesson knows the user's current
+  // directory before testing whether they created a 'new-project' directory.
   ipcMain.on('ready-for-dir', (event, arg) => {
     forkProcess.send({ message: arg });
   });

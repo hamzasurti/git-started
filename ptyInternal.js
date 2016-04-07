@@ -36,8 +36,7 @@ ptyTerm.on('data', function(data) {
     var temp = data;
     temp = temp.replace(re,'');
     currDir = temp;
-    process.send({currDir: currDir}); // added
-    // console.log('currDir', currDir);
+    process.send({ currDir: currDir });
     animationDataSchema.dataSchema(currDir);
 		getGitData.gitHistory(currDir);
   }
