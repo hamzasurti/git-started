@@ -28,49 +28,37 @@ var schemaMaker = function(termOutput, directoryName, modified){
     termOutput.forEach((index) => {
       // checks if file has any alphanumeric characters
       var temp = index.replace(/^\w+./,'');
-
       if(!(temp in container)) temp = 'file';
       var elementObj = {
         "name": index,
         "icon": "assets/64pxBlue/" + temp + ".png",
         "level": "#ccc"
       }
-      if(index.substring(index.length -1 ) === '/'){
-        elementObj.icon = "assets/64pxBlue/folder.png";
-        index = index.substring(0,index.length - 1);
+      if(index.substring(index.length - 1) === '/'){
+        temp = 'folder';
+        elementObj.icon = "assets/64pxBlue/" + temp + ".png";
       }
       //add modified red folder path logic here
-      if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
+      var git = index.substring(0,4);
+      if (git === ".git" || !!index.match(/^\w/)) {
         // makes .git foldrs black
-        if (index.substring(0,4) === ".git") {
+        if (git === ".git") {
           elementObj.level = "black";
         }
         if (modified){
           var modifiedObject = {};
           for (var i = 0, len = modified.length; i < len; i++){
             var hash = modified[i].split('/');
-            for(var j = 0; j < hash.length; j++){
+            for(var j = 0, hashLen = hash.length; j < hashLen; j++){
               if(!(hash[j] in modifiedObject)){
-                modifiedObject[hash[j]] = null;
+                modifiedObject[hash[j]] = 0;
               }
             }
           }
-
-          if(index in modifiedObject){
+          if(index in modifiedObject || index.substring(0,index.length-1) in modifiedObject){
             elementObj.level = 'red';
             elementObj.icon = "assets/64pxRed/" + temp + ".png";
           }
-
-          // for (var i = 0, len = modified.length; i < len; i++){
-          //   if (modified[i] === index) {
-          //     elementObj.level = "red";
-          //     elementObj.icon = "assets/64pxRed/" + temp + ".png";
-          //   }
-          // }
-
-
-
-
         }
         schema.children.push(elementObj);
       }
