@@ -107,9 +107,9 @@ Renderer.prototype.run = function(graph, svg) {
   // Apply the layout information to the graph
   reposition(result, svgNodes, svgEdges);
 
-  // this._postRender(result, svg);
-  //
-  // return result; // result is a Digraph
+  this._postRender(result, svg);
+
+  return result; // result is a Digraph
 };
 
 function copyAndInitGraph(graph) {
@@ -166,11 +166,12 @@ function drawNodes(graph, drawNode, roots) {
     .each(function(u) { calculateDimensions(this, graph.node(u)); });
 }
 
+// Note from Isaac: I commented out this function because we don't want edge labels.
 function drawEdgeLabels(graph, drawEdgeLabel, roots) {
-  roots
-    .append("g")
-      .each(function(e) { drawEdgeLabel(graph, e, d3.select(this)); })
-      .each(function(e) { calculateDimensions(this, graph.edge(e)); });
+  // roots
+  //   .append("g")
+  //     .each(function(e) { drawEdgeLabel(graph, e, d3.select(this)); })
+  //     .each(function(e) { calculateDimensions(this, graph.edge(e)); });
 }
 
 function drawEdges(graph, drawEdge, roots) {
@@ -279,6 +280,8 @@ function defaultDrawEdge(graph, e, root) {
   root
     // insert a path element before every g within a g.edge node in the selection (should be only 1)
     .insert("path", "*") // returns the just-inserted path element
+    .attr("stroke", "black") // added by Isaac
+    .attr("fill", "none")
     .attr("marker-end", "url(#arrowhead)")
     .attr("d", function() {
       var value = graph.edge(e);
@@ -325,6 +328,7 @@ function defaultPostLayout() {
 }
 
 function defaultPostRender(graph, root) {
+  console.log('Post-rendering');
   if (graph.isDirected() && root.select("#arrowhead").empty()) {
     root
       .append("svg:defs")
@@ -343,6 +347,7 @@ function defaultPostRender(graph, root) {
   }
 }
 
+// Isaac: This function adds labels to both nodes and paths.
 function addLabel(label, root, marginX, marginY) {
   // Add the rect first so that it appears behind the label
   var rect = root.append("rect");
@@ -367,7 +372,9 @@ function addLabel(label, root, marginX, marginY) {
     .attr("x", -(bbox.width / 2 + marginX))
     .attr("y", -(bbox.height / 2 + marginY))
     .attr("width", bbox.width + 2 * marginX)
-    .attr("height", bbox.height + 2 * marginY);
+    .attr("height", bbox.height + 2 * marginY)
+    .attr("fill", "white")
+    .attr("stroke", "black");
 }
 
 function addForeignObjectLabel(label, root) {
