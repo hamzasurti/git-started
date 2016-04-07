@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import jQuery from './dependencies/jquery-1.10.2.js';
-// Do I need to define d3, DAG, and dagreD3?
-// Or is it OK to keep them as globals on index.html?
+// Refactoring opportunity: import d3 and dagreD3 here rather than loading them on index.html.
 
 export default function (data) {
   console.log('Starting visualization function');
