@@ -37,8 +37,8 @@ var schemaMaker = function(termOutput, directoryName, modified){
       }
       if(index.substring(index.length -1 ) === '/'){
         elementObj.icon = "assets/64pxBlue/folder.png";
+        index = index.substring(0,index.length - 1);
       }
-
       //add modified red folder path logic here
       if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
         // makes .git foldrs black
@@ -46,12 +46,31 @@ var schemaMaker = function(termOutput, directoryName, modified){
           elementObj.level = "black";
         }
         if (modified){
+          var modifiedObject = {};
           for (var i = 0, len = modified.length; i < len; i++){
-            if (modified[i] === index) {
-              elementObj.level = "red";
-              elementObj.icon = "assets/64pxRed/" + temp + ".png";
+            var hash = modified[i].split('/');
+            for(var j = 0; j < hash.length; j++){
+              if(!(hash[j] in modifiedObject)){
+                modifiedObject[hash[j]] = null;
+              }
             }
           }
+
+          if(index in modifiedObject){
+            elementObj.level = 'red';
+            elementObj.icon = "assets/64pxRed/" + temp + ".png";
+          }
+
+          // for (var i = 0, len = modified.length; i < len; i++){
+          //   if (modified[i] === index) {
+          //     elementObj.level = "red";
+          //     elementObj.icon = "assets/64pxRed/" + temp + ".png";
+          //   }
+          // }
+
+
+
+
         }
         schema.children.push(elementObj);
       }
@@ -76,7 +95,6 @@ module.exports = {
         // git command to check git status
         simpleGit(pwd).status((error, i) => {
           modifiedFiles = i.modified;
-
           const schema = schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
           process.send ? process.send({ schema: schema }) : asyncWaterfallCallback(null, schema);
           return schema;
