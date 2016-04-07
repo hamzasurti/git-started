@@ -20,7 +20,11 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({ width: 1200, height: 700 });
+  mainWindow = new BrowserWindow({
+		width: 1200,
+		height: 700,
+		resizable: false,
+	});
 	// for some reason template literall doesnt work here
   mainWindow.loadURL('file://' +__dirname + '/index.html');
 
@@ -41,7 +45,7 @@ app.on('ready', () => {
   });
 
 	// For testing only, opens dev tools
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
   mainWindow.on('closed', () => {
