@@ -27,17 +27,14 @@ var schemaMaker = function(termOutput, directoryName, modified){
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
       // checks if file has any alphanumeric characters
-      var temp = index.replace(/^\w+./,'');
-      if(!(temp in container)) temp = 'file';
       var elementObj = {
         "name": index,
-        "icon": "assets/64pxBlue/" + temp + ".png",
         "level": "#ccc"
       }
-      if(index.substring(index.length - 1) === '/'){
-        temp = 'folder';
-        elementObj.icon = "assets/64pxBlue/" + temp + ".png";
-      }
+
+      var temp = terminalParse(index);
+
+      elementObj.icon = "assets/64pxBlue/" + temp + ".png";
       //add modified red folder path logic here
       var git = index.substring(0,4);
       if (git === ".git" || !!index.match(/^\w/)) {
@@ -45,17 +42,19 @@ var schemaMaker = function(termOutput, directoryName, modified){
         if (git === ".git") {
           elementObj.level = "black";
         }
+
         if (modified){
           var modifiedObject = {};
           for (var i = 0, len = modified.length; i < len; i++){
-            var hash = modified[i].split('/');
-            for(var j = 0, hashLen = hash.length; j < hashLen; j++){
-              if(!(hash[j] in modifiedObject)){
-                modifiedObject[hash[j]] = 0;
+            var tokens = modified[i].match(/([^\/]*\/?)/g);
+
+            for(var j = 0, tokenLen = tokens.length; j < tokenLen; j++){
+              if(!(tokens[j] in modifiedObject)){
+                modifiedObject[tokens[j]] = 0;
               }
             }
           }
-          if(index in modifiedObject || index.substring(0,index.length-1) in modifiedObject){
+          if(index in modifiedObject){
             elementObj.level = 'red';
             elementObj.icon = "assets/64pxRed/" + temp + ".png";
           }
@@ -66,6 +65,18 @@ var schemaMaker = function(termOutput, directoryName, modified){
   schema = [schema];
   return schema;
 };
+
+function terminalParse(item){
+  if(item[item.length - 1] === '/'){
+    var itemParse = 'folder';
+    return itemParse;
+  }
+  else{
+    var itemParse = item.replace(/^\w+./,'');
+    if(!(itemParse in container)) itemParse = 'file';
+    return itemParse;
+  }
+}
 
 module.exports = {
   dataSchema(pwd, asyncWaterfallCallback) {
