@@ -24,56 +24,52 @@ var schemaMaker = function(termOutput, directoryName, modified){
       'icon' : "assets/64pxBlue/folder.png",
       "level": "#ccc"
     };
+
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
-      // checks if file has any alphanumeric characters
+      if(index === '' || (index[0] === '.' && index[1] !== 'g')) return;
       var elementObj = {
         "name": index,
         "level": "#ccc"
       }
-
-      var temp = terminalParse(index);
-
-      elementObj.icon = "assets/64pxBlue/" + temp + ".png";
-      //add modified red folder path logic here
-      var git = index.substring(0,4);
-      if (git === ".git" || !!index.match(/^\w/)) {
-        // makes .git foldrs black
-        if (git === ".git") {
-          elementObj.level = "black";
-        }
-
-        if (modified){
-          var modifiedObject = {};
-          for (var i = 0, len = modified.length; i < len; i++){
-            var tokens = modified[i].match(/([^\/]*\/?)/g);
-
-            for(var j = 0, tokenLen = tokens.length; j < tokenLen; j++){
-              if(!(tokens[j] in modifiedObject)){
-                modifiedObject[tokens[j]] = 0;
-              }
-            }
-          }
-          if(index in modifiedObject){
-            elementObj.level = 'red';
-            elementObj.icon = "assets/64pxRed/" + temp + ".png";
-          }
-        }
+      if (index.substring(0,4) === ".git"){
+        if(index.substring(index.length - 1) === '/') elementObj.icon = "assets/folder.png"
+        else elementObj.icon = "assets/git.png";
+        elementObj.level = "black";
         schema.children.push(elementObj);
+        return;
       }
+
+      var temp = terminalParse(index, elementObj);
+      if (modified) modifiedAnimation(modified, elementObj, index, temp);
+      schema.children.push(elementObj);
     });
   schema = [schema];
   return schema;
 };
 
-function terminalParse(item){
+function modifiedAnimation(info, object, item, string){
+  for (var i = 0, len = info.length; i < len; i++){
+    if(info[i].indexOf(item) > -1){
+      object.level = "red";
+      object.icon  = "assets/64pxRed/" + string + ".png";
+      return;
+    }
+  }
+  return;
+}
+
+function terminalParse(item, object){
   if(item[item.length - 1] === '/'){
     var itemParse = 'folder';
+    object.type = 'directory';
+    object.icon = "assets/64pxBlue/folder.png";
     return itemParse;
   }
   else{
     var itemParse = item.replace(/^\w+./,'');
     if(!(itemParse in container)) itemParse = 'file';
+    object.icon = "assets/64pxBlue/" + itemParse + ".png";
     return itemParse;
   }
 }
