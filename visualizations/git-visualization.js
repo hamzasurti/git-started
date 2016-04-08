@@ -2,7 +2,7 @@
 // Refactoring opportunity: import d3 and dagreD3 here rather than loading them on index.html.
 
 export default function (data) {
-  console.log('Starting jQuery-free visualization function');
+  console.log('Starting visualization function');
 
   function renderGraph(graph) {
     // Grab the nodes and links from the graph we want to display.

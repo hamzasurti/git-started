@@ -90,9 +90,9 @@ treeVisualization.update = (selection, duration) => {
       return d.icon;
     })
     .attr("x", function(d) {return d.position_x ? d.position_x : '0px'})
-    .attr("y", function(d) {return d.position_y ? d.position_y : '-10px'})
-    .attr("width", function(d) {return d.value ? d.value : '20px'})
-    .attr("height", function(d) {return d.value ? d.value : '20px'})
+    .attr("y", function(d) {return d.position_y ? d.position_y : '-8px'})
+    .attr("width", function(d) {return d.value ? d.value : '16px'})
+    .attr("height", function(d) {return d.value ? d.value : '16px'})
 
   transition.select("text")
     .attr("x", function(d) { return d.children || d.childrenHidden ? -20 : 20; }) // had 13 rather than 20

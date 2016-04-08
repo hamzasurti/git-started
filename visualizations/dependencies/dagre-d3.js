@@ -328,7 +328,6 @@ function defaultPostLayout() {
 }
 
 function defaultPostRender(graph, root) {
-  console.log('Post-rendering');
   if (graph.isDirected() && root.select("#arrowhead").empty()) {
     root
       .append("svg:defs")
