@@ -69,7 +69,7 @@ export default class StructureAnimation extends Component {
     // vertically, and we want a tree that branches horizontally.
     // In other words, nodes that are on the same level will have the same y-coordinate
     // but different x-coordinates.
-      .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]); // had height * 0.9
+      .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]);
 
     // We know that the first node in the array is the root of the tree.
     // Let's designate its initial coordinates - where it should enter.
@@ -129,7 +129,7 @@ export default class StructureAnimation extends Component {
       if (node.yOriginal === undefined) node.yOriginal = node.y;
       // If node.index is odd, adjust node.y, which determines the position of this tree and the
       // link to it.
-      if (node.index % 2 === 1) node.y = node.yOriginal * .9;
+      if (node.index % 2 === 1) node.y = node.yOriginal * 0.9;
       // Parse node.name to extract a unique key for this tree.
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;

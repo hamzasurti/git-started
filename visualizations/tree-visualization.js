@@ -53,11 +53,19 @@ treeVisualization.enter = (selection, duration) =>{
   // Translate this node d.y0 units right and d.x0 units down.
   selection.attr("transform", function(d) {
               return "translate(" + d.y0 + "," + d.x0 + ")";
-            });
+            })
 
   selection.select("image")
-           .attr("height", 1e-6)
-           .attr("width", 1e-6)
+           .on('click', function(d){
+             if(d.type){
+               const commandString = `cd ${d.name} \n\r`
+               ipcRenderer.send('command-message', commandString);
+             }
+             if(d.children){
+               const commandString = `cd .. \n\r`
+               ipcRenderer.send('command-message', commandString);
+             }
+           })
 
   selection.select("text")
     .style("fill-opacity", 1e-6);
@@ -79,9 +87,7 @@ treeVisualization.update = (selection, duration) => {
 
   transition.select("image")
     .attr("xlink:href", function(d) {
-      //fix icon error if icon does not exist in folder
-      // return 'assets/64pxBlue/file.png';
-      return d.icon
+      return d.icon;
     })
     .attr("x", function(d) {return d.position_x ? d.position_x : '0px'})
     .attr("y", function(d) {return d.position_y ? d.position_y : '-10px'})

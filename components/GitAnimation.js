@@ -89,12 +89,12 @@ export default class GitAnimation extends Component {
       // JSX
       <div id="Git-Animation">
         <p><span id="dag-name"></span></p>
+        <p>Commit message: <span id="message"></span></p>
           <div id="dag">
               <svg height="80" width="100%">
                   <g transform="translate(20, 20)" />
               </svg>
           </div>
-          <p>Commit message: <span id="message"></span></p>
       </div>
     );
   }

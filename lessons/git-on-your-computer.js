@@ -77,6 +77,7 @@ const slides = [
     buttonFunction() {
       // Check whether the user has installed Git
       ipcRenderer.send('command-to-run', 'git --version');
+      if (!currentDirectory) ipcRenderer.send('ready-for-dir', '\n');
       ipcRenderer.once('terminal-output', (event, arg) => {
         // If terminal-output contains the text 'git version', the user should pass.
         // If not, the user shouldn't.

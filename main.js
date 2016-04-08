@@ -14,6 +14,8 @@ const fork = require('child_process').fork;
 
 let mainWindow = null;
 
+
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -21,7 +23,16 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({ width: 1200, height: 700 });
+
+	var dummy = new BrowserWindow({show: false})
+	// forces replace icon to load
+	dummy.setProgressBar(-1);
+
+  mainWindow = new BrowserWindow({
+		width: 1200,
+		height: 700,
+		resizable: false,
+	});
 	// for some reason template literall doesnt work here
   mainWindow.loadURL('file://' +__dirname + '/index.html');
 
@@ -77,7 +88,15 @@ function ptyChildProcess() {
 			//  animation to the structure animation.
   });
 
-    ipcMain.on('ready-for-git', (event, arg) => forkProcess.send({message: arg}));
+  // Note from Isaac: I added this listener to make we have Git data to show the first time the
+  // users toggles to the Git view.
+  ipcMain.on('ready-for-git', (event, arg) => forkProcess.send({message: arg}));
+
+	// Note from Isaac: I added this listener to ensure that the lesson knows the user's current
+  // directory before testing whether they created a 'new-project' directory.
+  ipcMain.on('ready-for-dir', (event, arg) => {
+    forkProcess.send({ message: arg });
+  });
 
 	// when user inputs data in terminal, start fork and run pty inside
 	// Each keystroke is an arg.
@@ -90,12 +109,11 @@ function ptyChildProcess() {
 			// sends animation schema
       if (message.schema) event.sender.send('direc-schema', message.schema);
 
-			if (message.gitGraph) {
-        console.log('*** sending git-graph');
-        event.sender.send('git-graph', message.gitGraph);
-      }
-		});
-	});
+      if (message.gitGraph) event.sender.send('git-graph', message.gitGraph);
+
+      if (message.currDir) event.sender.send('curr-dir', message.currDir);
+    });
+  });
 
   // Added by Isaac for testing
   ipcMain.on('dag-data', (event, arg) => {

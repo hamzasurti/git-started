@@ -149,8 +149,8 @@ Dashboard.propTypes = {
 };
 
 Dashboard.defaultProps = {
-  initialSidebarVisible: true,
-  initialStructureAnimationVisible: true, // set to false for test?
+  initialSidebarVisible: false,
+  initialStructureAnimationVisible: true,
   initialLessonVisible: false,
   initialErrorVisible: false,
 };
