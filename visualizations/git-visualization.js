@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import jQuery from './dependencies/jquery-1.10.2.js';
+// import jQuery from './dependencies/jquery-1.10.2.js';
 // Refactoring opportunity: import d3 and dagreD3 here rather than loading them on index.html.
 
 export default function (data) {
@@ -11,7 +11,9 @@ export default function (data) {
     const links = graph.links;
 
     // Using jQuery methods, grab the <g> element where we want to display the graph.
-    const graphElem = svgParent.children('g').get(0);
+    // const graphElem = svgParent.children('g').get(0);
+    const graphElem = document.getElementById('git-g');
+    // console.log('graphElem', graphElem);
 
     // Create a D3 selection with this element.
     const svg = d3.select(graphElem);
@@ -34,39 +36,40 @@ export default function (data) {
     // MOST CONFUSING STUFF ENDS
 
     // Adjust SVG height to content
-    const main = svgParent.find('g > g');
-    const h = main.get(0).getBoundingClientRect().height;
+    // const main = svgParent.find('g > g');
+    // console.log('main.get(0)', main.get(0));
+    var $mine = document.querySelector('#git-g g');
+    // console.log('$mine', $mine);
+    // const h = main.get(0).getBoundingClientRect().height;
+    const h = $mine.getBoundingClientRect().height;
     let newHeight = h + 40;
     newHeight = newHeight < 80 ? 80 : newHeight;
-    svgParent.height(newHeight);
+    const $svg = document.getElementById('git-svg');
+    $svg.setAttribute('height', newHeight);
+    // console.log('jQuery all gone?');
+    // svgParent.height(newHeight); // Remove jQuery here***
 
     // Zoom
-    d3.select(svgParent.get(0)).call(d3.behavior.zoom().on('zoom', () => {
+    // console.log('svgParent.get(0)', svgParent.get(0));
+    d3.select($svg).call(d3.behavior.zoom().on('zoom', () => {
+    // d3.select(svgParent.get(0)).call(d3.behavior.zoom().on('zoom', () => {
       const ev = d3.event;
       svg.select('g')
           .attr('transform', `translate(${ev.translate}) scale(${ev.scale})`);
     }));
   }
 
-  function displayGraph(graph, dagNameElem, svgElem) {
-    // Update the text inside the #dag-name span to reflect the name of the graph.
-    dagNameElem.text(graph.name);
-    // Run the function below.
-    // this.renderGraph(graph, svgElem);
-    renderGraph(graph, svgElem);
-  }
-
-  function loadData(gitData) {
-    displayGraph(gitData, jQuery('#dag-name'), jQuery('#dag > svg'));
-      // DAG.displayGraph(data, jQuery('#dag-name'), jQuery('#dag > svg'));
-  }
-
   // Is this the best place for this function?
   window.updateCommitMessage = function (message) {
-    jQuery('#message').text(message);
+    document.getElementById('#message').textContent = message;
+    // jQuery('#message').text(message);
   };
 
-  loadData(data);
+  // console.log("document.getElementById('git-svg')", document.getElementById('git-svg'));
+  // console.log("jQuery('#dag > svg')", jQuery('#dag > svg'));
+  // renderGraph(data, document.getElementById('git-svg')); // want to get here
+  // renderGraph(data, jQuery('#dag > svg')); // jQuery returns a jQuery object, not just the DOM el
+  renderGraph(data);
 
   console.log('Finished visualization function');
 }

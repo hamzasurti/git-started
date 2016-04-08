@@ -72,27 +72,14 @@ export default class GitAnimation extends Component {
     return result;
   }
 
-	// createGraph(nestedCommitArr) {
-  //  var gitGraph = new DAG();
-	// 	for (var i = 0; i < nestedCommitArr.length - 1; i++) {
-	// 		if (nestedCommitArr[i][1].match(/\s/)){
-	// 			nestedCommitArr[i][1] = nestedCommitArr[i][1].split(/\s/)
-	// 		}
-	// 		gitGraph.addEdges(nestedCommitArr[i][0],nestedCommitArr[i][2],null, nestedCommitArr[i][1]);
-	// 	}
-	// 	// console.log(gitGraph);
-	// 	return gitGraph;
-	// }
-
   render() {
     return (
-      // JSX
       <div id="Git-Animation">
-        <p><span id="dag-name"></span></p>
-        <p>Commit message: <span id="message"></span></p>
+        <p>Hover over any commit in your Git history to see the commit message.</p>
+        <p><em>Commit message</em>: <span id="message"></span></p>
           <div id="dag">
-              <svg height="80" width="100%">
-                  <g transform="translate(20, 20)" />
+              <svg height="80" width="100%" id="git-svg">
+                  <g transform="translate(20, 20)" id="git-g"/>
               </svg>
           </div>
       </div>
@@ -100,7 +87,4 @@ export default class GitAnimation extends Component {
   }
 }
 
-// Old JSX
-// <div>We will show a Git animation here
-//   <canvas id="gitGraph"></canvas>
-// </div>
+// had graphElem in inner div

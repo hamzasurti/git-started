@@ -53,7 +53,7 @@ app.on('ready', () => {
   });
 
 	// For testing only, opens dev tools
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
   mainWindow.on('closed', () => {
@@ -113,12 +113,6 @@ function ptyChildProcess() {
 
       if (message.currDir) event.sender.send('curr-dir', message.currDir);
     });
-  });
-
-  // Added by Isaac for testing
-  ipcMain.on('dag-data', (event, arg) => {
-    console.log('Main.js received dag-data');
-    fs.writeFile('test.js', JSON.stringify(arg), () => console.log('Finished writing file'));
   });
 }
 
