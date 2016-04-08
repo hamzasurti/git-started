@@ -61,7 +61,7 @@ treeVisualization.enter = (selection, duration) =>{
   selection.select("image")
            .on('click', function(d){
              if(d.type){
-               const commandString = `cd ${d.name} \n\r`
+               const commandString = `cd ${d.name.replace(/\s/g, '')} \n\r`
                ipcRenderer.send('command-message', commandString);
              }
              if(d.children){
