@@ -4,8 +4,8 @@ const exec = require('child_process').exec;
 module.exports = {
   gitHistory(pwd) {
     // const that = this;
-    // We can remove the max count below if desired:
-    const commandForGitHistory = `cd ${pwd};git log --pretty="%h|%p|%s|%d" --max-count=10`;
+    // We can remove the max count below if desired: --max-count=10
+    const commandForGitHistory = `cd ${pwd};git log --pretty="%h|%p|%s|%d"gi`;
     exec(commandForGitHistory, (err, stdout) => {
       if (err) {
         console.log(err.toString());
