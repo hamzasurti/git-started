@@ -77,7 +77,7 @@ export default class GitAnimation extends Component {
       <div id="Git-Animation">
         <p>Hover over any commit in your Git history to see the commit message.</p>
         <p><em>Commit message</em>: <span id="message"></span></p>
-          <div id="dag">
+          <div>
               <svg height="80" width="100%" id="git-svg">
                   <g transform="translate(20, 20)" id="git-g"/>
               </svg>
