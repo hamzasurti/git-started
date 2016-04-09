@@ -58,7 +58,7 @@ treeVisualization.enter = (selection, duration) =>{
   selection.select("image")
            .on('click', function(d){
              if(d.type){
-               const commandString = `cd ${d.name} \n\r`
+               const commandString = `cd ${d.name.replace(/ /g, "\\ ")} \n\r`
                ipcRenderer.send('command-message', commandString);
              }
              if(d.children){
@@ -84,15 +84,16 @@ treeVisualization.update = (selection, duration) => {
 
     // fix the x,y,width, height to scale properly
     // y must always be half of height
+  const scale = 16;
 
   transition.select("image")
     .attr("xlink:href", function(d) {
       return d.icon;
     })
     .attr("x", function(d) {return d.position_x ? d.position_x : '0px'})
-    .attr("y", function(d) {return d.position_y ? d.position_y : '-8px'})
-    .attr("width", function(d) {return d.value ? d.value : '16px'})
-    .attr("height", function(d) {return d.value ? d.value : '16px'})
+    .attr("y", function(d) {return d.position_y ? d.position_y : scale * -(1/2)})
+    .attr("width", function(d) {return d.value ? d.value : scale})
+    .attr("height", function(d) {return d.value ? d.value : scale})
 
   transition.select("text")
     .attr("x", function(d) { return d.children || d.childrenHidden ? -20 : 20; }) // had 13 rather than 20

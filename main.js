@@ -32,6 +32,8 @@ app.on('ready', () => {
 		width: 1200,
 		height: 700,
 		// resizable: false,
+    minHeight: 900,
+    minWidth:  500,
 	});
 	// for some reason template literall doesnt work here
   mainWindow.loadURL('file://' +__dirname + '/index.html');
