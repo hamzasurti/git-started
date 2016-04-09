@@ -11,47 +11,36 @@ body {
   right: 0;
 }
 
-/* Lesson styling */
+/* Lesson styling we couldn't easily to in React */
 code {
   font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
 }
 
 /* Button styling adapted from Skeleton:
-https://github.com/dhg/Skeleton/blob/master/css/skeleton.css*/
+https://github.com/dhg/Skeleton/blob/master/css/skeleton.css
+I tried putting the standard styling in React and the hover/focus styling (which is difficult to do
+in React: http://stackoverflow.com/questions/28365233) here, but the inline styling overrode the
+hover/focus styling.
+*/
 button {
   display: inline-block;
   height: 38px;
   padding: 0 30px;
-  color: #555; /*Adjust?*/
   text-align: center;
   font-family: Helvetica, sans-serif;
-  font-size: 14px; /* was 11 */
-  /*font-weight: 600; Adjust?*/
-  line-height: 38px; /*Adjust?*/
+  font-size: 14px;
+  line-height: 38px;
   letter-spacing: .1rem;
   text-transform: uppercase;
   text-decoration: none;
-  white-space: nowrap;
-  background-color: transparent;
+  color: #FFF;
+  background-color: #6BCBF8;
   border-radius: 4px;
-  border: 1px solid #bbb; /*Adjust?*/
+  border: none;
   cursor: pointer;
-  box-sizing: border-box; }
+}
 
 button:hover,
 button:focus {
-  color: #333; /*Adjust?*/
-  border-color: #888; /*Adjust?*/
-  outline: 0; }
-
-/* Do we want any of the primary button stuff? */
-button.button-primary {
-  color: #FFF;
-  background-color: #6BCBF8; /* was #33C3F0, then #6BCBF8, then #6bccf9, then #97ddff; */
-  border-color: #6BCBF8; }
-
-button.button-primary:hover,
-button.button-primary:focus {
-  color: #FFF;
-  background-color: #65C0EB; /* was #1EAEDB; */
-  border-color: #65C0EB; }
+  background-color: #65C0EB; /* Adobe's suggestion: #55A1C5 */
+}

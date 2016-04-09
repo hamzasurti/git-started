@@ -63,12 +63,12 @@ export default class Lesson extends Component {
       <div style={ styles.lesson } id="Lesson">
         <div style={ styles.padder }>
           <div>
-            <img src="assets/x-icon.png" alt="Click here to close this tutorial" height="12px"
-              width="12px" style={ styles.img } onClick={ this.props.hideLesson }
+            <img src="assets/x-icon.png" alt="Click here to close this tutorial" height="16px"
+              style={ styles.img } onClick={ this.props.hideLesson }
             />
             <em>Slide {this.props.slideNumber + 1} of {currentLesson.length}</em>
             {currentLesson[this.props.slideNumber].lessonText}
-            <button className="button-primary" onClick={ () => {
+            <button onClick={ () => {
               this.handleButtonClick(currentLesson, this.props.slideNumber,
                 this.props.errorVisible); }
               }
