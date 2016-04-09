@@ -8,6 +8,7 @@ import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
 
+
 import lessons from './../lessons/lesson-list';
 
 export default class Dashboard extends Component {
@@ -71,22 +72,23 @@ export default class Dashboard extends Component {
     const styles = {};
 
     styles.dashboard = { height: '100%', width: '100%' };
-    styles.sidebar = { height: '100%', backgroundColor: 'lightGray' };
+    styles.sidebar = { height: '40px', width: '100%', backgroundColor: 'black' };
     styles.settingsIcon = { padding: '8px' };
     styles.main = { height: '100%' };
     styles.upperHalf = { height: '50%', width: '100%' };
     styles.lowerHalf = { height: '50%', width: '100%' };
 
     if (sidebarVisible) {
-      styles.sidebar.float = 'left';
-      styles.sidebar.width = '20%';
-      styles.main.float = 'left';
-      styles.main.width = '80%';
+      // styles.sidebar.float = 'left';
+      // styles.sidebar.width = '20%';
+      // styles.main.float = 'left';
+      styles.main.width = '100%';
+      styles.sidebar.position = 'absolute';
     } else {
       styles.sidebar.position = 'absolute';
-      styles.sidebar.width = '28px';
+      // styles.sidebar.width = '28px';
       styles.main.position = 'absolute';
-      styles.main.left = '28px';
+      styles.main.left = '0';
       styles.main.right = 0;
     }
 
@@ -148,7 +150,7 @@ Dashboard.propTypes = {
 };
 
 Dashboard.defaultProps = {
-  initialSidebarVisible: true,
+  initialSidebarVisible: false,
   initialStructureAnimationVisible: true,
   initialLessonVisible: false,
   initialErrorVisible: false,

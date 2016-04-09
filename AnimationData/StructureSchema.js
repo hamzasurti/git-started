@@ -1,62 +1,100 @@
-
-
+'use strict';
 const exec = require('child_process').exec;
 const simpleGit = require('simple-git');
-const path = require('path')
+const path = require('path');
 
+var container = {
+  'css':  null,
+  "html": null,
+  'js':   null,
+  'rb':   null,
+  'py':   null,
+  'json': null,
+  'pdf':  null,
+  'png':  null
+}
 
+var schemaMaker = function(termOutput, directoryName, modified){
+    var schema = {
+      "name": directoryName,
+      "children": [],
+      "position_x": '-10px',
+      "position_y": '-20px',
+      "value": 40,
+      'icon' : "assets/64pxBlue/folder.png",
+      "level": "#ccc"
+    };
 
-function schemaMaker(termOutput, directoryName, modified){
-  var schema = {
-    "name": directoryName,
-    "children": [],
-    "value": 15,
-    "level": '#33C3F0'
-  };
-  // loops through reply and puts it in D3 readable structure
-  termOutput.forEach((index) => {
-    // checks if file has any alphanumeric characters
-    var elementObj = {"name":index}
-    if(index.substring(index.length -1 ) === '/') elementObj.level = '#33C3F0';
-    if (index.substring(0,4) === ".git" || !!index.match(/^\w/)) {
-      // makes .git foldrs black
-      if (index.substring(0,4) === ".git") elementObj.level = "black";
-      if (modified){
-        for (var i = 0; i < modified.length; i++){
-          if (modified[i] === index){
-            elementObj.level = "red";
-          }
-        }
+    // loops through reply and puts it in D3 readable structure
+    termOutput.forEach((index) => {
+      if(index === '' || (index[0] === '.' && index[1] !== 'g')) return;
+      var elementObj = {
+        "name": index,
+        "level": "#ccc"
       }
+      if (index.substring(0,4) === ".git"){
+        if(index.substring(index.length - 1) === '/') elementObj.icon = "assets/folder.png"
+        else elementObj.icon = "assets/git.png";
+        elementObj.level = "black";
+        schema.children.push(elementObj);
+        return;
+      }
+
+      var temp = terminalParse(index, elementObj);
+      if (modified) modifiedAnimation(modified, elementObj, index, temp);
       schema.children.push(elementObj);
-    }
-  })
+    });
   schema = [schema];
   return schema;
-}
-module.exports = {
+};
 
-  // Can we decide here whether to send the response back to the client?
-  // Basically, we want the ability to run commands independent of the client.
-  DataSchema: function(pwd,asyncWaterfallCallback) {
-    // child process that gets all items in a directory
-  	var command = 'cd ' + pwd + ';ls -ap';
-  	exec(command, (err, stdout, stderr) => {
-  			if (err) {
-  				console.log(err.toString());
-  			} else {
-  				var stdoutArr = stdout.split('\n');
-          var currentDirectoryName = path.parse(pwd).name;
-  				var modifiedFiles;
-          // git command to check git status
-  				simpleGit(pwd).status((err, i) => {
-  					modifiedFiles = i.modified;
-
-  					var schema = schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
-            process.send ? process.send({schema: schema}) : asyncWaterfallCallback(null, schema);
-            return schema;
-  				})
-  			}
-  	})
+function modifiedAnimation(info, object, item, string){
+  for (var i = 0, len = info.length; i < len; i++){
+    if(info[i].indexOf(item) > -1){
+      object.level = "red";
+      object.icon  = "assets/64pxRed/" + string + ".png";
+      return;
+    }
   }
+  return;
+}
+
+function terminalParse(item, object){
+  if(item[item.length - 1] === '/'){
+    var itemParse = 'folder';
+    object.type = 'directory';
+    object.icon = "assets/64pxBlue/folder.png";
+    return itemParse;
+  }
+  else{
+    var itemParse = item.replace(/^\w+./,'');
+    if(!(itemParse in container)) itemParse = 'file';
+    object.icon = "assets/64pxBlue/" + itemParse + ".png";
+    return itemParse;
+  }
+}
+
+module.exports = {
+  dataSchema(pwd, asyncWaterfallCallback) {
+    // child process that gets all items in a directory
+    // const command = `cd ${pwd}; ls -ap;`;
+    const command = 'cd ' + pwd + '; ls -ap';
+
+    exec(command, (err, stdout) => {
+      if (err) {
+        console.log('the error you are getting with ls is: ==>', err.toString());
+      } else {
+        const stdoutArr = stdout.split('\n');
+        const currentDirectoryName = path.parse(pwd).name;
+        let modifiedFiles;
+        // git command to check git status
+        simpleGit(pwd).status((error, i) => {
+          modifiedFiles = i.modified;
+          const schema = schemaMaker(stdoutArr, currentDirectoryName, modifiedFiles);
+          process.send ? process.send({ schema: schema }) : asyncWaterfallCallback(null, schema);
+          return schema;
+        });
+      }
+    });
+  },
 };
