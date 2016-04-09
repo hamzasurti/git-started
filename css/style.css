@@ -3,8 +3,6 @@ body {
   margin: 0px;
 }
 
-/* Add media query to ensure that #sidebar-container is always at least 64px wide */
-
 #dashboard-container {
   position: absolute;
   top: 0;
@@ -12,3 +10,48 @@ body {
   left: 0;
   right: 0;
 }
+
+/* Lesson styling */
+code {
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+}
+
+/* Button styling adapted from Skeleton:
+https://github.com/dhg/Skeleton/blob/master/css/skeleton.css*/
+button {
+  display: inline-block;
+  height: 38px;
+  padding: 0 30px;
+  color: #555; /*Adjust?*/
+  text-align: center;
+  font-family: Helvetica, sans-serif;
+  font-size: 14px; /* was 11 */
+  /*font-weight: 600; Adjust?*/
+  line-height: 38px; /*Adjust?*/
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid #bbb; /*Adjust?*/
+  cursor: pointer;
+  box-sizing: border-box; }
+
+button:hover,
+button:focus {
+  color: #333; /*Adjust?*/
+  border-color: #888; /*Adjust?*/
+  outline: 0; }
+
+/* Do we want any of the primary button stuff? */
+button.button-primary {
+  color: #FFF;
+  background-color: #6BCBF8; /* was #33C3F0, then #6BCBF8, then #6bccf9, then #97ddff; */
+  border-color: #6BCBF8; }
+
+button.button-primary:hover,
+button.button-primary:focus {
+  color: #FFF;
+  background-color: #65C0EB; /* was #1EAEDB; */
+  border-color: #65C0EB; }

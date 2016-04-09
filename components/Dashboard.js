@@ -21,8 +21,8 @@ export default class Dashboard extends Component {
     this.hideLesson = this.hideLesson.bind(this);
     this.changeSlide = this.changeSlide.bind(this);
     this.state = {
-      lessonNumber: undefined,
-      slideNumber: undefined,
+      lessonNumber: 0, // for styling only - reset to undefined
+      slideNumber: 0, // for styling only - reset to undefined
       sidebarVisible: props.initialSidebarVisible,
       structureAnimationVisible: props.initialStructureAnimationVisible,
       lessonVisible: props.initialLessonVisible,
@@ -151,7 +151,7 @@ Dashboard.propTypes = {
 Dashboard.defaultProps = {
   initialSidebarVisible: false,
   initialStructureAnimationVisible: true,
-  initialLessonVisible: false,
+  initialLessonVisible: true, // for styling only
   initialErrorVisible: false,
 };
 

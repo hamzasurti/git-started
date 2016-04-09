@@ -37,7 +37,7 @@ const slides = [
         </ul>
         <p>Don't worry - we'll walk you through each step. Ready to get started?</p>
       </div>,
-    buttonText: "Yes - let's do this!",
+    buttonText: "Yes!",
     buttonFunction() {
       // Start listening for updates to currentDirectory
       ipcRenderer.on('curr-dir', (event, arg) => {

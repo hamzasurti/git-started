@@ -40,7 +40,8 @@ export default class Lesson extends Component {
     const styles = {};
 
     // Isaac: I'm not sure whether overflow should be auto or scroll.
-    styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll' };
+    styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll',
+     fontFamily: 'Helvetica, sans-serif' };
     styles.padder = { padding: '16px' };
     styles.img = { float: 'right' };
     styles.error = { color: 'red' };
@@ -67,7 +68,7 @@ export default class Lesson extends Component {
             />
             <em>Slide {this.props.slideNumber + 1} of {currentLesson.length}</em>
             {currentLesson[this.props.slideNumber].lessonText}
-            <button onClick={ () => {
+            <button className="button-primary" onClick={ () => {
               this.handleButtonClick(currentLesson, this.props.slideNumber,
                 this.props.errorVisible); }
               }
