@@ -68,6 +68,7 @@ export default class Lesson extends Component {
             />
             <em>Slide {this.props.slideNumber + 1} of {currentLesson.length}</em>
             {currentLesson[this.props.slideNumber].lessonText}
+            {error}
             <button onClick={ () => {
               this.handleButtonClick(currentLesson, this.props.slideNumber,
                 this.props.errorVisible); }
@@ -75,7 +76,6 @@ export default class Lesson extends Component {
             >
               { currentLesson[this.props.slideNumber].buttonText }
             </button>
-            {error}
           </div>
         </div>
       </div>

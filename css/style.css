@@ -14,6 +14,8 @@ body {
 /* Lesson styling we couldn't easily to in React */
 code {
   font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+  color: white;
+  background-color: black;
 }
 
 /* Button styling adapted from Skeleton:
@@ -38,6 +40,7 @@ button {
   border-radius: 4px;
   border: none;
   cursor: pointer;
+  outline: none;
 }
 
 button:hover,
