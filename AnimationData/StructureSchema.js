@@ -27,7 +27,7 @@ var schemaMaker = function(termOutput, directoryName, modified){
 
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
-      if(index === '' || (index[0] === '.' && index[1] !== 'g')) return;
+      if(index === '' || (index[0] === '.' && index.substring(0,4) !== '.git')) return;
       var elementObj = {
         "name": index,
         "level": "#ccc"
@@ -78,6 +78,7 @@ module.exports = {
   dataSchema(pwd, asyncWaterfallCallback) {
     // child process that gets all items in a directory
     // const command = `cd ${pwd}; ls -ap;`;
+    // if (!pwd) return;
     const command = 'cd ' + pwd + '; ls -ap';
 
     exec(command, (err, stdout) => {
