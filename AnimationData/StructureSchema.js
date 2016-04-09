@@ -35,7 +35,7 @@ var schemaMaker = function(termOutput, directoryName, modified){
       if (index.substring(0,4) === ".git"){
         if(index.substring(index.length - 1) === '/') elementObj.icon = "assets/folder.png"
         else elementObj.icon = "assets/git.png";
-        elementObj.level = "black";
+        elementObj.level = "#151414";
         schema.children.push(elementObj);
         return;
       }
@@ -78,6 +78,7 @@ module.exports = {
   dataSchema(pwd, asyncWaterfallCallback) {
     // child process that gets all items in a directory
     // const command = `cd ${pwd}; ls -ap;`;
+    // if (!pwd) return;
     const command = 'cd ' + pwd + '; ls -ap';
 
     exec(command, (err, stdout) => {

@@ -48,9 +48,12 @@ export default class StructureAnimation extends Component {
 
     // Create variables to determine the size of the tree
     // and the size of the SVG containing it (or just the height-width ratio?).
+
+
     styles.viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
     styles.viewBoxHeight = this.props.sidebarVisible ? this.state.windowHeight * 7 / 24 :
       this.state.windowHeight * 5 / 24;
+
       // was hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
     styles.viewBoxString = `0 0 ${styles.viewBoxWidth} ${styles.viewBoxHeight}`;
     styles.translationValue = `translate(${margin.left}, ${margin.top})`;
@@ -69,7 +72,9 @@ export default class StructureAnimation extends Component {
     // vertically, and we want a tree that branches horizontally.
     // In other words, nodes that are on the same level will have the same y-coordinate
     // but different x-coordinates.
-      .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]);
+    .size([viewBoxHeight, viewBoxWidth]);
+
+      // .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]);
 
     // We know that the first node in the array is the root of the tree.
     // Let's designate its initial coordinates - where it should enter.
@@ -120,25 +125,29 @@ export default class StructureAnimation extends Component {
     // so I'm removing any slash before using the name as a key.
     // I added the trim to account for the fact that the name values sometime begin with a carriage
     // return for some reason, and that throws things off.
+
+    let counter = 1;
+    const trees = layout.nodes && layout.nodes.map((node) => {
+      node.index = counter;
+      counter++;
+      // Save the starting value of node.y as node.yOriginal so we can use it in the future.
+      if (node.yOriginal === undefined) node.yOriginal = node.y;
+      // If node.index is odd, adjust node.y, which determines the position of this tree and the
+      // link to it.
+      if (node.index % 2 === 1) node.y = node.yOriginal * 0.9;
+      // Parse node.name to extract a unique key for this tree.
+      node.name = node.name.trim();
+      const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
+      const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
+      return (<Tree key={key} data={node} />);
+    });
+
     const links = layout.linkSelection && layout.linkSelection.map((link) => {
       link.target.name = link.target.name.trim();
       const nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
       const key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) :
         link.target.name;
       return (<Link key={key} data={link} />);
-    });
-
-    let counter = 1;
-
-    const trees = layout.nodes && layout.nodes.map((node) => {
-      node.index = counter;
-      counter++;
-      if(node.yOriginal === undefined) node.yOriginal = node.y;
-      if(node.index % 2 === 1) node.y = node.yOriginal * .9;
-      node.name = node.name.trim();
-      const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
-      const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
-      return (<Tree key={key} data={node} />);
     });
 
     // If you want to see the size of the SVG, add this code before the links and trees:
@@ -162,7 +171,7 @@ export default class StructureAnimation extends Component {
 StructureAnimation.defaultProps = {
   initialTreeData: treeData,
   // We're not currently using the right or bottom margins.
-  initialMargin: { top: 8, right: 20, bottom: 0, left: 90 },
+  initialMargin: { top: 0, right: 20, bottom: 0, left: 20 },
   // The initial window dimensions are specified in app.on('ready') in main.js.
   initialWindowWidth: 1200,
   initialWindowHeight: 700,

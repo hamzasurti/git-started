@@ -22,7 +22,11 @@ process.once('message', function(data) {
 	animationDataSchema.dataSchema(process.env.HOME)
 });
 process.on('message', function(data) {
-	data.message.cols ? ptyTerm.resize(data.message.cols,data.message.rows) :ptyTerm.write(data.message)
+	if (data.message.cols) {
+    // ptyTerm.resize(data.message.cols,data.message.rows);
+  } else {
+    ptyTerm.write(data.message)
+  }
 });
 
 

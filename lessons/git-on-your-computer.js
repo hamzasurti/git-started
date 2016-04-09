@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 // BUTTON FUNCTION TEMPLATE
 // buttonFunction: function() {
 //  // Check whether X
@@ -39,6 +41,7 @@ const slides = [
     buttonFunction() {
       // Start listening for updates to currentDirectory
       ipcRenderer.on('curr-dir', (event, arg) => {
+        // console.log('Lesson received curr-dir', arg);
         currentDirectory = arg;
       });
       ipcRenderer.send('test-result-1', true);
@@ -105,13 +108,16 @@ const slides = [
       // Note: We repeat "'cd ' + currentDirectory + command" a lot,
       // but since we need to use the most up-to-date value for currentDirectory,
       // I'm not sure there's any way around this.
+      // const commandToRun = 'pwd';
       const commandToRun = `cd ${currentDirectory}; cd new-project`;
+      console.log('Sending command', commandToRun);
       ipcRenderer.send('command-to-run', commandToRun);
       ipcRenderer.once('terminal-output', (event, arg) => {
       // If we can't cd into new-project, the terminal will create an error, and arg will be a
       // string starting with 'Error.' In this case, the user should fail the test, so we'll
       // return a falsy value: zero. Otherwise, the user should pass.
       // This test is returning false negatives:
+        console.log('terminal-output', arg);
         ipcRenderer.send('test-result-1', arg.indexOf('Error'));
       });
     },

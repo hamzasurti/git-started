@@ -43,6 +43,7 @@ export default class Lesson extends Component {
     styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll' };
     styles.padder = { padding: '16px' };
     styles.img = { float: 'right' };
+    styles.error = { color: 'red' };
 
     return styles;
   }
@@ -50,11 +51,12 @@ export default class Lesson extends Component {
   // The image is from https://www.iconfinder.com/icons/118584/x_icon#size=32
   render() {
     const currentLesson = lessons[this.props.lessonNumber].content; // the slide deck
-    const error = this.props.errorVisible ?
-      <p><strong>{ currentLesson[this.props.slideNumber].errorMessage }</strong></p> :
-      undefined;
-
     const styles = this.buildStyles();
+    const error = this.props.errorVisible ?
+      <p>
+        <strong style={styles.error}>{ currentLesson[this.props.slideNumber].errorMessage }</strong>
+      </p> :
+      undefined;
 
     return (
       <div style={ styles.lesson } id="Lesson">

@@ -18,14 +18,14 @@ treeVisualization.enter = (selection, duration) =>{
                const commandString = `cd ${d.name.replace(/ /g, "\\ ")} \n\r`
                ipcRenderer.send('command-message', commandString);
              }
-             if(d.children){
+             if(d.value || d.children){
                const commandString = `cd .. \n\r`
                ipcRenderer.send('command-message', commandString);
              }
            })
 
-  selection.select("text")
-    .style("fill-opacity", 1e-6);
+  // selection.select("text")
+  //   .style("fill-opacity", 1e-6);
 
   treeVisualization.update(selection, duration);
 }
@@ -39,23 +39,27 @@ treeVisualization.update = (selection, duration) => {
       return "translate(" + d.y + "," + d.x + ")";
     })
 
-  // fix the x,y,width, height to scale properly
-  // y must always be half of height
-  var scale = 16;
+    // fix the x,y,width, height to scale properly
+    // y must always be half of height
+  const scale = 16;
 
   transition.select("image")
     .attr("xlink:href", function(d) {return d.icon;})
-    .attr("x", function(d) {return d.position_x ? d.position_x : 0;})
-    .attr("y", function(d) {return d.position_y ? d.position_y : scale * -1/2;})
-    .attr("width", function(d) { return d.value ? d.value : scale;})
-    .attr("height", function(d) {return d.value ? d.value : scale;})
+    .attr("x", function(d) {return d.position_x ? d.position_x : 0})
+    .attr("y", function(d) {return d.position_y ? d.position_y : scale * -(1/2)})
+    .attr("width", function(d) {return d.value ? d.value : scale})
+    .attr("height", function(d) {return d.value ? d.value : scale})
 
   transition.select("text")
-    .attr("x", function(d) { return d.children || d.childrenHidden ? -20 : 20; }) // had 13 rather than 20
+    .attr("x", function(d) { return d.value ? -9 : 17})
+    .attr("y", function(d) { if(d.value) return 25;})
     .attr("dy", ".35em")
-    .attr("text-anchor", function(d) { return d.children || d.childrenHidden ? "end" : "start"; })
+    .attr("text-anchor", "start")
+    .style("fill-opacity", 1)
+    .style("font-size", function(d) {return d.value ? 10 : 7})
     .text(function(d) { return d.name; })
-    .style("fill-opacity", 1);
+    // .attr("text-anchor", function(d) { return d.children || d.childrenHidden ? "end" : "start"; })
+
 }
 
 export default treeVisualization;

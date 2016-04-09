@@ -1,33 +1,34 @@
-import React, {Component} from 'react';
-const DAG = require('../AnimationData/DAG');
-
-/* eslint-disable no-console */
+import React, { Component } from 'react';
+import gitVisualization from './../visualizations/git-visualization.js';
 
 export default class GitAnimation extends Component {
 
   componentDidMount() {
-    ipcRenderer.on('git-graph', (event, arg) => {
-      this.createGraph(arg);
+    ipcRenderer.send('ready-for-git', '\n');
+    ipcRenderer.on('git-graph', (event, nestedCommitArr) => {
+      gitVisualization.renderGraph(gitVisualization.createGraph(nestedCommitArr));
     });
+    window.updateCommitMessage = function (message) {
+      // Should we use refs instead of getElementById?
+      document.getElementById('message').textContent = message;
+    };
   }
 
-	createGraph(nestedCommitArr) {
-   var gitGraph = new DAG();
-		for (var i = 0; i < nestedCommitArr.length - 1; i++) {
-			if (nestedCommitArr[i][1].match(/\s/)){
-				nestedCommitArr[i][1] = nestedCommitArr[i][1].split(/\s/)
-			}
-			gitGraph.addEdges(nestedCommitArr[i][0],nestedCommitArr[i][2],null, nestedCommitArr[i][1]);
-		}
-		// console.log(gitGraph);
-		return gitGraph;
-	}
+  buildStyle() {
+    return { color: 'blue' };
+  }
 
   render() {
+    const style = this.buildStyle();
     return (
-      // JSX
-      <div>Our Git visualization is in development and will be included in a future release.
-        <canvas id="gitGraph"></canvas>
+      <div id="Git-Animation">
+        <p>Hover over any commit in your Git history to see the commit message.</p>
+        <p>Commit message: <strong id="message" style={style}></strong></p>
+          <div>
+              <svg height="80" width="100%" id="git-svg">
+                  <g transform="translate(20, 20)" id="git-g" />
+              </svg>
+          </div>
       </div>
     );
   }
