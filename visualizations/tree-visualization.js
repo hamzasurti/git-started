@@ -45,7 +45,7 @@ treeVisualization.hide = (selection, duration) => {
       .attr("width", 1e-6)
 
     transition.select("text")
-      .style("fill-opacity", 1e-6);
+      .style("fill-opacity", 1e-6)
       .style('fill', '#d2d2d2')
   }
 
@@ -69,7 +69,7 @@ treeVisualization.enter = (selection, duration) =>{
            })
 
   selection.select("text")
-    .style("fill-opacity", 1e-6);
+    .style("fill-opacity", 1e-6)
     .style('fill', '#d2d2d2')
 
 
@@ -103,7 +103,7 @@ treeVisualization.update = (selection, duration) => {
     .attr("dy", ".35em")
     .attr("text-anchor", function(d) { return d.children || d.childrenHidden ? "end" : "start"; })
     .text(function(d) { return d.name; })
-    .style("fill-opacity", 1);
+    .style("fill-opacity", 1)
     .style('fill', '#d2d2d2')
 
 }

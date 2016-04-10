@@ -7,6 +7,7 @@ import Animation from './Animation';
 import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
+// import downCarrot from './assets/downCarrot'
 
 
 import lessons from './../lessons/lesson-list';
