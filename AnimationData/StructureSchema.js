@@ -27,7 +27,7 @@ var schemaMaker = function(termOutput, directoryName, modified){
 
     // loops through reply and puts it in D3 readable structure
     termOutput.forEach((index) => {
-      if(index === '' || (index[0] === '.' && index[1] !== 'g')) return;
+      if(index === '' || (index[0] === '.' && index.substring(0,4) !== '.git')) return;
       var elementObj = {
         "name": index,
         "level": "#ccc"
@@ -35,7 +35,7 @@ var schemaMaker = function(termOutput, directoryName, modified){
       if (index.substring(0,4) === ".git"){
         if(index.substring(index.length - 1) === '/') elementObj.icon = "assets/folder.png"
         else elementObj.icon = "assets/git.png";
-        elementObj.level = "black";
+        elementObj.level = "#ccc";
         schema.children.push(elementObj);
         return;
       }
@@ -51,7 +51,7 @@ var schemaMaker = function(termOutput, directoryName, modified){
 function modifiedAnimation(info, object, item, string){
   for (var i = 0, len = info.length; i < len; i++){
     if(info[i].indexOf(item) > -1){
-      object.level = "red";
+      object.level = "#ccc";
       object.icon  = "assets/64pxRed/" + string + ".png";
       return;
     }
@@ -78,6 +78,7 @@ module.exports = {
   dataSchema(pwd, asyncWaterfallCallback) {
     // child process that gets all items in a directory
     // const command = `cd ${pwd}; ls -ap;`;
+    // if (!pwd) return;
     const command = 'cd ' + pwd + '; ls -ap';
 
     exec(command, (err, stdout) => {

@@ -120,25 +120,29 @@ export default class StructureAnimation extends Component {
     // so I'm removing any slash before using the name as a key.
     // I added the trim to account for the fact that the name values sometime begin with a carriage
     // return for some reason, and that throws things off.
+
+    let counter = 1;
+    const trees = layout.nodes && layout.nodes.map((node) => {
+      node.index = counter;
+      counter++;
+      // Save the starting value of node.y as node.yOriginal so we can use it in the future.
+      if (node.yOriginal === undefined) node.yOriginal = node.y;
+      // If node.index is odd, adjust node.y, which determines the position of this tree and the
+      // link to it.
+      if (node.index % 2 === 1) node.y = node.yOriginal * 0.9;
+      // Parse node.name to extract a unique key for this tree.
+      node.name = node.name.trim();
+      const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
+      const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
+      return (<Tree key={key} data={node} />);
+    });
+
     const links = layout.linkSelection && layout.linkSelection.map((link) => {
       link.target.name = link.target.name.trim();
       const nameEndsWithSlash = link.target.name.indexOf('/') === link.target.name.length - 1;
       const key = nameEndsWithSlash ? link.target.name.slice(0, link.target.name.length - 1) :
         link.target.name;
       return (<Link key={key} data={link} />);
-    });
-
-    let counter = 1;
-
-    const trees = layout.nodes && layout.nodes.map((node) => {
-      node.index = counter;
-      counter++;
-      if(node.yOriginal === undefined) node.yOriginal = node.y;
-      if(node.index % 2 === 1) node.y = node.yOriginal * .9;
-      node.name = node.name.trim();
-      const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
-      const key = nameEndsWithSlash ? node.name.slice(0, node.name.length - 1) : node.name;
-      return (<Tree key={key} data={node} />);
     });
 
     // If you want to see the size of the SVG, add this code before the links and trees:

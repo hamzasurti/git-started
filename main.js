@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 const electron = require('electron');
 const app = electron.app;
@@ -5,7 +6,7 @@ const ipcMain = require('electron').ipcMain;
 const	BrowserWindow = electron.BrowserWindow;
 const animationDataSchema = require('./AnimationData/StructureSchema');
 const async = require('async');
-
+const fs = require('fs'); // added by Isaac for testing
 
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
@@ -30,14 +31,13 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 700,
-    minWidth: 1200,
-    minHeight: 700,
+    minWidth: 900,
+    minHeight: 500,
     titleBarStyle: 'hidden-inset',
 
   });
 
   mainWindow.loadURL('file://' + __dirname + '/index.html');
-
 
 	// initialize fork
   mainWindow.webContents.on('did-finish-load', () => {
@@ -56,7 +56,7 @@ app.on('ready', () => {
   });
 
 	// For testing only, opens dev tools
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
   mainWindow.on('closed', () => {
@@ -91,6 +91,10 @@ function ptyChildProcess() {
 			//  animation to the structure animation.
   });
 
+  // Note from Isaac: I added this listener to make we have Git data to show the first time the
+  // users toggles to the Git view.
+  ipcMain.on('ready-for-git', (event, arg) => forkProcess.send({message: arg}));
+
 	// Note from Isaac: I added this listener to ensure that the lesson knows the user's current
   // directory before testing whether they created a 'new-project' directory.
   ipcMain.on('ready-for-dir', (event, arg) => {
@@ -106,16 +110,12 @@ function ptyChildProcess() {
 			// sends what is diplayed in terminal
       if (message.data) event.sender.send('terminal-reply', message.data);
 			// sends animation schema
-
       if (message.schema) event.sender.send('direc-schema', message.schema);
 
       if (message.gitGraph) event.sender.send('git-graph', message.gitGraph);
 
-      if (message.currDir) {
-        console.log('*** sending curr-dir');
-        event.sender.send('curr-dir', message.currDir); // Added
-      }
-    })
+      if (message.currDir) event.sender.send('curr-dir', message.currDir);
+    });
   });
 }
 

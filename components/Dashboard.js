@@ -21,8 +21,8 @@ export default class Dashboard extends Component {
     this.hideLesson = this.hideLesson.bind(this);
     this.changeSlide = this.changeSlide.bind(this);
     this.state = {
-      lessonNumber: undefined,
-      slideNumber: undefined,
+      lessonNumber: 0,
+      slideNumber: 0,
       sidebarVisible: props.initialSidebarVisible,
       structureAnimationVisible: props.initialStructureAnimationVisible,
       lessonVisible: props.initialLessonVisible,
@@ -72,32 +72,27 @@ export default class Dashboard extends Component {
     const styles = {};
 
     styles.dashboard = { height: '100%', width: '100%' };
-    styles.sidebar = { height: '40px', width: '100%', backgroundColor: 'black' };
+    styles.sidebar = { height: '40px', width: '100%', backgroundColor: 'tranparent', borderBottom: '1px solid #D2D2D2' };
     styles.settingsIcon = { padding: '8px' };
-    styles.main = { height: '100%' };
-    styles.upperHalf = { height: '50%', width: '100%' };
-    styles.lowerHalf = { height: '50%', width: '100%' };
+    styles.main = { height: '100vh', width: '100%'};
+    styles.upperHalf = { height: '55%', width: '100%' };
+    styles.lowerHalf = { height: '45%', width: '100%', backgroundColor: '#151414', 'borderTop':'10px solid #D2D2D2' };
 
-    if (sidebarVisible) {
-      // styles.sidebar.float = 'left';
-      // styles.sidebar.width = '20%';
-      // styles.main.float = 'left';
-      styles.main.width = '100%';
-      styles.sidebar.position = 'absolute';
-    } else {
-      styles.sidebar.position = 'absolute';
-      // styles.sidebar.width = '28px';
-      styles.main.position = 'absolute';
-      styles.main.left = '0';
-      styles.main.right = 0;
-    }
+    // if (sidebarVisible) {
+    //   styles.sidebar.position = 'absolute';
+    // } else {
+    //   styles.sidebar.position = 'absolute';
+    //   styles.main.position = 'absolute';
+    //   styles.main.left = '0';
+    //   styles.main.right = 0;
+    // }
 
     return styles;
   }
 
   render() {
     const styles = this.buildStyles(this.state.sidebarVisible);
-
+    console.log('render being called');
     // Create an array of lesson names to pass down to Sidebar as props.
     // (We don't want to pass all the lesson contents - that's a lot of data.)
     const lessonInfo = lessons.map(lesson =>
@@ -117,9 +112,6 @@ export default class Dashboard extends Component {
     return (
       <div id="Dashboard" style={ styles.dashboard }>
         <div style={ styles.sidebar }>
-          <img src="assets/setting-icon.png" onClick={ this.toggleSidebar }
-            height="12px" width="12px" style={ styles.settingsIcon }
-          />
           <Sidebar showLesson={ this.showLesson }
             lessonInfo={ lessonInfo } lessonNumber={ this.state.lessonNumber }
             lessonVisible={ this.state.lessonVisible } sidebarVisible={ this.state.sidebarVisible }
@@ -152,7 +144,7 @@ Dashboard.propTypes = {
 Dashboard.defaultProps = {
   initialSidebarVisible: false,
   initialStructureAnimationVisible: true,
-  initialLessonVisible: false,
+  initialLessonVisible: true,
   initialErrorVisible: false,
 };
 
