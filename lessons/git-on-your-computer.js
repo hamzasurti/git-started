@@ -49,7 +49,7 @@ const slides = [
         </code> and then click Enter.</p>
         <p>If you see a version number - like <code>git version 2.6.4</code> - you have Git
          installed, and you're ready for step two.</p>
-        <p>If not, you can download Git from <a href="http://git-scm.com/downloads">git-scm.com/downloads</a>. Then follow the
+        <p>If not, you can download Git from http://git-scm.com/downloads. Then follow the
           directions at the top of this page to confirm that Git is installed correctly.</p>
       </div>, // '
     buttonText: "OK - what's next?",
@@ -245,6 +245,7 @@ const slides = [
         <p>OK, you've made a commit for this project - the first snapshot of many! But it wasn't a very exciting snapshot, because new-file.txt was empty. So let's add some text to the file and then commit again.</p>
         <p>Typically, developers write code using a text editor like Atom or Sublime Text. For this lesson, though, we'll practice editing a file directly from the terminal - something you can do even without Git.</p>
         <p>In the terminal, type <code>echo "<strong>This will be the best project ever.</strong>" > new-file.txt</code> and click Enter. (Again, you can replace the bolded part with whatever text you wish.)</p>
+        <p>In the animation above, you'll notice that new-file.txt turns red when you modify it. This means it has changes that you haven't committed yet.</p>
       </div>,
     buttonText: 'Done!',
     buttonFunction() {
