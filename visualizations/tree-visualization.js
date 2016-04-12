@@ -46,7 +46,7 @@ treeVisualization.hide = (selection, duration) => {
 
     transition.select("text")
       .style("fill-opacity", 1e-6)
-      .style('fill', '#d2d2d2')
+      .style('fill', '#A09E9E')
   }
 
 // Set the attributes for nodes that are new to the DOM, including placing them in their initial position (x0, y0).
@@ -70,7 +70,7 @@ treeVisualization.enter = (selection, duration) =>{
 
   selection.select("text")
     .style("fill-opacity", 1e-6)
-    .style('fill', '#d2d2d2')
+    .style('fill', '#A09E9E')
 
 
   treeVisualization.update(selection, duration);
@@ -104,7 +104,7 @@ treeVisualization.update = (selection, duration) => {
     .attr("text-anchor", function(d) { return d.children || d.childrenHidden ? "end" : "start"; })
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1)
-    .style('fill', '#d2d2d2')
+    .style('fill', '#A09E9E')
 
 }
 

@@ -17,14 +17,14 @@ export default class Dashboard extends Component {
     super(props);
     this.setErrorVisibility = this.setErrorVisibility.bind(this);
     this.setStructureAnimationVisibility = this.setStructureAnimationVisibility.bind(this);
-    this.toggleSidebar = this.toggleSidebar.bind(this);
+    this.setDropdownVisibility = this.setDropdownVisibility.bind(this);
     this.showLesson = this.showLesson.bind(this);
     this.hideLesson = this.hideLesson.bind(this);
     this.changeSlide = this.changeSlide.bind(this);
     this.state = {
       lessonNumber: 0,
       slideNumber: 0,
-      sidebarVisible: props.initialSidebarVisible,
+      DropdownVisible: props.initialDropdownVisible,
       structureAnimationVisible: props.initialStructureAnimationVisible,
       lessonVisible: props.initialLessonVisible,
       errorVisible: props.initialErrorVisible,
@@ -43,9 +43,9 @@ export default class Dashboard extends Component {
     });
   }
 
-  toggleSidebar() {
+  setDropdownVisibility() {
     this.setState({
-      sidebarVisible: !this.state.sidebarVisible,
+      DropdownVisible: !this.state.DropdownVisible,
     });
   }
 
@@ -69,7 +69,7 @@ export default class Dashboard extends Component {
     });
   }
 
-  buildStyles(sidebarVisible) {
+  buildStyles(DropdownVisible) {
     const styles = {};
 
     styles.dashboard = { height: '100%', width: '100%' };
@@ -79,7 +79,7 @@ export default class Dashboard extends Component {
     styles.upperHalf = { height: '55%', width: '100%' };
     styles.lowerHalf = { height: '45%', width: '100%', backgroundColor: '#151414', 'borderTop':'10px solid #D2D2D2' };
 
-    // if (sidebarVisible) {
+    // if (DropdownVisible) {
     //   styles.sidebar.position = 'absolute';
     // } else {
     //   styles.sidebar.position = 'absolute';
@@ -92,7 +92,7 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    const styles = this.buildStyles(this.state.sidebarVisible);
+    const styles = this.buildStyles(this.state.DropdownVisible);
     console.log('render being called');
     // Create an array of lesson names to pass down to Sidebar as props.
     // (We don't want to pass all the lesson contents - that's a lot of data.)
@@ -114,15 +114,16 @@ export default class Dashboard extends Component {
       <div id="Dashboard" style={ styles.dashboard }>
         <div style={ styles.sidebar }>
           <Sidebar showLesson={ this.showLesson }
+            dropdownVisibility={ this.setDropdownVisibility }
             lessonInfo={ lessonInfo } lessonNumber={ this.state.lessonNumber }
-            lessonVisible={ this.state.lessonVisible } sidebarVisible={ this.state.sidebarVisible }
+            lessonVisible={ this.state.lessonVisible } DropdownVisible={ this.state.DropdownVisible }
           />
         </div>
         <div style={ styles.main }>
           <div style={ styles.upperHalf }>
             <Animation structureAnimationVisible={ this.state.structureAnimationVisible }
               setStructureAnimationVisibility={ this.setStructureAnimationVisibility }
-              sidebarVisible={ this.state.sidebarVisible }
+              DropdownVisible={ this.state.DropdownVisible }
             />
           </div>
           <div style={ styles.lowerHalf }>
@@ -136,14 +137,14 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  initialSidebarVisible: React.PropTypes.bool,
+  initialDropdownVisible: React.PropTypes.bool,
   initialStructureAnimationVisible: React.PropTypes.bool,
   initialLessonVisible: React.PropTypes.bool,
   initialErrorVisible: React.PropTypes.bool,
 };
 
 Dashboard.defaultProps = {
-  initialSidebarVisible: false,
+  initialDropdownVisible: false,
   initialStructureAnimationVisible: true,
   initialLessonVisible: true,
   initialErrorVisible: false,

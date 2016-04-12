@@ -1,82 +1,62 @@
 import React, { Component } from 'react';
 
+
 // We could add navigation, contact/help, search, progress indicators, and login here
 // if we have these features.
 export default class Sidebar extends Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(index) {
-    this.props.showLesson(index);
-  }
-
-  buildStyles(sidebarVisible) {
-    const styles = {};
-
-    styles.main = { padding: '8px' };
-    styles.main.display = sidebarVisible ? 'block' : 'none';
-    styles.button = { textAlign: 'left' };
-    styles.text = { paddingLeft: '16px' };
-    styles.image = { float: 'left', paddingTop: '2px', paddingBottom: '2px' };
-
-    return styles;
-  }
-
-  buildLessonList(lessonInfo, lessonNumber, lessonVisible, styles, handleClick) {
+  buildLessonList(lessonInfo, lessonNumber, lessonVisible, handleClick) {
     const lessonList = lessonInfo.map((lesson, index) => {
-      const image = (
-        <div style={styles.image}>
-          <img src={lesson.iconPath} alt="" height="12px" width="12px" />
-        </div>
-      );
+      const lessonArr = [];
+      for (let i = 0; i < 3; i++) {
+        lessonArr.push(<li onClick={() => this.props.showLesson(0)} style={ {
+          padding: '15px 15px 15px 15px',
+          border: '1px solid #F9F9F9',
+          backgroundColor: 'white',
+          fontFamily: 'sans-serif',
+          fontSize: '80%',
+          color: '#A09E9E',
+        } }
+        >
+        <strong>{i === 0 ? lesson.name : `GitHub ${i}`}</strong>
+        </li>);
+      }
 
       // How to render the current lesson
-      if (lessonNumber === index && lessonVisible) {
         return (
-          <button key={index} style={styles.button}>
-            {image}
-            <div style={styles.text}>
-              <strong>{lesson.name}</strong>
-            </div>
-          </button>
+          <ul style={{listStyle: "none",padding: '0',margin: '0', marginTop: '14px'}} key={index} >
+            {lessonArr}
+          </ul>
         );
-
-      // How to render all other lessons
-      }
-      return (
-        <button key={index} style={styles.button} onClick={ () => { handleClick(index); } }>
-          {image}
-          <div style={styles.text}>
-            <span>{lesson.name}</span>
-          </div>
-        </button>
-      );
     });
     return lessonList;
   }
 
   render() {
-    const styles = this.buildStyles(this.props.sidebarVisible);
 
-    const lessonList = this.buildLessonList(this.props.lessonInfo, this.props.lessonNumber,
-      this.props.lessonVisible, styles, this.handleClick);
+    const lessonList = this.props.DropdownVisible ? this.buildLessonList(this.props.lessonInfo, this.props.lessonNumber,
+      this.props.lessonVisible, this.handleClick) : undefined;
 
     return (
-      <div style={styles.main} id="Sidebar">
-        <img src="assets/app-icon.png" width="64px" alt="Awesome logo here!" />
-        <p>Choose a tutorial:</p>
+      <div  id="Dropdown" style={{
+        "position": "absolute", right: "10",backgroundColor: "tranparent", 'zIndex': 2, fontFamily: 'sans-serif', transform: 'translateY(11px)',  color: '#A09E9E', textAlign : 'right',
+      }}  onClick={this.props.dropdownVisibility}>
+        &#9662; Lessons
         {lessonList}
       </div>
     );
   }
 }
 
+
 Sidebar.propTypes = {
   showLesson: React.PropTypes.func,
   lessonInfo: React.PropTypes.array,
   lessonNumber: React.PropTypes.number,
   lessonVisible: React.PropTypes.bool,
-  sidebarVisible: React.PropTypes.bool,
+  DropdownVisible: React.PropTypes.bool,
 };
