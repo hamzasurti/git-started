@@ -18,7 +18,7 @@ body {
   /*border: 10px #151414!important;*/
   /*border-top: 10px solid #d2d2d2!important;*/
   border: 0!important;
-  box-shadow: 0 20px 0 #d2d2d2;
+  /*box-shadow: 0 20px 0 #d2d2d2;*/
   background-color: #151414!important;
   margin-top: 7px!important;
   bottom: 0px!important;
@@ -38,6 +38,7 @@ transform: translateY(-50%);
 text-align: right;*/
 float: right!important;
 color: #d2d2d2;
+
 }
 
 #Dropdown > span:hover {
@@ -48,6 +49,7 @@ color: #d2d2d2;
   background-color: #F9F9F9!important;
     color: black!important;
     cursor: pointer;
+ max-height:150px!important;
 }
 
 #Lesson {

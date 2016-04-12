@@ -125,6 +125,7 @@ export default class Dashboard extends Component {
               setStructureAnimationVisibility={ this.setStructureAnimationVisibility }
               DropdownVisible={ this.state.DropdownVisible }
             />
+            <span style={{textAlign: 'center', marginLeft: '10%', bottom: '45%', position: 'absolute', color: '#B0AEAE', fontSize: '300%', fontFamily: 'monospace'}}> gTerm</span>
           </div>
           <div style={ styles.lowerHalf }>
             {lesson}

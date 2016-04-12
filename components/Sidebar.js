@@ -20,6 +20,8 @@ export default class Sidebar extends Component {
           fontFamily: 'sans-serif',
           fontSize: '80%',
           color: '#A09E9E',
+          'max-height':0,
+          transition:'max-height 500ms ease!important;',
         } }
         >
         <strong>{i === 0 ? lesson.name : `GitHub ${i}`}</strong>
