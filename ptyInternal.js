@@ -7,7 +7,7 @@ let currDir;
 const ptyTerm = pty.fork('bash', [], {
   name: 'xterm-color',
   cols: 175,
-  rows: 27,
+  rows: 17,
   cwd: process.env.HOME,
   env: process.env,
 });
@@ -23,7 +23,7 @@ process.once('message', function(data) {
 });
 process.on('message', function(data) {
 	if (data.message.cols) {
-    // ptyTerm.resize(data.message.cols,data.message.rows);
+    ptyTerm.resize(data.message.cols,data.message.rows);
   } else {
     ptyTerm.write(data.message)
   }
