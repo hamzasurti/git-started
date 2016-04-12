@@ -21,6 +21,7 @@ linkVisualization.enter = (selection, diagonal, duration) => {
             .style("stroke", function(d){
                 return d.target.level;
             })
+            .style("stroke-width", .5)
 
   linkVisualization.update(selection, diagonal, duration)
 }
@@ -34,6 +35,8 @@ linkVisualization.update = (selection, diagonal, duration) => {
            .style("stroke", function(d){
               return d.target.level;
             })
+            .style("stroke-width", .5)
+
 }
 
 // Hide links when we're hiding the children they point to.
@@ -47,6 +50,8 @@ linkVisualization.exit = (selection, diagonal, duration) => {
            .style("stroke", function(d){
               return d.target.level
            })
+           .style("stroke-width", .5)
+
 }
 
 export default linkVisualization;
