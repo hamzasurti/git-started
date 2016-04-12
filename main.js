@@ -55,7 +55,7 @@ app.on('ready', () => {
   });
 
 	// For testing only, opens dev tools
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
 	// Set mainWindow back to null when the window is closed.
   mainWindow.on('closed', () => {

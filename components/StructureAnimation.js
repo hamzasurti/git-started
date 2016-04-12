@@ -48,9 +48,12 @@ export default class StructureAnimation extends Component {
 
     // Create variables to determine the size of the tree
     // and the size of the SVG containing it (or just the height-width ratio?).
+
+    // styles.viewBoxWidth = this.state.windowWidth; // previously hard-coded as 660
+    // styles.viewBoxHeight = this.state.windowHeight;
     styles.viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
-    styles.viewBoxHeight = this.props.sidebarVisible ? this.state.windowHeight * 7 / 24 :
-      this.state.windowHeight * 5 / 24;
+    styles.viewBoxHeight = this.state.windowHeight * 6 / 24;
+
       // was hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
     styles.viewBoxString = `0 0 ${styles.viewBoxWidth} ${styles.viewBoxHeight}`;
     styles.translationValue = `translate(${margin.left}, ${margin.top})`;
@@ -69,7 +72,9 @@ export default class StructureAnimation extends Component {
     // vertically, and we want a tree that branches horizontally.
     // In other words, nodes that are on the same level will have the same y-coordinate
     // but different x-coordinates.
-      .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]);
+    .size([viewBoxHeight * .93, viewBoxWidth * .90]);
+
+      // .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]);
 
     // We know that the first node in the array is the root of the tree.
     // Let's designate its initial coordinates - where it should enter.
@@ -151,7 +156,7 @@ export default class StructureAnimation extends Component {
     // How does the svg know to fill the full width of its containing div? I'm not sure about this.
 
     return (
-      <div id="Structure-Animation">
+      <div width='100%' height='100%' id="Structure-Animation">
         <svg viewBox={styles.viewBoxString}>
           <g transform={styles.translationValue}>
             {links}
@@ -166,7 +171,7 @@ export default class StructureAnimation extends Component {
 StructureAnimation.defaultProps = {
   initialTreeData: treeData,
   // We're not currently using the right or bottom margins.
-  initialMargin: { top: 8, right: 20, bottom: 0, left: 90 },
+  initialMargin: { top: 0, right: 20, bottom: 0, left: 20 },
   // The initial window dimensions are specified in app.on('ready') in main.js.
   initialWindowWidth: 1200,
   initialWindowHeight: 700,

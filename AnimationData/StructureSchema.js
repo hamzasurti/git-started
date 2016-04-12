@@ -33,9 +33,14 @@ var schemaMaker = function(termOutput, directoryName, modified){
         "level": "#ccc"
       }
       if (index.substring(0,4) === ".git"){
-        if(index.substring(index.length - 1) === '/') elementObj.icon = "assets/folder.png"
-        else elementObj.icon = "assets/git.png";
-        elementObj.level = "black";
+        if(index.substring(index.length - 1) === '/'){
+          elementObj.icon = "assets/folder.png"
+          elementObj.name = index.substring(0,index.length-1);
+        }
+        else {
+          elementObj.icon = "assets/git.png";
+        }
+        elementObj.level = "#151414";
         schema.children.push(elementObj);
         return;
       }
@@ -62,6 +67,7 @@ function modifiedAnimation(info, object, item, string){
 function terminalParse(item, object){
   if(item[item.length - 1] === '/'){
     var itemParse = 'folder';
+    object.name = item.substring(0,item.length-1)
     object.type = 'directory';
     object.icon = "assets/64pxBlue/folder.png";
     return itemParse;
