@@ -10,7 +10,7 @@ export default class Terminal extends Component {
   }
 
   buildStyle(lessonVisible) {
-    const style = { float: 'left', height: '100%', backgroundColor: 'black' };
+    const style = { float: 'left', height: '100%', backgroundColor: '#151414' };
     style.width = lessonVisible ? '65%' : '100%';
     return style;
   }
@@ -18,12 +18,13 @@ export default class Terminal extends Component {
   renderTerm(elem) {
     const $Terminal = document.getElementById('Terminal');
     const columns = ($Terminal.offsetWidth / 6.71) - 1;
-    const numRows = Math.floor($Terminal.offsetHeight / 12.3);
+    const numRows = Math.floor($Terminal.offsetHeight / 18); //should defoulst to 17
+    console.log(numRows);
     const term = new Term({ // creates a new term.js terminal
       cursorBlink: true,
       useStyle: true,
       cols: columns,
-      rows: numRows,
+      rows: 1,
     });
 
     term.open(elem);
@@ -41,7 +42,7 @@ export default class Terminal extends Component {
 
     window.addEventListener('resize', () => {
       const cols = Math.ceil(($Terminal.offsetWidth / 6.71) - 1);
-      const rows = Math.floor($Terminal.offsetHeight / 12.3);
+      const rows = Math.floor($Terminal.offsetHeight / 18);
       const sizeObj = { cols, rows };
       term.resize(cols, rows);
       ipcRenderer.send('command-message', sizeObj);

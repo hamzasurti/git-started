@@ -40,7 +40,6 @@ var schemaMaker = function(termOutput, directoryName, modified){
         else {
           elementObj.icon = "assets/git.png";
         }
-        elementObj.level = "#151414";
         schema.children.push(elementObj);
         return;
       }
@@ -56,7 +55,7 @@ var schemaMaker = function(termOutput, directoryName, modified){
 function modifiedAnimation(info, object, item, string){
   for (var i = 0, len = info.length; i < len; i++){
     if(info[i].indexOf(item) > -1){
-      object.level = "red";
+      object.level = "#ccc";
       object.icon  = "assets/64pxRed/" + string + ".png";
       return;
     }

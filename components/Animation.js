@@ -20,8 +20,9 @@ export default class Animation extends Component {
   buildStyles(structureAnimationVisible) {
     const styles = {};
 
-    styles.padder = { padding: '6px' };
-    styles.toggle = { float: 'right', border: '1px solid black', textAlign: 'center' };
+
+    styles.padder = { padding: '16px' };
+    styles.toggle = { float: 'right', border: '1px solid black', textAlign: 'center',position: 'absolute', right: '13px', 'z-index':0 };
     styles.git = { borderBottom: '1px solid black', padding: '2px 2px 0px 2px' };
     styles.structure = { padding: '2px 2px 0px 2px' };
 

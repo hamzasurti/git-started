@@ -52,7 +52,7 @@ export default class StructureAnimation extends Component {
     // styles.viewBoxWidth = this.state.windowWidth; // previously hard-coded as 660
     // styles.viewBoxHeight = this.state.windowHeight;
     styles.viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
-    styles.viewBoxHeight = this.state.windowHeight * 6 / 24;
+    styles.viewBoxHeight = this.state.windowHeight * 7 / 24;
 
       // was hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
     styles.viewBoxString = `0 0 ${styles.viewBoxWidth} ${styles.viewBoxHeight}`;

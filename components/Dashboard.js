@@ -7,6 +7,7 @@ import Animation from './Animation';
 import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
+// import downCarrot from './assets/downCarrot'
 
 
 import lessons from './../lessons/lesson-list';
@@ -16,14 +17,14 @@ export default class Dashboard extends Component {
     super(props);
     this.setErrorVisibility = this.setErrorVisibility.bind(this);
     this.setStructureAnimationVisibility = this.setStructureAnimationVisibility.bind(this);
-    this.toggleSidebar = this.toggleSidebar.bind(this);
+    this.setDropdownVisibility = this.setDropdownVisibility.bind(this);
     this.showLesson = this.showLesson.bind(this);
     this.hideLesson = this.hideLesson.bind(this);
     this.changeSlide = this.changeSlide.bind(this);
     this.state = {
-      lessonNumber: undefined,
-      slideNumber: undefined,
-      sidebarVisible: props.initialSidebarVisible,
+      lessonNumber: 0,
+      slideNumber: 0,
+      DropdownVisible: props.initialDropdownVisible,
       structureAnimationVisible: props.initialStructureAnimationVisible,
       lessonVisible: props.initialLessonVisible,
       errorVisible: props.initialErrorVisible,
@@ -42,9 +43,9 @@ export default class Dashboard extends Component {
     });
   }
 
-  toggleSidebar() {
+  setDropdownVisibility() {
     this.setState({
-      sidebarVisible: !this.state.sidebarVisible,
+      DropdownVisible: !this.state.DropdownVisible,
     });
   }
 
@@ -68,35 +69,31 @@ export default class Dashboard extends Component {
     });
   }
 
-  buildStyles(sidebarVisible) {
+  buildStyles(DropdownVisible) {
     const styles = {};
 
     styles.dashboard = { height: '100%', width: '100%' };
-    styles.sidebar = { height: '100%', backgroundColor: 'lightGray' };
+    styles.sidebar = { height: '40px', width: '100%', backgroundColor: 'tranparent', borderBottom: '1px solid #D2D2D2' };
     styles.settingsIcon = { padding: '8px' };
-    styles.main = { height: '100%' };
-    styles.upperHalf = { height: '50%', width: '100%' };
-    styles.lowerHalf = { height: '50%', width: '100%' };
+    styles.main = { height: '100vh', width: '100%'};
+    styles.upperHalf = { height: '55%', width: '100%' };
+    styles.lowerHalf = { height: '45%', width: '100%', backgroundColor: '#151414', 'borderTop':'10px solid #D2D2D2' };
 
-    if (sidebarVisible) {
-      styles.sidebar.float = 'left';
-      styles.sidebar.width = '20%';
-      styles.main.float = 'left';
-      styles.main.width = '80%';
-    } else {
-      styles.sidebar.position = 'absolute';
-      styles.sidebar.width = '28px';
-      styles.main.position = 'absolute';
-      styles.main.left = '28px';
-      styles.main.right = 0;
-    }
+    // if (DropdownVisible) {
+    //   styles.sidebar.position = 'absolute';
+    // } else {
+    //   styles.sidebar.position = 'absolute';
+    //   styles.main.position = 'absolute';
+    //   styles.main.left = '0';
+    //   styles.main.right = 0;
+    // }
 
     return styles;
   }
 
   render() {
-    const styles = this.buildStyles(this.state.sidebarVisible);
-
+    const styles = this.buildStyles(this.state.DropdownVisible);
+    console.log('render being called');
     // Create an array of lesson names to pass down to Sidebar as props.
     // (We don't want to pass all the lesson contents - that's a lot of data.)
     const lessonInfo = lessons.map(lesson =>
@@ -116,20 +113,19 @@ export default class Dashboard extends Component {
     return (
       <div id="Dashboard" style={ styles.dashboard }>
         <div style={ styles.sidebar }>
-          <img src="assets/setting-icon.png" onClick={ this.toggleSidebar }
-            height="12px" width="12px" style={ styles.settingsIcon }
-          />
           <Sidebar showLesson={ this.showLesson }
+            dropdownVisibility={ this.setDropdownVisibility }
             lessonInfo={ lessonInfo } lessonNumber={ this.state.lessonNumber }
-            lessonVisible={ this.state.lessonVisible } sidebarVisible={ this.state.sidebarVisible }
+            lessonVisible={ this.state.lessonVisible } DropdownVisible={ this.state.DropdownVisible }
           />
         </div>
         <div style={ styles.main }>
           <div style={ styles.upperHalf }>
             <Animation structureAnimationVisible={ this.state.structureAnimationVisible }
               setStructureAnimationVisibility={ this.setStructureAnimationVisibility }
-              sidebarVisible={ this.state.sidebarVisible }
+              DropdownVisible={ this.state.DropdownVisible }
             />
+            <span style={{textAlign: 'center', marginLeft: '10%', bottom: '45%', position: 'absolute', color: '#B0AEAE', fontSize: '300%', fontFamily: 'monospace'}}> gTerm</span>
           </div>
           <div style={ styles.lowerHalf }>
             {lesson}
@@ -142,16 +138,16 @@ export default class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  initialSidebarVisible: React.PropTypes.bool,
+  initialDropdownVisible: React.PropTypes.bool,
   initialStructureAnimationVisible: React.PropTypes.bool,
   initialLessonVisible: React.PropTypes.bool,
   initialErrorVisible: React.PropTypes.bool,
 };
 
 Dashboard.defaultProps = {
-  initialSidebarVisible: false,
+  initialDropdownVisible: false,
   initialStructureAnimationVisible: true,
-  initialLessonVisible: false,
+  initialLessonVisible: true,
   initialErrorVisible: false,
 };
 

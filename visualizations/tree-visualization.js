@@ -24,8 +24,7 @@ treeVisualization.enter = (selection, duration) =>{
              }
            })
 
-  // selection.select("text")
-  //   .style("fill-opacity", 1e-6);
+
 
   treeVisualization.update(selection, duration);
 }
@@ -58,7 +57,8 @@ treeVisualization.update = (selection, duration) => {
     .style("fill-opacity", 1)
     .style("font-size", function(d) {return d.value ? 10 : 7})
     .text(function(d) { return d.name; })
-    // .attr("text-anchor", function(d) { return d.children || d.childrenHidden ? "end" : "start"; })
+    .style("fill-opacity", 1)
+    .style('fill', '#A09E9E')
 
 }
 

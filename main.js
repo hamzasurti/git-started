@@ -24,19 +24,20 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
 
-	var dummy = new BrowserWindow({show: false})
-	// forces replace icon to load
-	dummy.setProgressBar(-1);
+  var dummy = new BrowserWindow({show: false})
+  // forces replace icon to load
+  dummy.setProgressBar(-1);
 
   mainWindow = new BrowserWindow({
-		width: 1200,
-		height: 700,
-		// resizable: false,
-    minHeight: 900,
-    minWidth:  500,
-	});
-	// for some reason template literall doesnt work here
-  mainWindow.loadURL('file://' +__dirname + '/index.html');
+    width: 1200,
+    height: 700,
+    minWidth: 900,
+    minHeight: 500,
+    titleBarStyle: 'hidden-inset',
+
+  });
+
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
 
 	// initialize fork
   mainWindow.webContents.on('did-finish-load', () => {
