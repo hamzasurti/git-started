@@ -23,7 +23,7 @@ process.once('message', function(data) {
 });
 process.on('message', function(data) {
 	if (data.message.cols) {
-    ptyTerm.resize(data.message.cols,data.message.rows);
+    // ptyTerm.resize(data.message.cols,data.message.rows);
   } else {
     ptyTerm.write(data.message)
   }
