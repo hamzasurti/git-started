@@ -9,5 +9,3 @@ gTerm also includes a lesson on Git and terminal basics. As you progress through
 - Visit gTerm.xyz to download our ZIP folder for Mac.
 - Unzip the folder, right-click gTerm, and select "Open".
 - You may see a warning that gTerm is "from an unidentified developer". Click the "Open" button to access the app.
-
-## Feedback
