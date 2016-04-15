@@ -4,4 +4,4 @@ build/
 assets/.DS_Store
 test.js
 gTerm-darwin-x64/
-assets/readme/
+gTerm-darwin-x64.zip
