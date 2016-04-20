@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-// Import other components here
+// Import other components
 import Animation from './Animation';
 import Lesson from './Lesson';
 import Dropdown from './Dropdown';

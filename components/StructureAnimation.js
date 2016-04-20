@@ -1,12 +1,18 @@
+/* eslint-disable no-undef */
+// We don't need to define ipcRenderer because it will be loaded by the time this file runs.
+/* eslint-disable no-param-reassign */
+
 import React, { Component } from 'react';
-import treeData from './../AnimationData/treeStructure';
 import Tree from './Tree';
 import Link from './Link';
 
+// Import default file structure data
+import treeData from './../AnimationData/treeStructure';
 const d3 = require('d3');
 
-// The goal here was to make React responsible for DOM structure (adding and removing elements)
-// and to make D3 responsible for styling, as described in this blog post:
+// In this component, React is responsible for DOM structure (adding and removing elements)
+// and D3 is responsible for styling.
+// This blog post provided inspiration:
 // https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3#.ztcxqykek
 
 export default class StructureAnimation extends Component {
@@ -22,13 +28,6 @@ export default class StructureAnimation extends Component {
 
   componentDidMount() {
     // This fires on initial load and when the user toggles between the structure and Git views.
-    // For some reason, after I toggle, every time I run a command or toggle again,
-    // I see an error message in the console about setting state for an unmounted component:
-    // "Warning: setState(...): Can only update a mounted or mounting component.
-    // This usually means you called setState() on an unmounted component. This is a no-op.
-    // Please check the code for the undefined component."
-    // I'm not sure what's going on, since cDM shouldn't fire for an unmounted component.
-    // However, the tree still renders correctly.
     ipcRenderer.send('ready-for-schema', '\n');
     ipcRenderer.on('direc-schema', (e, arg) => {
       this.updateTree(arg);
@@ -46,15 +45,9 @@ export default class StructureAnimation extends Component {
   buildStyles(windowWidth, windowHeight, margin) {
     const styles = {};
 
-    // Create variables to determine the size of the tree
-    // and the size of the SVG containing it (or just the height-width ratio?).
-
-    // styles.viewBoxWidth = this.state.windowWidth; // previously hard-coded as 660
-    // styles.viewBoxHeight = this.state.windowHeight;
-    styles.viewBoxWidth = this.state.windowWidth * 7 / 12; // previously hard-coded as 660
+    // Create variables to determine the size of the tree and the SVG containing it.
+    styles.viewBoxWidth = this.state.windowWidth * 7 / 12;
     styles.viewBoxHeight = this.state.windowHeight * 7 / 24;
-
-      // was hard-coded as 300, which looks good if the sidebar and Chrome dev tools are visible
     styles.viewBoxString = `0 0 ${styles.viewBoxWidth} ${styles.viewBoxHeight}`;
     styles.translationValue = `translate(${margin.left}, ${margin.top})`;
 
@@ -65,31 +58,30 @@ export default class StructureAnimation extends Component {
     const layout = {};
 
     // Create a tree layout.
-    const tree = d3.layout.tree()
-    // The first argument below is the maximum x-coordinate D3 will assign.
+    // The first argument provided to size() is the maximum x-coordinate D3 will assign.
     // The second argument is the maximum y-coordinate.
     // We're switching width and height here because d3 by default makes trees that branch
     // vertically, and we want a tree that branches horizontally.
     // In other words, nodes that are on the same level will have the same y-coordinate
     // but different x-coordinates.
-    .size([viewBoxHeight * .93, viewBoxWidth * .90]);
+    const tree = d3.layout.tree()
+      .size([viewBoxHeight * 0.93, viewBoxWidth * 0.90]);
 
-      // .size([viewBoxHeight * 0.93, viewBoxWidth * 0.9]);
-
-    // We know that the first node in the array is the root of the tree.
-    // Let's designate its initial coordinates - where it should enter.
+    // The first node in the array is the root of the tree.
+    // Set its initial coordinates - where it should enter.
     const root = this.state.treeData[0];
     root.x0 = viewBoxHeight / 2;
     root.y0 = 0;
 
-    // The next line creates and returns an array of nodes associated with the specified root node.
+    // Create an array of nodes associated with the root.
     // (The returned array is basically a flattened version of treeData.)
     // Before the next line runs, each node has children, level, name, and value properties.
     // After the next line runs, each node also has parent, depth, x, and y properties.
     // (D3 tree nodes always have parent, child, depth, x, and y properties.)
     // We will pass one node from this array to each Tree as props.data.
     layout.nodes = tree.nodes(root);
-    // This line creates and returns an array of objects representing all parent-child links
+
+    // Create an array of objects representing all parent-child links
     // in the nodes array we just created.
     layout.linkSelection = tree.links(layout.nodes);
 
@@ -99,8 +91,7 @@ export default class StructureAnimation extends Component {
       // We want to compress the tree a bit so that there's room for file/directory names
       // to the right of the deepest level.
       d.y *= 0.8;
-      // We could scale d.x too to prevent the svg from cutting off notes at the top and bottom
-      // of a node column.
+
       // If the node has a parent, set its initial coordinates to the parent's initial coordinates.
       // In other words, the parent and child should enter from the same place.
       if (d.parent) {
@@ -118,23 +109,20 @@ export default class StructureAnimation extends Component {
 
     const layout = this.buildTree(styles.viewBoxHeight, styles.viewBoxWidth);
 
-    // I think it makes sense to the use target.name as an id,
-    // because no two links should ever point to the same target.
-    // If needed, though, we could use {link.source.name + '/'  link.target.name} instead.
-    // We sometimes receive directory names with slashes and sometimes receive them without,
-    // so I'm removing any slash before using the name as a key.
-    // I added the trim to account for the fact that the name values sometime begin with a carriage
-    // return for some reason, and that throws things off.
-
+    // Create a counter variable that we'll use to stagger the items in our animation.
     let counter = 1;
+
     const trees = layout.nodes && layout.nodes.map((node) => {
-      node.index = counter;
-      counter++;
       // Save the starting value of node.y as node.yOriginal so we can use it in the future.
       if (node.yOriginal === undefined) node.yOriginal = node.y;
+
+      // Give the node an index property to determine how it will be staggered.
+      node.index = counter ++;
+
       // If node.index is odd, adjust node.y, which determines the position of this tree and the
       // link to it.
       if (node.index % 2 === 1) node.y = node.yOriginal * 0.9;
+
       // Parse node.name to extract a unique key for this tree.
       node.name = node.name.trim();
       const nameEndsWithSlash = node.name.indexOf('/') === node.name.length - 1;
@@ -150,13 +138,8 @@ export default class StructureAnimation extends Component {
       return (<Link key={key} data={link} />);
     });
 
-    // If you want to see the size of the SVG, add this code before the links and trees:
-    // <rect x='0' y='0' width={viewBoxWidth - this.state.margin.left}
-    // height={viewBoxHeight - this.state.margin.top} rx='15' ry='15' />
-    // How does the svg know to fill the full width of its containing div? I'm not sure about this.
-
     return (
-      <div width='100%' height='100%' id="Structure-Animation">
+      <div width="100%" height="100%" id="Structure-Animation">
         <svg viewBox={styles.viewBoxString}>
           <g transform={styles.translationValue}>
             {links}
@@ -170,8 +153,7 @@ export default class StructureAnimation extends Component {
 
 StructureAnimation.defaultProps = {
   initialTreeData: treeData,
-  // We're not currently using the right or bottom margins.
-  initialMargin: { top: 0, right: 20, bottom: 0, left: 20 },
+  initialMargin: { top: 0, left: 20 },
   // The initial window dimensions are specified in app.on('ready') in main.js.
   initialWindowWidth: 1200,
   initialWindowHeight: 700,
