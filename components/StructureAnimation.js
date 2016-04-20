@@ -43,7 +43,7 @@ export default class StructureAnimation extends Component {
     });
   }
 
-  buildStyles(windowWidth, windowHeight, sidebarVisible, margin) {
+  buildStyles(windowWidth, windowHeight, margin) {
     const styles = {};
 
     // Create variables to determine the size of the tree
@@ -114,7 +114,7 @@ export default class StructureAnimation extends Component {
 
   render() {
     const styles = this.buildStyles(this.state.windowWidth, this.state.windowHeight,
-      this.state.sidebarVisible, this.state.margin);
+      this.state.margin);
 
     const layout = this.buildTree(styles.viewBoxHeight, styles.viewBoxWidth);
 
@@ -182,5 +182,4 @@ StructureAnimation.propTypes = {
   initialMargin: React.PropTypes.object,
   initialWindowWidth: React.PropTypes.number,
   initialWindowHeight: React.PropTypes.number,
-  sidebarVisible: React.PropTypes.bool,
 };

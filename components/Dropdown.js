@@ -40,7 +40,7 @@ export default class Sidebar extends Component {
 
   render() {
 
-    const lessonList = this.props.DropdownVisible ? this.buildLessonList(this.props.lessonInfo, this.props.lessonNumber,
+    const lessonList = this.props.dropdownVisible ? this.buildLessonList(this.props.lessonInfo, this.props.lessonNumber,
       this.props.lessonVisible, this.handleClick) : undefined;
 
     return (
@@ -59,5 +59,5 @@ Sidebar.propTypes = {
   lessonInfo: React.PropTypes.array,
   lessonNumber: React.PropTypes.number,
   lessonVisible: React.PropTypes.bool,
-  DropdownVisible: React.PropTypes.bool,
+  dropdownVisible: React.PropTypes.bool,
 };

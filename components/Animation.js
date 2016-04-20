@@ -41,8 +41,7 @@ export default class Animation extends Component {
   // and https://www.iconfinder.com/icons/83306/git_icon#size=32
   render() {
     const selectedAnimation = this.props.structureAnimationVisible ?
-      <StructureAnimation sidebarVisible={this.props.sidebarVisible} /> :
-      <GitAnimation />;
+      <StructureAnimation /> : <GitAnimation />;
 
     const styles = this.buildStyles(this.props.structureAnimationVisible);
 
@@ -65,11 +64,7 @@ export default class Animation extends Component {
 }
 
 
-
-
 Animation.propTypes = {
-  padderStyle: React.PropTypes.object,
   setStructureAnimationVisibility: React.PropTypes.func,
-  sidebarVisible: React.PropTypes.bool,
   structureAnimationVisible: React.PropTypes.bool,
 };
