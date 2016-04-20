@@ -98,7 +98,7 @@ export default class Dashboard extends Component {
     // Render the lesson only if it should be visible.
     const lesson = this.state.lessonVisible ?
       <Lesson lessonNumber={ this.state.lessonNumber } slideNumber={ this.state.slideNumber }
-        styles={ styles } errorVisible={ this.state.errorVisible } changeSlide={ this.changeSlide }
+        errorVisible={ this.state.errorVisible } changeSlide={ this.changeSlide }
         hideLesson={ this.hideLesson } setErrorVisibility={ this.setErrorVisibility }
       /> : undefined;
 

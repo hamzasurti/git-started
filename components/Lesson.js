@@ -1,4 +1,6 @@
-/* eslint-disable no-console */
+/* eslint-disable no-undef */
+// We don't need to define ipcRenderer because it will be loaded by the time this file runs.
+
 import React, { Component } from 'react';
 import lessons from './../lessons/lesson-list';
 
@@ -12,18 +14,20 @@ export default class Lesson extends Component {
     // If this slide has a buttonFunction, run it.
     if (lesson[slideNumber].buttonFunction) {
       lesson[slideNumber].buttonFunction();
-      // Listen for the result of the test triggered by buttonFunction
-      // (since I can't get the buttonFunction to return a Boolean, which would be simpler).
+
+      // Listen for the result of the buttonFunction test.
       ipcRenderer.once('test-result-2', (event, arg) => {
-        console.log('result', arg);
-        // If the user passed the test (if arg is true), advance.
+        // If the user passed the test (if arg is true), advance and hide the error message.
         if (arg) {
           this.advance(lesson, slideNumber);
           if (errorVisible) this.props.setErrorVisibility(false);
+        // If the user failed the test, show the error message.
         } else {
           this.props.setErrorVisibility(true);
         }
       });
+
+    // If the slide does not have a buttonFunction, simply advance.
     } else {
       this.advance(lesson, slideNumber);
     }
@@ -36,13 +40,9 @@ export default class Lesson extends Component {
     this.props.changeSlide(destination);
   }
 
-  // #Lesson {
-  //   background-color: white!important;
-  // }
   buildStyles() {
     const styles = {};
 
-    // Isaac: I'm not sure whether overflow should be auto or scroll.
     styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll',
      fontFamily: 'Helvetica, sans-serif', backgroundColor: 'white' };
     styles.padder = { padding: '16px' };
@@ -52,10 +52,12 @@ export default class Lesson extends Component {
     return styles;
   }
 
-  // The image is from https://www.iconfinder.com/icons/118584/x_icon#size=32
+  // The X icon is from https://www.iconfinder.com/icons/118584/x_icon#size=32
   render() {
-    const currentLesson = lessons[this.props.lessonNumber].content; // the slide deck
+    const currentLesson = lessons[this.props.lessonNumber].content;
     const styles = this.buildStyles();
+
+    // Render the error message only if it should be visible.
     const error = this.props.errorVisible ?
       <p>
         <strong style={styles.error}>{ currentLesson[this.props.slideNumber].errorMessage }</strong>
@@ -90,7 +92,7 @@ Lesson.propTypes = {
   lessonNumber: React.PropTypes.number,
   slideNumber: React.PropTypes.number,
   errorVisible: React.PropTypes.bool,
-  hideLesson: React.PropTypes.func,
   changeSlide: React.PropTypes.func,
+  hideLesson: React.PropTypes.func,
   setErrorVisibility: React.PropTypes.func,
 };
