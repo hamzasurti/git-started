@@ -1,4 +1,8 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable strict */
+/* eslint-disable no-unused-expressions */
+
+// Use strict mode so that we can use let and const.
 'use strict';
 
 const exec = require('child_process').exec;
@@ -99,4 +103,5 @@ module.exports = {
       });
     });
   },
+  schemaMaker,
 };

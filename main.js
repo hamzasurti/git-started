@@ -1,19 +1,20 @@
-/* eslint-disable no-console */
+/* eslint-disable strict */
+
+// Use strict mode so that we can use let and const.
 'use strict';
+
 const electron = require('electron');
 const app = electron.app;
 const ipcMain = require('electron').ipcMain;
 const	BrowserWindow = electron.BrowserWindow;
 const animationDataSchema = require('./AnimationData/StructureSchema');
 const async = require('async');
-const fs = require('fs'); // added by Isaac for testing
 
 // Require the child_process module so we can communicate with the user's terminal
 const exec = require('child_process').exec;
 const fork = require('child_process').fork;
 
 let mainWindow = null;
-
 
 
 app.on('window-all-closed', () => {
@@ -23,9 +24,8 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-
-  var dummy = new BrowserWindow({show: false})
-  // forces replace icon to load
+  const dummy = new BrowserWindow({ show: false });
+  // Force replace icon to load
   dummy.setProgressBar(-1);
 
   mainWindow = new BrowserWindow({
@@ -34,12 +34,11 @@ app.on('ready', () => {
     minWidth: 900,
     minHeight: 500,
     titleBarStyle: 'hidden-inset',
-
   });
 
-  mainWindow.loadURL('file://' + __dirname + '/index.html');
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
-	// initialize fork
+	// Initialize fork
   mainWindow.webContents.on('did-finish-load', () => {
     setTimeout(async.waterfall([
       async.apply(animationDataSchema.dataSchema, process.env.HOME),
