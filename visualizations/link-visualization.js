@@ -30,16 +30,4 @@ linkVisualization.update = (selection, diagonal, duration) => {
     .style('stroke-width', 0.5);
 };
 
-// Hide links when we're hiding the children they point to.
-linkVisualization.exit = (selection, diagonal, duration) => {
-  selection.transition()
-    .duration(duration)
-    .attr('d', d => {
-      const o = { x: d.source.x, y: d.source.y };
-      return diagonal({ source: o, target: o });
-    })
-    .style('stroke', d => d.target.level)
-    .style('stroke-width', 0.5);
-};
-
 export default linkVisualization;
