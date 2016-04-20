@@ -2,8 +2,8 @@
 // We don't need to define ipcRenderer because it will be loaded by the time this file runs.
 
 import React, { Component } from 'react';
-const Term = require('term.js');
-const ReactDOM = require('react-dom');
+import ReactDOM from 'react-dom';
+import Term from 'term.js';
 
 export default class Terminal extends Component {
   // Once the Terminal component mounts, append a terminal emulator to it.

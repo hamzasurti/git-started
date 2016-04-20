@@ -1,4 +1,4 @@
-const d3 = require('d3'); // const?
+import d3 from 'd3';
 
 var linkVisualization = {};
 

@@ -3,12 +3,12 @@
 /* eslint-disable no-param-reassign */
 
 import React, { Component } from 'react';
+import d3 from 'd3';
 import Tree from './Tree';
 import Link from './Link';
 
 // Import default file structure data
 import treeData from './../AnimationData/treeStructure';
-const d3 = require('d3');
 
 // In this component, React is responsible for DOM structure (adding and removing elements)
 // and D3 is responsible for styling.

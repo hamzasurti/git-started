@@ -1,14 +1,13 @@
-// Refactoring opportunity: import d3 and dagreD3 here rather than loading them on index.html.
-const DAG = require('../AnimationData/DAG'); // Can we import instead?
+/* eslint-disable no-undef */
+// We don't need to define dagreD3 because it will be loaded by the time this file runs.
+/* eslint-disable no-param-reassign */
+
+import d3 from 'd3';
+import DAG from '../AnimationData/DAG';
 
 const gitVisualization = {};
 
-gitVisualization.renderGraph = function (graph) {
-  // Is this the best place for this function, which is needed to show commit messages?
-  // window.updateCommitMessage = function (message) {
-  //   document.getElementById('message').textContent = message;
-  // };
-
+gitVisualization.renderGraph = (graph) => {
   // Grab the nodes and links from the graph we want to display.
   const nodes = graph.nodes;
   const links = graph.links;
@@ -49,7 +48,7 @@ gitVisualization.renderGraph = function (graph) {
   }));
 };
 
-gitVisualization.createGraph = function (nestedCommitArr) {
+gitVisualization.createGraph = (nestedCommitArr) => {
   const gitGraph = new DAG();
   for (let i = 0; i < nestedCommitArr.length - 1; i++) {
     if (nestedCommitArr[i][1].match(/\s/)) {

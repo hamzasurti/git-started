@@ -1,4 +1,3 @@
-const d3 = require('d3');
 import linkVisualization from './link-visualization';
 
 var treeVisualization = {};
