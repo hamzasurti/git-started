@@ -105,11 +105,9 @@ export default class Dashboard extends Component {
     return (
       <div id="Dashboard" style={ styles.dashboard }>
         <div style={ styles.dropdown }>
-          <Dropdown showLesson={ this.showLesson }
-            dropdownVisibility={ this.setDropdownVisibility }
-            lessonInfo={ lessonInfo } lessonNumber={ this.state.lessonNumber }
-            lessonVisible={ this.state.lessonVisible }
+          <Dropdown lessonInfo={ lessonInfo } showLesson={ this.showLesson }
             dropdownVisible={ this.state.dropdownVisible }
+            setDropdownVisibility={ this.setDropdownVisibility }
           />
         </div>
         <div style={ styles.main }>
