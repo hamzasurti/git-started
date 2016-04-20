@@ -93,7 +93,6 @@ export default class Dashboard extends Component {
 
   render() {
     const styles = this.buildStyles(this.state.DropdownVisible);
-    console.log('render being called');
     // Create an array of lesson names to pass down to Sidebar as props.
     // (We don't want to pass all the lesson contents - that's a lot of data.)
     const lessonInfo = lessons.map(lesson =>

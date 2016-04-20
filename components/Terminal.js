@@ -10,7 +10,8 @@ export default class Terminal extends Component {
   }
 
   buildStyle(lessonVisible) {
-    const style = { float: 'left', height: '100%', backgroundColor: '#151414' };
+    const style = { float: 'left', height: '100%', backgroundColor: '#151414',
+     borderColor: '#151414', zIndex: 3 };
     style.width = lessonVisible ? '65%' : '100%';
     return style;
   }
@@ -19,7 +20,6 @@ export default class Terminal extends Component {
     const $Terminal = document.getElementById('Terminal');
     const columns = ($Terminal.offsetWidth / 6.71) - 1;
     const numRows = Math.floor($Terminal.offsetHeight / 18); //should defoulst to 17
-    console.log(numRows);
     const term = new Term({ // creates a new term.js terminal
       cursorBlink: true,
       useStyle: true,

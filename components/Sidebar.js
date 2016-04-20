@@ -54,7 +54,6 @@ export default class Sidebar extends Component {
   }
 }
 
-
 Sidebar.propTypes = {
   showLesson: React.PropTypes.func,
   lessonInfo: React.PropTypes.array,

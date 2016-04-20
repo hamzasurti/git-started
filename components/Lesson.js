@@ -36,12 +36,15 @@ export default class Lesson extends Component {
     this.props.changeSlide(destination);
   }
 
+  // #Lesson {
+  //   background-color: white!important;
+  // }
   buildStyles() {
     const styles = {};
 
     // Isaac: I'm not sure whether overflow should be auto or scroll.
     styles.lesson = { float: 'left', height: '100%', width: '35%', overflow: 'scroll',
-     fontFamily: 'Helvetica, sans-serif' };
+     fontFamily: 'Helvetica, sans-serif', backgroundColor: 'white' };
     styles.padder = { padding: '16px' };
     styles.img = { float: 'right' };
     styles.error = { color: 'red' };
