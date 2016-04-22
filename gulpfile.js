@@ -18,7 +18,7 @@ function handleErrors(...args) {
 
 function buildScript(file, watch) {
   const props = {
-    entries: [`./components/ + ${file}`],
+    entries: [`./components/${file}`],
     debug: true,
     transform: babelify.configure({
       presets: ['react', 'es2015', 'stage-0'],
