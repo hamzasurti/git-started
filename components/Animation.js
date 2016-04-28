@@ -20,9 +20,9 @@ export default class Animation extends Component {
   buildStyles(structureAnimationVisible) {
     const styles = {};
 
-
     styles.padder = { padding: '16px' };
-    styles.toggle = { float: 'right', border: '1px solid black', textAlign: 'center',position: 'absolute', right: '13px', 'z-index':0 };
+    styles.toggle = { float: 'right', border: '1px solid black', textAlign: 'center',
+      position: 'absolute', right: '13px', zIndex: 0 };
     styles.git = { borderBottom: '1px solid black', padding: '2px 2px 0px 2px' };
     styles.structure = { padding: '2px 2px 0px 2px' };
 
@@ -37,12 +37,13 @@ export default class Animation extends Component {
     return styles;
   }
 
-  // Images from https://www.iconfinder.com/icons/172515/folder_opened_icon#size=32
+  // The images in the toggle are from
+  // https://www.iconfinder.com/icons/172515/folder_opened_icon#size=32
   // and https://www.iconfinder.com/icons/83306/git_icon#size=32
   render() {
+    // Render only the animation that is currently selected.
     const selectedAnimation = this.props.structureAnimationVisible ?
-      <StructureAnimation sidebarVisible={this.props.sidebarVisible} /> :
-      <GitAnimation />;
+      <StructureAnimation /> : <GitAnimation />;
 
     const styles = this.buildStyles(this.props.structureAnimationVisible);
 
@@ -50,10 +51,10 @@ export default class Animation extends Component {
       <div id="Animation">
         <div style={ styles.padder }>
           <div style={ styles.toggle }>
-            <div style={ styles.git } onClick={this.showGit}>
+            <div style={ styles.git } onClick={ this.showGit }>
               <img src="assets/git-icon.png" alt="Git view" height="12" width="12" />
             </div>
-            <div style={ styles.structure } onClick={this.showStructure}>
+            <div style={ styles.structure } onClick={ this.showStructure }>
               <img src="assets/folder-icon.png" alt="Directory view" height="12" width="12" />
             </div>
           </div>
@@ -64,12 +65,7 @@ export default class Animation extends Component {
   }
 }
 
-
-
-
 Animation.propTypes = {
-  padderStyle: React.PropTypes.object,
   setStructureAnimationVisibility: React.PropTypes.func,
-  sidebarVisible: React.PropTypes.bool,
   structureAnimationVisible: React.PropTypes.bool,
 };

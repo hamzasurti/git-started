@@ -11,19 +11,19 @@ body {
   right: 0;
 }
 
-/* Lesson styling we couldn't easily to in React */
+/* For our React components, we relied primarily on inline styling.
+In a few situations, using an external stylesheet made more sense.
+We've included this styling below. */
 code {
   font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
   color: white;
   background-color: black;
 }
 
-/* Button styling adapted from Skeleton:
-https://github.com/dhg/Skeleton/blob/master/css/skeleton.css
-I tried putting the standard styling in React and the hover/focus styling (which is difficult to do
-in React: http://stackoverflow.com/questions/28365233) here, but the inline styling overrode the
-hover/focus styling.
-*/
+/* We adapted our button styling adapted from Skeleton:
+https://github.com/dhg/Skeleton/blob/master/css/skeleton.css.
+Using inline styling for hover/focus would have been verbose:
+http://stackoverflow.com/questions/28365233 */
 button {
   display: inline-block;
   height: 38px;
@@ -45,35 +45,18 @@ button {
 
 button:hover,
 button:focus {
-  background-color: #65C0EB; /* Adobe's suggestion: #55A1C5 */
+  background-color: #65C0EB;
 }
 
+/* Styling for the terminal emulator appended to the Terminal component by renderTerm */
 .terminal {
   color: #d2d2d2!important;
-  /*border: 10px #151414!important;*/
-  /*border-top: 10px solid #d2d2d2!important;*/
   border: 0!important;
-  /*box-shadow: 0 20px 0 #d2d2d2;*/
   background-color: #151414!important;
   margin-top: 7px!important;
   bottom: 0px!important;
   font-size: 13px;
   margin-left: 5px
-}
-
-#Terminal {
-  border-color: #151414;
-  z-index: 3;
-} ;
-
-#Dropdown {
-  position: relative;
-/*top: 50%;
-transform: translateY(-50%);
-text-align: right;*/
-float: right!important;
-color: #d2d2d2;
-
 }
 
 #Dropdown > span:hover {
@@ -82,11 +65,7 @@ color: #d2d2d2;
 
 #Dropdown > ul > li:hover {
   background-color: #F9F9F9!important;
-    color: black!important;
-    cursor: pointer;
- max-height:150px!important;
-}
-
-#Lesson {
-  background-color: white!important;
+  color: black!important;
+  cursor: pointer;
+  max-height:150px!important;
 }

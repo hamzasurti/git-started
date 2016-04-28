@@ -1,3 +1,5 @@
-// We may be running into errors trying to browserify these two lines.
-const pty = require('pty.js'); // low-level terminal spawner: https://github.com/chjj/pty.js
-const ipcRenderer = require('electron').ipcRenderer; // allows render process and main process to communicate: http://electron.atom.io/docs/v0.36.8/api/ipc-renderer
+/* eslint-disable no-unused-vars */
+
+// Our bundle file uses these modules:
+const pty = require('pty.js');
+const ipcRenderer = require('electron').ipcRenderer;

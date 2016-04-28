@@ -1,3 +1,5 @@
+const d3 = require('d3');
+
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var global=self;/**
  * @license
@@ -82,26 +84,17 @@ Renderer.prototype.postRender = function(postRender) {
 Renderer.prototype.run = function(graph, svg) {
   // First copy the input graph so that it is not changed by the rendering
   // process.
-  graph = copyAndInitGraph(graph); // I can still see the commit messages here.
+  graph = copyAndInitGraph(graph);
 
   // Create node and edge roots, attach labels, and capture dimension
   // information for use with layout.
   var svgNodes = createNodeRoots(graph, svg);
   var svgEdges = createEdgeRoots(graph, svg);
-  // console.log('svgNodes', svgNodes); // I'm not sure what this is.
-  // var selection = d3.select(svgNodes[0][0]);
-  // console.log('selection.datum()', selection.datum()); // The only data I'm seeing there is the hash.
-
   drawNodes(graph, this._drawNode, svgNodes);
   drawEdgeLabels(graph, this._drawEdgeLabel, svgEdges);
 
   // Now apply the layout function
-  var result = runLayout(graph, this._layout); // Now I can see the message here too!
-
-  // Run any user-specified post layout processing
-  // Isaac: I'm commenting out this function because it's empty.
-  // this._postLayout(result, svg);
-
+  var result = runLayout(graph, this._layout);
   drawEdges(result, this._drawEdge, svgEdges);
 
   // Apply the layout information to the graph
@@ -109,7 +102,7 @@ Renderer.prototype.run = function(graph, svg) {
 
   this._postRender(result, svg);
 
-  return result; // result is a Digraph
+  return result;
 };
 
 function copyAndInitGraph(graph) {
@@ -144,11 +137,6 @@ function createNodeRoots(graph, svg) {
     .enter()
       .append("g")
       .classed("node", true);
-      // I don't think I need to add this attribute, actually.
-      // .attr("data-message", (d, i) => {
-      //   // d is just the hash
-      //   return "Commit message here";
-      // });
 }
 
 function createEdgeRoots(graph, svg) {
@@ -166,12 +154,8 @@ function drawNodes(graph, drawNode, roots) {
     .each(function(u) { calculateDimensions(this, graph.node(u)); });
 }
 
-// Note from Isaac: I commented out this function because we don't want edge labels.
 function drawEdgeLabels(graph, drawEdgeLabel, roots) {
-  // roots
-  //   .append("g")
-  //     .each(function(e) { drawEdgeLabel(graph, e, d3.select(this)); })
-  //     .each(function(e) { calculateDimensions(this, graph.edge(e)); });
+  // Our app does not need edge labels.
 }
 
 function drawEdges(graph, drawEdge, roots) {
@@ -190,7 +174,7 @@ function runLayout(graph, layout) {
   // Copy labels to the result graph
   graph.eachNode(function(u, value) {
     result.node(u).label = value.label;
-    result.node(u).message = value.message; // Added by Isaac
+    result.node(u).message = value.message;
   });
   graph.eachEdge(function(e, u, v, value) { result.edge(e).label = value.label; });
 
@@ -198,54 +182,18 @@ function runLayout(graph, layout) {
 }
 
 function reposition(graph, svgNodes, svgEdges) {
-  // console.log('graph', graph);
-  // console.log('svgNodes', svgNodes);
-  // // svgNodes is an array containing one element.
-  // // This element is an array of 7 g's.
-  // // This element also has a parentNode property.
-  // console.log('svgNodes[0]', svgNodes[0]);
-  // // svgNodes is similar. I think it represents the links?
-  // console.log('svgEdges', svgEdges);
-
   svgNodes
     .attr("transform", function(u) {
-      // graph.node is a function that grabs the data we want.
-      // The first argument (u) is the curren node's id (a string like 'm1').
-      // The second argument is an index 0-7.
-      // The third arguent is 0.
-      // The fourth argument is undefined.
       var value = graph.node(u);
-      // console.log(graph); // This is a Digraph - whatever that means.
-      // console.log(value); // does not contain info about my parents or child
-      // Ooh, value has all kinds of goodies, including the translation values used below and the label I provided in graph3.js.
-      // I need to somehow adjust the logic here.
-      // Can I go back to my child and see if he has another parent?
-      // Can I log myself and my parents?
-      // console.log(value.label, value.order);
-      // IDEA: Can I just set value.y to value.order times something?
-      // Or use value.order times something in place of value.y?
-      // Now we're making progress!
       value.y = value.order * 60;
       return "translate(" + value.x + "," + value.y + ")";
-      // return "translate(" + value.x + "," + value.order * 60 + ")";
     });
 
-  // This code just moves the link label (text).
-  // console.log('svgEdges', svgEdges); // svgEdges is an array of g.edge's
-  // console.log('svgEdges.selectAll("g .edge-label")', svgEdges.selectAll("g .edge-label"));
   svgEdges
-    .selectAll("g .edge-label") // This returns the link labels, basically.
+    .selectAll("g .edge-label")
     .attr("transform", function(e) {
-      // e is an underscored number from _1 to _8
       var value = graph.edge(e);
-      // Again, value is a data object, with label as the name.
-      // Most of the property values are consistent from link to link.
-      // value.point is where the differences come in.
-      // It's an array of three objects.
-      // All three objects have x and y properties.
-      // The middle object also has dr, dl, ur, and ul properties.
       var point = findMidPoint(value.points);
-      // In our case, point will just be value.points[1].
       return "translate(" + point.x + "," + point.y + ")";
     });
 }
@@ -254,7 +202,6 @@ function defaultDrawNode(graph, u, root) {
   // Rect has to be created before label so that it doesn't cover it!
   var label = root.append("g")
                   .attr("class", "label")
-                  // .attr("data-message", graph.node(u).message)
                   .on("mouseover", function() {
                     window.updateCommitMessage(graph.node(u).message);
                   })
@@ -272,30 +219,20 @@ function defaultDrawEdgeLabel(graph, e, root) {
   addLabel(graph.edge(e).label, label, 0, 0);
 }
 
-// Monday: I think this is what I want to adjust.
-// It looks like this function is called before reposition.
 function defaultDrawEdge(graph, e, root) {
-  // graph is a Digraph, e is a number preceded by an underscore,
-  // and root is an array holding one g.edge node
   root
-    // insert a path element before every g within a g.edge node in the selection (should be only 1)
-    .insert("path", "*") // returns the just-inserted path element
-    .attr("stroke", "black") // added by Isaac
+    .insert("path", "*")
+    .attr("stroke", "black")
     .attr("fill", "none")
     .attr("marker-end", "url(#arrowhead)")
     .attr("d", function() {
       var value = graph.edge(e);
-      // console.log('value', value);
       var source = graph.node(graph.incidentNodes(e)[0]);
-      // console.log('source', source);
       var target = graph.node(graph.incidentNodes(e)[1]);
-      // console.log('target', target);
       var points = value.points;
-
       var p0 = points.length === 0 ? target : points[0];
       var p1 = points.length === 0 ? source : points[points.length - 1];
 
-      // If we didn't have the following lines, points would contain only the middle point.
       points.unshift(intersectRect(source, p0));
       // TODO: use bpodgursky's shortening algorithm here
       points.push(intersectRect(target, p1));
@@ -308,21 +245,17 @@ function defaultDrawEdge(graph, e, root) {
       }
       points[1].y = (points[0].y + points[2].y) / 2;
 
-      // console.log(target.order * 60);
-      // console.log(`${target.label} y's: ${points[0].y}, ${points[1].y}, ${points[2].y}`);
-
       var result = d3.svg.line()
         .x(function(d) { return d.x; })
         .y(function(d) { return d.y; })
         .interpolate("bundle") // https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate
         .tension(0.95)
-        (points); // Perhaps I just need to provide different points?
+        (points);
 
       return result;
     });
 }
 
-// Empty function
 function defaultPostLayout() {
   // Do nothing
 }
@@ -336,7 +269,6 @@ function defaultPostRender(graph, root) {
           .attr("viewBox", "0 0 10 10")
           .attr("refX", 8)
           .attr("refY", 5)
-          // .attr("markerUnits", "strokewidth") // throws an error
           .attr("markerWidth", 8)
           .attr("markerHeight", 5)
           .attr("orient", "auto")
@@ -346,7 +278,7 @@ function defaultPostRender(graph, root) {
   }
 }
 
-// Isaac: This function adds labels to both nodes and paths.
+// This function adds labels to both nodes and paths.
 function addLabel(label, root, marginX, marginY) {
   // Add the rect first so that it appears behind the label
   var rect = root.append("rect");
@@ -408,9 +340,7 @@ function addTextLabel(label, root) {
 
 function findMidPoint(points) {
   var midIdx = points.length / 2;
-  // In our case, since points.length is 3, midIdx is 1.5.
   if (points.length % 2) {
-    // 1.5 % 2 is truthy (not zero), so return points[1], the middle point (duh).
     return points[Math.floor(midIdx)];
   } else {
     var p0 = points[midIdx - 1];

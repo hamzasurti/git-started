@@ -1,11 +1,15 @@
 /* eslint-disable max-len */
+/* eslint-disable no-undef */
+// We don't need to define ipcRenderer because it will be loaded by the time this file runs.
 
 // Import React so we can use JSX.
 import React from 'react';
 
+// Create a variable to hold the name of the current directory.
+// We will update this variable once we start running tests.
 let currentDirectory;
 
-// Export an array. Alternatively, we could use a linked list.
+// Create an array of slides to export.
 const slides = [
   {
     lessonText:
@@ -65,7 +69,6 @@ const slides = [
     },
     errorMessage: "Oops! It looks like you haven't installed Git. Try again and then click the button below.",
 
-  // Does the user actually see the visualization mentioned below?
   }, {
     lessonText:
       <div>
@@ -79,9 +82,6 @@ const slides = [
     buttonText: 'Done!',
     buttonFunction() {
       // Check whether the user has created new-project
-      // Note: We repeat "'cd ' + currentDirectory + command" a lot,
-      // but since we need to use the most up-to-date value for currentDirectory,
-      // I'm not sure there's any way around this.
       const commandToRun = `cd ${currentDirectory}; cd new-project`;
       ipcRenderer.send('command-to-run', commandToRun);
       ipcRenderer.once('terminal-output', (event, arg) => {
@@ -213,7 +213,6 @@ const slides = [
          commits when you want to refer back to them in the future!</p>
       </div>,
     buttonText: "What's next?",
-    //  Running git status should tell us what we need to know. We could also check for a message.
     buttonFunction() {
       // Check whether the user has git-committed new-file.text.
       const commandToRun = `cd ${currentDirectory}; git log; git status`;
@@ -257,7 +256,6 @@ const slides = [
         // 'modified:' + whitespace + 'new-file.txt'.
         const regExp = /(modified:\s+new-file[.]txt)/;
         ipcRenderer.send('test-result-1', regExp.test(arg));
-        // As an alternative to RegExp.test, we could use String.search.
       });
     },
     errorMessage:
@@ -273,11 +271,6 @@ const slides = [
          recent commit. Remember: last time we committed, new-file.txt was empty.</p>
       </div>,
     buttonText: 'I see my changes!',
-    // We could add a buttonFunction to check whether the user has run git diff,
-    // but we'd need to be able to access the contents of their command line.
-    // Since we don't currently have a buttonFunction for this slide,
-    // we aren't currently using the errorMessage below.
-    errorMessage: "Oops! It looks like you didn't run the git diff command, or you aren't inside the 'new-project' directory. Try again and then click the button below.",
 
   }, {
     lessonText:
@@ -295,18 +288,10 @@ const slides = [
         <p>The GitHub lesson is coming soon, but it isn't ready yet. Would you like to repeat the
          lesson you just finished?</p>
       </div>, // '
-    buttonText: "Sure!",
+    buttonText: 'Sure!',
   },
 ];
 
 export { slides as lesson1 };
 
-/* A valuable resource for this lesson was https://github.com/jlord/git-it-electron.
-Some notes on it:
-- lib/verify/ contains a file for each challenge.
-Each file exports a verifyXChallenge function (where X is the challenge name).
-- lib/challenge.js handles clicks on the 'Verify' button.
-On click, it runs the appropriate verifyXChallenge function.
-- You can run the application by downloading and opening the zip file,
-navigating into the appropriate directory, and typing 'electron .' into your command line.
-*/
+// A valuable resource for this lesson was https://github.com/jlord/git-it-electron.

@@ -1,4 +1,7 @@
-'use strict'
+/* eslint-disable strict */
+
+'use strict';
+
 const pty = require('pty.js');
 const animationDataSchema = require('./AnimationData/StructureSchema');
 const getGitData = require('./AnimationData/gitData');
@@ -12,36 +15,27 @@ const ptyTerm = pty.fork('bash', [], {
   env: process.env,
 });
 
+// Set the terminal prompt to pwd.
+// We can read the bash profile here with the source command.
+ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`);
+ptyTerm.write('clear \r');
 
-  // sets the terminal prompt to pwd
-	// We can read the bash profile here with the source command.
-ptyTerm.write(`PROMPT_COMMAND='PS1=$(pwd)" $ "'\r`)
-ptyTerm.write(`clear \r`); // originally had \n before \r
+process.once('message', () => animationDataSchema.dataSchema(process.env.HOME));
 
-process.once('message', function(data) {
-	animationDataSchema.dataSchema(process.env.HOME)
-});
-process.on('message', function(data) {
-	if (data.message.cols) {
-    // ptyTerm.resize(data.message.cols,data.message.rows);
-  } else {
-    ptyTerm.write(data.message)
-  }
-});
+process.on('message', data => { if (!data.message.cols) ptyTerm.write(data.message); });
 
-
-ptyTerm.on('data', function(data) {
-  // crude way to find path, need to improve
+ptyTerm.on('data', data => {
+  // Find path
   process.send({
-    data:data
-  })
-  var re = /\s[$]\s/g;
+    data,
+  });
+  const re = /\s[$]\s/g;
   if (data.match(re)) {
-    var temp = data;
-    temp = temp.replace(re,'');
+    let temp = data;
+    temp = temp.replace(re, '');
     currDir = temp;
-    process.send({ currDir: currDir });
+    process.send({ currDir });
     animationDataSchema.dataSchema(currDir);
-		getGitData.gitHistory(currDir);
+    getGitData.gitHistory(currDir);
   }
 });
