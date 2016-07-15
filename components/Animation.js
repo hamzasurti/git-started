@@ -41,7 +41,7 @@ export default class Animation extends Component {
   // https://www.iconfinder.com/icons/172515/folder_opened_icon#size=32
   // and https://www.iconfinder.com/icons/83306/git_icon#size=32
   render() {
-    // Render only the animation that is currently selected.
+    // Render only the animation that is currently selected
     const selectedAnimation = this.props.structureAnimationVisible ?
       <StructureAnimation /> : <GitAnimation />;
 
